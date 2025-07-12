@@ -3,11 +3,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Layout from "@/components/layout";
 import ResultCard from "@/components/result-card";
 import ShareModal from "@/components/share-modal";
+import ActionPlanModal from "@/components/action-plan-modal";
 import { apiRequest } from "@/lib/queryClient";
 import type { SearchResult } from "@shared/schema";
 
 export default function SavedResults() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [actionPlanModalOpen, setActionPlanModalOpen] = useState(false);
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
   const queryClient = useQueryClient();
 
@@ -32,6 +34,11 @@ export default function SavedResults() {
   const handleShareResult = (result: SearchResult) => {
     setSelectedResult(result);
     setShareModalOpen(true);
+  };
+
+  const handleViewDetails = (result: SearchResult) => {
+    setSelectedResult(result);
+    setActionPlanModalOpen(true);
   };
 
   if (isLoading) {
@@ -69,6 +76,7 @@ export default function SavedResults() {
                 result={result}
                 onSave={handleSaveResult}
                 onShare={handleShareResult}
+                onViewDetails={handleViewDetails}
               />
             ))}
           </div>
@@ -79,6 +87,12 @@ export default function SavedResults() {
         isOpen={shareModalOpen}
         result={selectedResult}
         onClose={() => setShareModalOpen(false)}
+      />
+
+      <ActionPlanModal
+        isOpen={actionPlanModalOpen}
+        result={selectedResult}
+        onClose={() => setActionPlanModalOpen(false)}
       />
     </Layout>
   );

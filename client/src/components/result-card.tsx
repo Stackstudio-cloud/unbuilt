@@ -8,9 +8,10 @@ interface ResultCardProps {
   result: SearchResult;
   onSave: (id: number, isSaved: boolean) => void;
   onShare: (result: SearchResult) => void;
+  onViewDetails: (result: SearchResult) => void;
 }
 
-export default function ResultCard({ result, onSave, onShare }: ResultCardProps) {
+export default function ResultCard({ result, onSave, onShare, onViewDetails }: ResultCardProps) {
   const [isSaved, setIsSaved] = useState(result.isSaved);
   const { toast } = useToast();
 
@@ -136,8 +137,12 @@ export default function ResultCard({ result, onSave, onShare }: ResultCardProps)
             Market Size: {result.marketSize}
           </div>
         </div>
-        <Button variant="ghost" className="text-google-blue hover:text-google-blue-dark text-sm font-medium">
-          View Details <ArrowRight className="w-4 h-4 ml-1" />
+        <Button 
+          variant="ghost" 
+          className="text-google-blue hover:text-google-blue-dark text-sm font-medium"
+          onClick={() => onViewDetails(result)}
+        >
+          Action Plan <ArrowRight className="w-4 h-4 ml-1" />
         </Button>
       </div>
     </div>

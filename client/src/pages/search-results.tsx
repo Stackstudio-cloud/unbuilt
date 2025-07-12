@@ -5,6 +5,7 @@ import { Filter, Grid, List, ChevronLeft, ChevronRight } from "lucide-react";
 import Layout from "@/components/layout";
 import ResultCard from "@/components/result-card";
 import ShareModal from "@/components/share-modal";
+import ActionPlanModal from "@/components/action-plan-modal";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,6 +15,7 @@ import type { Search, SearchResult } from "@shared/schema";
 export default function SearchResults() {
   const [match, params] = useRoute("/search/:id");
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [actionPlanModalOpen, setActionPlanModalOpen] = useState(false);
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
   const [categoryFilters, setCategoryFilters] = useState<string[]>([
     "Tech That's Missing",
@@ -58,6 +60,11 @@ export default function SearchResults() {
   const handleShareResult = (result: SearchResult) => {
     setSelectedResult(result);
     setShareModalOpen(true);
+  };
+
+  const handleViewDetails = (result: SearchResult) => {
+    setSelectedResult(result);
+    setActionPlanModalOpen(true);
   };
 
   const handleCategoryFilter = (category: string) => {
@@ -165,6 +172,7 @@ export default function SearchResults() {
                   result={result}
                   onSave={handleSaveResult}
                   onShare={handleShareResult}
+                  onViewDetails={handleViewDetails}
                 />
               ))}
             </div>
@@ -210,6 +218,12 @@ export default function SearchResults() {
         isOpen={shareModalOpen}
         result={selectedResult}
         onClose={() => setShareModalOpen(false)}
+      />
+
+      <ActionPlanModal
+        isOpen={actionPlanModalOpen}
+        result={selectedResult}
+        onClose={() => setActionPlanModalOpen(false)}
       />
     </Layout>
   );
