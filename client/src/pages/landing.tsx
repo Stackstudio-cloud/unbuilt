@@ -24,7 +24,7 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Sparkles className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">GapFinder</span>
+            <span className="text-2xl font-bold text-gray-900">InnoGap</span>
           </div>
           <div className="flex items-center space-x-4">
             <Button variant="ghost" onClick={() => setLocation("/about")}>
@@ -47,7 +47,7 @@ export default function Landing() {
             🚀 Discover What's Missing in the Market
           </Badge>
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Find Market Gaps & <span className="text-blue-600">Unlock Opportunities</span>
+            Discover Innovation Gaps & <span className="text-blue-600">Unlock Opportunities</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             The only AI-powered platform that reveals untapped market opportunities, 
@@ -231,7 +231,7 @@ export default function Landing() {
             Ready to Discover Your Next Big Opportunity?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Join thousands of entrepreneurs who've found their breakthrough with GapFinder
+            Join thousands of entrepreneurs who've found their breakthrough with InnoGap
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-6" onClick={handleGetStarted}>
@@ -248,7 +248,7 @@ export default function Landing() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Sparkles className="w-6 h-6" />
-                <span className="text-xl font-bold">GapFinder</span>
+                <span className="text-xl font-bold">InnoGap</span>
               </div>
               <p className="text-gray-400 text-sm">
                 AI-powered market gap discovery platform for entrepreneurs and innovators.
@@ -268,8 +268,8 @@ export default function Landing() {
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><button onClick={() => setLocation("/about")} className="hover:text-white">About Us</button></li>
-                <li><a href="mailto:support@gapfinder.com" className="hover:text-white">Contact</a></li>
-                <li><a href="mailto:careers@gapfinder.com" className="hover:text-white">Careers</a></li>
+                <li><a href="mailto:support@innogap.ai" className="hover:text-white">Contact</a></li>
+                <li><a href="mailto:careers@innogap.ai" className="hover:text-white">Careers</a></li>
               </ul>
             </div>
             
@@ -284,7 +284,7 @@ export default function Landing() {
           
           <div className="border-t border-gray-800 pt-8 text-center">
             <p className="text-gray-400 text-sm">
-              © 2025 GapFinder Technologies. All rights reserved. Business Registration: Pending
+              © 2025 InnoGap Technologies. All rights reserved. Business Registration: Pending
             </p>
           </div>
         </div>

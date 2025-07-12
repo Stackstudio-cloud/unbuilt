@@ -13,7 +13,7 @@ export default function About() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Sparkles className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">GapFinder</span>
+            <span className="text-2xl font-bold text-gray-900">InnoGap</span>
           </div>
           <div className="flex items-center space-x-4">
             <Button variant="ghost" onClick={() => setLocation("/")}>
@@ -31,7 +31,7 @@ export default function About() {
           {/* Company Overview */}
           <section className="text-center mb-16">
             <h1 className="text-4xl font-bold text-gray-900 mb-6">
-              About GapFinder
+              About InnoGap
             </h1>
             <p className="text-xl text-gray-600 mb-8">
               The world's first AI-powered platform for discovering untapped market opportunities 
@@ -73,7 +73,7 @@ export default function About() {
           {/* How It Works */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-              How GapFinder Works
+              How InnoGap Works
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
@@ -117,7 +117,7 @@ export default function About() {
               <div>
                 <h3 className="text-xl font-semibold mb-4">Business Details</h3>
                 <div className="space-y-2 text-gray-600">
-                  <p><strong>Company:</strong> GapFinder Technologies</p>
+                  <p><strong>Company:</strong> InnoGap Technologies</p>
                   <p><strong>Industry:</strong> Software as a Service (SaaS)</p>
                   <p><strong>Founded:</strong> 2025</p>
                   <p><strong>Business Model:</strong> Subscription-based platform</p>
@@ -146,7 +146,7 @@ export default function About() {
             <div className="bg-white rounded-lg p-8 max-w-2xl mx-auto">
               <div className="flex items-center justify-center mb-4">
                 <Mail className="w-6 h-6 text-blue-600 mr-2" />
-                <span className="text-lg">support@gapfinder.com</span>
+                <span className="text-lg">support@innogap.ai</span>
               </div>
               <p className="text-gray-600 mb-6">
                 Have questions about our platform or need help with your subscription? 
@@ -165,10 +165,10 @@ export default function About() {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Sparkles className="w-6 h-6" />
-            <span className="text-xl font-bold">GapFinder</span>
+            <span className="text-xl font-bold">InnoGap</span>
           </div>
           <p className="text-gray-400">
-            © 2025 GapFinder Technologies. All rights reserved.
+            © 2025 InnoGap Technologies. All rights reserved.
           </p>
         </div>
       </footer>
