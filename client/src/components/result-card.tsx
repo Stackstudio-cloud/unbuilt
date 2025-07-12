@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Bookmark, Share2, ArrowRight, Lightbulb, TrendingUp } from "lucide-react";
+import React, { useState } from "react";
+import { Bookmark, Share2, ArrowRight, Lightbulb, TrendingUp, Crown, Zap, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import type { SearchResult } from "@shared/schema";
 

@@ -1,5 +1,10 @@
+import React from "react";
 import { Link, useLocation } from "wouter";
-import { SearchX, History, Bookmark, Download, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
+import { User, Search, Bookmark, History, TrendingUp, LogOut, Settings, Crown } from "lucide-react";
+import Logo from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,48 +12,90 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
+  const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div className="min-h-screen bg-background transition-colors">
+      <header className="glass-dark dark:glass sticky top-0 z-50 border-b border-purple-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-                <SearchX className="text-google-blue w-6 h-6 mr-2" />
-                <span className="text-xl font-medium text-google-gray-dark">GapFinder</span>
+              <Link href="/" className="hover:opacity-80 transition-opacity">
+                <Logo size="md" />
               </Link>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <Link href="/trending" className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                location === '/trending' 
-                  ? 'text-google-blue bg-blue-50' 
-                  : 'text-google-gray hover:text-google-blue'
-              }`}>
-                <TrendingUp className="w-4 h-4 mr-1" />
-                Trending
-              </Link>
-              <Link href="/history" className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                location === '/history' 
-                  ? 'text-google-blue bg-blue-50' 
-                  : 'text-google-gray hover:text-google-blue'
-              }`}>
-                <History className="w-4 h-4 mr-1" />
-                History
-              </Link>
-              <Link href="/saved" className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                location === '/saved' 
-                  ? 'text-google-blue bg-blue-50' 
-                  : 'text-google-gray hover:text-google-blue'
-              }`}>
-                <Bookmark className="w-4 h-4 mr-1" />
-                Saved
-              </Link>
-              <button className="flex items-center bg-google-blue text-white px-4 py-2 rounded-lg hover:bg-google-blue-dark transition-colors">
-                <Download className="w-4 h-4 mr-1" />
-                Export
-              </button>
+            <div className="flex items-center space-x-1">
+              {user && (
+                <>
+                  <Link href="/trending">
+                    <Button 
+                      variant={location === '/trending' ? 'default' : 'ghost'} 
+                      size="sm"
+                      className={location === '/trending' ? 'neon-border-blue' : 'hover-glow'}
+                    >
+                      <TrendingUp className="w-4 h-4 mr-1" />
+                      Trending
+                    </Button>
+                  </Link>
+                  <Link href="/search-history">
+                    <Button 
+                      variant={location === '/search-history' ? 'default' : 'ghost'} 
+                      size="sm"
+                      className={location === '/search-history' ? 'neon-border-blue' : 'hover-glow'}
+                    >
+                      <History className="w-4 h-4 mr-1" />
+                      History
+                    </Button>
+                  </Link>
+                  <Link href="/saved-results">
+                    <Button 
+                      variant={location === '/saved-results' ? 'default' : 'ghost'} 
+                      size="sm"
+                      className={location === '/saved-results' ? 'neon-border-blue' : 'hover-glow'}
+                    >
+                      <Bookmark className="w-4 h-4 mr-1" />
+                      Saved
+                    </Button>
+                  </Link>
+                  
+                  {(user.plan === 'free' || !user.plan) && (
+                    <Link href="/subscribe">
+                      <Button size="sm" className="btn-premium ml-2 animate-pulse-glow">
+                        <Crown className="w-4 h-4 mr-1" />
+                        Upgrade Pro
+                      </Button>
+                    </Link>
+                  )}
+                  
+                  <ThemeToggle />
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={logout}
+                    className="hover-glow ml-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </>
+              )}
+              
+              {!user && (
+                <>
+                  <ThemeToggle />
+                  <Link href="/auth/login">
+                    <Button variant="ghost" size="sm" className="hover-glow">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/auth/register">
+                    <Button size="sm" className="btn-premium">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
