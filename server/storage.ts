@@ -12,6 +12,7 @@ export interface IStorage {
   createSearchResult(result: InsertSearchResult): Promise<SearchResult>;
   getSearchResults(searchId: number): Promise<SearchResult[]>;
   getAllSavedResults(): Promise<SearchResult[]>;
+  getSearchResultById(id: number): Promise<SearchResult | undefined>;
   updateSearchResult(id: number, updates: Partial<SearchResult>): Promise<SearchResult | undefined>;
   deleteSearchResult(id: number): Promise<boolean>;
 }
@@ -64,6 +65,11 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(searchResults)
       .where(eq(searchResults.isSaved, true));
+  }
+
+  async getSearchResultById(id: number): Promise<SearchResult | undefined> {
+    const [result] = await db.select().from(searchResults).where(eq(searchResults.id, id));
+    return result || undefined;
   }
 
   async updateSearchResult(id: number, updates: Partial<SearchResult>): Promise<SearchResult | undefined> {

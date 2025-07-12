@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { SearchX, History, Bookmark, Download } from "lucide-react";
+import { SearchX, History, Bookmark, Download, TrendingUp } from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,6 +21,14 @@ export default function Layout({ children }: LayoutProps) {
             </div>
             
             <div className="flex items-center space-x-4">
+              <Link href="/trending" className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                location === '/trending' 
+                  ? 'text-google-blue bg-blue-50' 
+                  : 'text-google-gray hover:text-google-blue'
+              }`}>
+                <TrendingUp className="w-4 h-4 mr-1" />
+                Trending
+              </Link>
               <Link href="/history" className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 location === '/history' 
                   ? 'text-google-blue bg-blue-50' 

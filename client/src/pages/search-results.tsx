@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRoute } from "wouter";
-import { Filter, Grid, List, ChevronLeft, ChevronRight } from "lucide-react";
+import { Filter, Grid, List, ChevronLeft, ChevronRight, Download, Search as SearchIcon, SlidersHorizontal } from "lucide-react";
 import Layout from "@/components/layout";
 import ResultCard from "@/components/result-card";
 import ShareModal from "@/components/share-modal";
 import ActionPlanModal from "@/components/action-plan-modal";
+import ExportModal from "@/components/export-modal";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { apiRequest } from "@/lib/queryClient";
 import type { Search, SearchResult } from "@shared/schema";
 
@@ -16,7 +21,13 @@ export default function SearchResults() {
   const [match, params] = useRoute("/search/:id");
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [actionPlanModalOpen, setActionPlanModalOpen] = useState(false);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [innovationRange, setInnovationRange] = useState([1, 10]);
+  const [feasibilityFilter, setFeasibilityFilter] = useState<string[]>(["high", "medium", "low"]);
+  const [marketPotentialFilter, setMarketPotentialFilter] = useState<string[]>(["high", "medium", "low"]);
   const [categoryFilters, setCategoryFilters] = useState<string[]>([
     "Tech That's Missing",
     "Services That Don't Exist", 
@@ -75,9 +86,29 @@ export default function SearchResults() {
     );
   };
 
-  const filteredResults = results.filter((result: SearchResult) => 
-    categoryFilters.includes(result.category)
-  );
+  const filteredResults = results.filter((result: SearchResult) => {
+    // Category filter
+    if (!categoryFilters.includes(result.category)) return false;
+    
+    // Search query filter
+    if (searchQuery && !result.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
+        !result.description.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    
+    // Innovation score filter
+    if (result.innovationScore < innovationRange[0] || result.innovationScore > innovationRange[1]) {
+      return false;
+    }
+    
+    // Feasibility filter
+    if (!feasibilityFilter.includes(result.feasibility)) return false;
+    
+    // Market potential filter
+    if (!marketPotentialFilter.includes(result.marketPotential)) return false;
+    
+    return true;
+  });
 
   const sortedResults = [...filteredResults].sort((a: SearchResult, b: SearchResult) => {
     switch (sortBy) {
@@ -150,6 +181,22 @@ export default function SearchResults() {
                 </p>
               </div>
               <div className="flex items-center space-x-3">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setFiltersOpen(!filtersOpen)}
+                >
+                  <SlidersHorizontal className="w-4 h-4 mr-2" />
+                  Advanced Filters
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setExportModalOpen(true)}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </Button>
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
@@ -163,6 +210,116 @@ export default function SearchResults() {
                 </Select>
               </div>
             </div>
+
+            {/* Advanced Filters Panel */}
+            <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+              <CollapsibleContent>
+                <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                  <h3 className="font-semibold text-google-gray-dark mb-4">Advanced Filters</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Search Query Filter */}
+                    <div>
+                      <Label htmlFor="search-filter">Search within results</Label>
+                      <div className="relative">
+                        <SearchIcon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          id="search-filter"
+                          placeholder="Filter by keywords..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Innovation Score Range */}
+                    <div>
+                      <Label>Innovation Score Range</Label>
+                      <div className="mt-2">
+                        <Slider
+                          value={innovationRange}
+                          onValueChange={setInnovationRange}
+                          max={10}
+                          min={1}
+                          step={1}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-gray-500 mt-1">
+                          <span>{innovationRange[0]}</span>
+                          <span>{innovationRange[1]}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Feasibility Filter */}
+                    <div>
+                      <Label>Feasibility Level</Label>
+                      <div className="mt-2 space-y-2">
+                        {["high", "medium", "low"].map((level) => (
+                          <div key={level} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`feasibility-${level}`}
+                              checked={feasibilityFilter.includes(level)}
+                              onCheckedChange={(checked) => {
+                                setFeasibilityFilter(prev => 
+                                  checked 
+                                    ? [...prev, level]
+                                    : prev.filter(f => f !== level)
+                                );
+                              }}
+                            />
+                            <label htmlFor={`feasibility-${level}`} className="text-sm capitalize">
+                              {level}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Market Potential Filter */}
+                    <div>
+                      <Label>Market Potential</Label>
+                      <div className="mt-2 space-y-2">
+                        {["high", "medium", "low"].map((level) => (
+                          <div key={level} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`market-${level}`}
+                              checked={marketPotentialFilter.includes(level)}
+                              onCheckedChange={(checked) => {
+                                setMarketPotentialFilter(prev => 
+                                  checked 
+                                    ? [...prev, level]
+                                    : prev.filter(f => f !== level)
+                                );
+                              }}
+                            />
+                            <label htmlFor={`market-${level}`} className="text-sm capitalize">
+                              {level}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Reset Filters */}
+                    <div className="flex items-end">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setSearchQuery("");
+                          setInnovationRange([1, 10]);
+                          setFeasibilityFilter(["high", "medium", "low"]);
+                          setMarketPotentialFilter(["high", "medium", "low"]);
+                        }}
+                        className="w-full"
+                      >
+                        Reset Filters
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
 
             {/* Results */}
             <div className="space-y-6">
@@ -224,6 +381,12 @@ export default function SearchResults() {
         isOpen={actionPlanModalOpen}
         result={selectedResult}
         onClose={() => setActionPlanModalOpen(false)}
+      />
+
+      <ExportModal
+        isOpen={exportModalOpen}
+        results={filteredResults}
+        onClose={() => setExportModalOpen(false)}
       />
     </Layout>
   );

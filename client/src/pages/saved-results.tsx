@@ -4,12 +4,15 @@ import Layout from "@/components/layout";
 import ResultCard from "@/components/result-card";
 import ShareModal from "@/components/share-modal";
 import ActionPlanModal from "@/components/action-plan-modal";
+import ExportModal from "@/components/export-modal";
+import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import type { SearchResult } from "@shared/schema";
 
 export default function SavedResults() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [actionPlanModalOpen, setActionPlanModalOpen] = useState(false);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
   const queryClient = useQueryClient();
 
@@ -93,6 +96,12 @@ export default function SavedResults() {
         isOpen={actionPlanModalOpen}
         result={selectedResult}
         onClose={() => setActionPlanModalOpen(false)}
+      />
+
+      <ExportModal
+        isOpen={exportModalOpen}
+        results={savedResults}
+        onClose={() => setExportModalOpen(false)}
       />
     </Layout>
   );

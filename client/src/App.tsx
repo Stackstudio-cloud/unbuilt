@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import SearchResults from "@/pages/search-results";
 import SavedResults from "@/pages/saved-results";
 import SearchHistory from "@/pages/search-history";
+import Trending from "@/pages/trending";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/search/:id" component={SearchResults} />
       <Route path="/saved" component={SavedResults} />
       <Route path="/history" component={SearchHistory} />
+      <Route path="/trending" component={Trending} />
       <Route component={NotFound} />
     </Switch>
   );

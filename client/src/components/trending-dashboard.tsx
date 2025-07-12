@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, TrendingDown, Fire, Clock, Users, Search, BarChart3, Target } from "lucide-react";
+import { TrendingUp, TrendingDown, Flame, Clock, Users, Search, BarChart3, Target } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -148,7 +148,7 @@ export default function TrendingDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Top Category</CardTitle>
-            <Fire className="h-4 w-4 text-muted-foreground" />
+            <Flame className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-lg font-bold">{data.stats.topCategory}</div>

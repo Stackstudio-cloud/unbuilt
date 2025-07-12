@@ -28,8 +28,31 @@ export default function ExportModal({ isOpen, results, onClose }: ExportModalPro
     setIsExporting(true);
     
     try {
-      // Simulate export process
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await fetch('/api/export', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          format: exportFormat,
+          resultIds: results.map(r => r.id),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Export failed');
+      }
+
+      // Create download link
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `gapfinder-${exportFormat}-${new Date().toISOString().split('T')[0]}.${exportFormat === 'csv' ? 'csv' : 'html'}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
       
       toast({
         title: "Export Complete",
@@ -61,8 +84,21 @@ export default function ExportModal({ isOpen, results, onClose }: ExportModalPro
     setIsExporting(true);
     
     try {
-      // Simulate email sending
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await fetch('/api/email-report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailRecipient,
+          message: customMessage,
+          resultIds: results.map(r => r.id),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Email failed');
+      }
       
       toast({
         title: "Email Sent",

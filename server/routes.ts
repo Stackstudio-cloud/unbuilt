@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { analyzeGaps } from "./services/gemini";
 import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
+import { exportResults, sendEmailReport } from "./routes/export";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Search endpoint
@@ -87,6 +88,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: 'Failed to get saved results' });
     }
   });
+
+  // Export results
+  app.post("/api/export", exportResults);
+
+  // Send email report
+  app.post("/api/email-report", sendEmailReport);
 
   const httpServer = createServer(app);
   return httpServer;
