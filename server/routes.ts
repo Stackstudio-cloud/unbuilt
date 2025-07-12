@@ -7,6 +7,14 @@ import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
 import { exportResults, sendEmailReport } from "./routes/export";
 import { register, login, logout, getProfile, updateProfile } from "./routes/auth";
 import { requireAuth, optionalAuth } from "./middleware/auth";
+import Stripe from "stripe";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2023-10-16",
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication routes
@@ -104,6 +112,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Send email report
   app.post("/api/email-report", sendEmailReport);
+
+  // Stripe subscription routes
+  app.post('/api/create-subscription', requireAuth, async (req, res) => {
+    try {
+      const { plan } = req.body;
+      const user = (req as any).user;
+
+      if (!user.email) {
+        return res.status(400).json({ error: 'User email required' });
+      }
+
+      // Define price based on plan (you'll need to create these in Stripe Dashboard)
+      const priceMap = {
+        pro: 'price_pro_monthly',
+        enterprise: 'price_enterprise_monthly'
+      };
+
+      // Create or get Stripe customer
+      let customer;
+      if (user.stripeCustomerId) {
+        customer = await stripe.customers.retrieve(user.stripeCustomerId);
+      } else {
+        customer = await stripe.customers.create({
+          email: user.email,
+          name: user.username,
+        });
+        
+        // Update user with Stripe customer ID
+        await authService.updateUserProfile(user.id, { 
+          stripeCustomerId: customer.id 
+        });
+      }
+
+      // Create subscription
+      const subscription = await stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{
+          price: priceMap[plan as keyof typeof priceMap] || priceMap.pro,
+        }],
+        payment_behavior: 'default_incomplete',
+        expand: ['latest_invoice.payment_intent'],
+      });
+
+      // Update user with subscription info
+      await authService.updateUserProfile(user.id, {
+        stripeSubscriptionId: subscription.id,
+        plan: plan
+      });
+
+      const invoice = subscription.latest_invoice as Stripe.Invoice;
+      const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent;
+
+      res.json({
+        subscriptionId: subscription.id,
+        clientSecret: paymentIntent.client_secret,
+      });
+    } catch (error: any) {
+      console.error('Subscription creation error:', error);
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  // Check subscription status
+  app.get('/api/subscription-status', requireAuth, async (req, res) => {
+    try {
+      const user = (req as any).user;
+      
+      if (!user.stripeSubscriptionId) {
+        return res.json({ status: 'none', plan: 'free' });
+      }
+
+      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+      
+      res.json({
+        status: subscription.status,
+        plan: user.plan || 'free',
+        currentPeriodEnd: subscription.current_period_end,
+      });
+    } catch (error) {
+      console.error('Subscription status error:', error);
+      res.status(500).json({ error: 'Failed to get subscription status' });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

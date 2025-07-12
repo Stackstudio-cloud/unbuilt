@@ -14,6 +14,7 @@ import SearchHistory from "@/pages/search-history";
 import Trending from "@/pages/trending";
 import Login from "@/pages/auth/login";
 import Register from "@/pages/auth/register";
+import Subscribe from "@/pages/subscribe";
 import NotFound from "@/pages/not-found";
 import { useAuth, initializeAuth } from "./hooks/use-auth";
 import { useEffect } from "react";
@@ -33,6 +34,7 @@ function Router() {
       <Route path="/saved" component={SavedResults} />
       <Route path="/history" component={SearchHistory} />
       <Route path="/trending" component={Trending} />
+      <Route path="/subscribe" component={Subscribe} />
       <Route path="/auth/login" component={Login} />
       <Route path="/auth/register" component={Register} />
       <Route component={NotFound} />
