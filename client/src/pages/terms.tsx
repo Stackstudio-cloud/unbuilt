@@ -12,7 +12,7 @@ export default function Terms() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Sparkles className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">InnoGap</span>
+            <span className="text-2xl font-bold text-gray-900">NotYetBuilt</span>
           </div>
           <div className="flex items-center space-x-4">
             <Button variant="ghost" onClick={() => setLocation("/")}>
@@ -31,7 +31,7 @@ export default function Terms() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
               <p className="text-gray-600">
-                By accessing and using InnoGap ("Service"), you accept and agree to be bound by 
+                By accessing and using NotYetBuilt ("Service"), you accept and agree to be bound by 
                 the terms and provision of this agreement. If you do not agree to abide by the above, 
                 please do not use this service.
               </p>
@@ -40,7 +40,7 @@ export default function Terms() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">2. Service Description</h2>
               <p className="text-gray-600 mb-4">
-                InnoGap is an AI-powered platform that provides market gap analysis and innovation 
+                NotYetBuilt is an AI-powered platform that provides market gap analysis and innovation 
                 opportunity discovery services. Our service includes:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-gray-600">
@@ -86,7 +86,7 @@ export default function Terms() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">6. Limitation of Liability</h2>
               <p className="text-gray-600">
-                InnoGap provides market analysis for informational purposes only. We do not guarantee 
+                NotYetBuilt provides market analysis for informational purposes only. We do not guarantee 
                 the accuracy, completeness, or usefulness of any information provided. Users are responsible 
                 for their own business decisions and investments.
               </p>
@@ -104,8 +104,8 @@ export default function Terms() {
               <h2 className="text-2xl font-semibold mb-4">8. Contact Information</h2>
               <p className="text-gray-600">
                 For questions about these Terms of Service, please contact us at 
-                <a href="mailto:legal@innogap.ai" className="text-blue-600 hover:underline ml-1">
-                  legal@innogap.ai
+                <a href="mailto:legal@notyetbuilt.tech" className="text-blue-600 hover:underline ml-1">
+                  legal@notyetbuilt.tech
                 </a>
               </p>
             </section>
