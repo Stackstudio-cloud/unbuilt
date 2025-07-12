@@ -32,7 +32,7 @@ Preferred communication style: Simple, everyday language.
 - **ORM**: Drizzle ORM with type-safe database operations
 - **Schema**: Shared schema definitions between client and server
 - **Migrations**: Drizzle Kit for database schema migrations
-- **Development Storage**: In-memory storage class for development/testing
+- **Production Storage**: PostgreSQL database with Drizzle ORM for persistent data storage
 
 ## Key Components
 

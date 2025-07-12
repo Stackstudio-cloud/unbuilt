@@ -1,4 +1,6 @@
 import { searches, searchResults, type Search, type SearchResult, type InsertSearch, type InsertSearchResult } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, sql } from "drizzle-orm";
 
 export interface IStorage {
   // Search operations
@@ -14,84 +16,72 @@ export interface IStorage {
   deleteSearchResult(id: number): Promise<boolean>;
 }
 
-export class MemStorage implements IStorage {
-  private searches: Map<number, Search>;
-  private searchResults: Map<number, SearchResult>;
-  private searchCurrentId: number;
-  private resultCurrentId: number;
-
-  constructor() {
-    this.searches = new Map();
-    this.searchResults = new Map();
-    this.searchCurrentId = 1;
-    this.resultCurrentId = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   async createSearch(insertSearch: InsertSearch): Promise<Search> {
-    const id = this.searchCurrentId++;
-    const search: Search = {
-      ...insertSearch,
-      id,
-      timestamp: new Date(),
-      resultsCount: 0,
-    };
-    this.searches.set(id, search);
+    const [search] = await db
+      .insert(searches)
+      .values(insertSearch)
+      .returning();
     return search;
   }
 
   async getSearches(): Promise<Search[]> {
-    return Array.from(this.searches.values()).sort((a, b) => 
-      b.timestamp.getTime() - a.timestamp.getTime()
-    );
+    return await db
+      .select()
+      .from(searches)
+      .orderBy(desc(searches.timestamp));
   }
 
   async getSearchById(id: number): Promise<Search | undefined> {
-    return this.searches.get(id);
+    const [search] = await db.select().from(searches).where(eq(searches.id, id));
+    return search || undefined;
   }
 
   async createSearchResult(insertResult: InsertSearchResult): Promise<SearchResult> {
-    const id = this.resultCurrentId++;
-    const result: SearchResult = {
-      ...insertResult,
-      id,
-      isSaved: false,
-    };
-    this.searchResults.set(id, result);
+    const [result] = await db
+      .insert(searchResults)
+      .values(insertResult)
+      .returning();
     
     // Update search results count
-    const search = this.searches.get(insertResult.searchId);
-    if (search) {
-      search.resultsCount++;
-    }
+    await db
+      .update(searches)
+      .set({ resultsCount: sql`${searches.resultsCount} + 1` })
+      .where(eq(searches.id, insertResult.searchId));
     
     return result;
   }
 
   async getSearchResults(searchId: number): Promise<SearchResult[]> {
-    return Array.from(this.searchResults.values()).filter(
-      result => result.searchId === searchId
-    );
+    return await db
+      .select()
+      .from(searchResults)
+      .where(eq(searchResults.searchId, searchId));
   }
 
   async getAllSavedResults(): Promise<SearchResult[]> {
-    return Array.from(this.searchResults.values()).filter(
-      result => result.isSaved
-    );
+    return await db
+      .select()
+      .from(searchResults)
+      .where(eq(searchResults.isSaved, true));
   }
 
   async updateSearchResult(id: number, updates: Partial<SearchResult>): Promise<SearchResult | undefined> {
-    const result = this.searchResults.get(id);
-    if (result) {
-      const updatedResult = { ...result, ...updates };
-      this.searchResults.set(id, updatedResult);
-      return updatedResult;
-    }
-    return undefined;
+    const [result] = await db
+      .update(searchResults)
+      .set(updates)
+      .where(eq(searchResults.id, id))
+      .returning();
+    return result || undefined;
   }
 
   async deleteSearchResult(id: number): Promise<boolean> {
-    return this.searchResults.delete(id);
+    const result = await db
+      .delete(searchResults)
+      .where(eq(searchResults.id, id))
+      .returning();
+    return result.length > 0;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
