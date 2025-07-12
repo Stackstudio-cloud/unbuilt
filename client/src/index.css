@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Google-inspired colors */
+  --google-blue: hsl(207, 90%, 54%);
+  --google-blue-dark: hsl(207, 90%, 44%);
+  --google-green: hsl(122, 39%, 49%);
+  --google-red: hsl(4, 85%, 57%);
+  --google-yellow: hsl(45, 100%, 51%);
+  --google-gray: hsl(0, 0%, 40%);
+  --google-gray-dark: hsl(0, 0%, 13%);
+  --google-gray-light: hsl(0, 0%, 97%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-google-blue {
+    color: var(--google-blue);
+  }
+  
+  .text-google-blue-dark {
+    color: var(--google-blue-dark);
+  }
+  
+  .text-google-green {
+    color: var(--google-green);
+  }
+  
+  .text-google-red {
+    color: var(--google-red);
+  }
+  
+  .text-google-yellow {
+    color: var(--google-yellow);
+  }
+  
+  .text-google-gray {
+    color: var(--google-gray);
+  }
+  
+  .text-google-gray-dark {
+    color: var(--google-gray-dark);
+  }
+  
+  .text-google-gray-light {
+    color: var(--google-gray-light);
+  }
+  
+  .bg-google-blue {
+    background-color: var(--google-blue);
+  }
+  
+  .bg-google-blue-dark {
+    background-color: var(--google-blue-dark);
+  }
+  
+  .bg-google-green {
+    background-color: var(--google-green);
+  }
+  
+  .bg-google-red {
+    background-color: var(--google-red);
+  }
+  
+  .bg-google-yellow {
+    background-color: var(--google-yellow);
+  }
+  
+  .bg-google-gray {
+    background-color: var(--google-gray);
+  }
+  
+  .bg-google-gray-dark {
+    background-color: var(--google-gray-dark);
+  }
+  
+  .bg-google-gray-light {
+    background-color: var(--google-gray-light);
+  }
+  
+  .border-google-blue {
+    border-color: var(--google-blue);
+  }
+  
+  .border-google-blue-dark {
+    border-color: var(--google-blue-dark);
+  }
+  
+  .border-google-green {
+    border-color: var(--google-green);
+  }
+  
+  .border-google-red {
+    border-color: var(--google-red);
+  }
+  
+  .border-google-yellow {
+    border-color: var(--google-yellow);
+  }
+  
+  .border-google-gray {
+    border-color: var(--google-gray);
+  }
+  
+  .border-google-gray-dark {
+    border-color: var(--google-gray-dark);
+  }
+  
+  .border-google-gray-light {
+    border-color: var(--google-gray-light);
+  }
+  
+  .hover\:bg-google-blue:hover {
+    background-color: var(--google-blue);
+  }
+  
+  .hover\:bg-google-blue-dark:hover {
+    background-color: var(--google-blue-dark);
+  }
+  
+  .hover\:text-google-blue:hover {
+    color: var(--google-blue);
+  }
+  
+  .hover\:text-google-blue-dark:hover {
+    color: var(--google-blue-dark);
+  }
+}
