@@ -1,13 +1,18 @@
-import { useState } from "react";
-import { X, Download, FileText, Table, Presentation, Mail } from "lucide-react";
+import React, { useState } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
+import { Download, Mail, FileText, Presentation, Database, Crown } from "lucide-react";
+import { SearchResult } from "@shared/schema";
+import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-import type { SearchResult } from "@shared/schema";
+import { apiRequest } from "@/lib/queryClient";
 
 interface ExportModalProps {
   isOpen: boolean;
@@ -16,103 +21,137 @@ interface ExportModalProps {
 }
 
 export default function ExportModal({ isOpen, results, onClose }: ExportModalProps) {
-  const [exportFormat, setExportFormat] = useState<"pdf" | "csv" | "pitch">("pdf");
-  const [emailRecipient, setEmailRecipient] = useState("");
-  const [customMessage, setCustomMessage] = useState("");
-  const [isExporting, setIsExporting] = useState(false);
+  const { user } = useAuth();
   const { toast } = useToast();
+  const [exportFormat, setExportFormat] = useState("pdf");
+  const [includeDetails, setIncludeDetails] = useState(true);
+  const [customTitle, setCustomTitle] = useState("");
+  const [customIntro, setCustomIntro] = useState("");
+  const [emailRecipient, setEmailRecipient] = useState("");
+  const [isExporting, setIsExporting] = useState(false);
 
-  if (!isOpen) return null;
+  const isPro = user?.plan === 'pro' || user?.plan === 'enterprise';
+
+  const exportFormats = [
+    {
+      id: "pdf",
+      name: "PDF Report",
+      description: "Professional report with charts and analysis",
+      icon: FileText,
+      premium: false
+    },
+    {
+      id: "csv", 
+      name: "CSV Data",
+      description: "Raw data for spreadsheet analysis",
+      icon: Database,
+      premium: false
+    },
+    {
+      id: "pitch",
+      name: "Investor Pitch Deck",
+      description: "Ready-to-present PowerPoint with market analysis",
+      icon: Presentation,
+      premium: true
+    },
+    {
+      id: "executive",
+      name: "Executive Summary",
+      description: "C-level focused strategic overview",
+      icon: FileText,
+      premium: true
+    }
+  ];
 
   const handleExport = async () => {
-    setIsExporting(true);
-    
-    try {
-      const response = await fetch('/api/export', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          format: exportFormat,
-          resultIds: results.map(r => r.id),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Export failed');
-      }
-
-      // Create download link
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `gapfinder-${exportFormat}-${new Date().toISOString().split('T')[0]}.${exportFormat === 'csv' ? 'csv' : 'html'}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
+    if (!isPro && exportFormats.find(f => f.id === exportFormat)?.premium) {
       toast({
-        title: "Export Complete",
-        description: `Successfully exported ${results.length} results as ${exportFormat.toUpperCase()}`,
+        title: "Pro Feature Required",
+        description: "Upgrade to Pro to export premium formats",
+        variant: "destructive"
       });
-      
+      return;
+    }
+
+    setIsExporting(true);
+    try {
+      const response = await apiRequest("POST", "/api/export", {
+        format: exportFormat,
+        results: results.map(r => r.id),
+        options: {
+          includeDetails,
+          customTitle: customTitle || "Market Gap Analysis Report",
+          customIntro,
+          branding: isPro
+        }
+      });
+
+      if (exportFormat === "email") {
+        toast({
+          title: "Email Sent",
+          description: `Report sent to ${emailRecipient}`,
+        });
+      } else {
+        // Trigger download
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `market-analysis-${Date.now()}.${exportFormat === 'csv' ? 'csv' : 'pdf'}`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        toast({
+          title: "Export Complete",
+          description: "Your report has been downloaded",
+        });
+      }
       onClose();
     } catch (error) {
       toast({
         title: "Export Failed",
-        description: "Please try again later",
-        variant: "destructive",
+        description: "Failed to generate report. Please try again.",
+        variant: "destructive"
       });
     } finally {
       setIsExporting(false);
     }
   };
 
-  const handleEmailShare = async () => {
+  const handleSendEmail = async () => {
     if (!emailRecipient) {
       toast({
         title: "Email Required",
-        description: "Please enter an email address",
-        variant: "destructive",
+        description: "Please enter a recipient email address",
+        variant: "destructive"
       });
       return;
     }
 
     setIsExporting(true);
-    
     try {
-      const response = await fetch('/api/email-report', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: emailRecipient,
-          message: customMessage,
-          resultIds: results.map(r => r.id),
-        }),
+      await apiRequest("POST", "/api/send-report", {
+        email: emailRecipient,
+        results: results.map(r => r.id),
+        options: {
+          includeDetails,
+          customTitle: customTitle || "Market Gap Analysis Report",
+          customIntro
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Email failed');
-      }
-      
       toast({
         title: "Email Sent",
-        description: `Gap analysis report sent to ${emailRecipient}`,
+        description: `Report sent to ${emailRecipient}`,
       });
-      
-      setEmailRecipient("");
-      setCustomMessage("");
       onClose();
     } catch (error) {
       toast({
-        title: "Email Failed",
-        description: "Please try again later",
-        variant: "destructive",
+        title: "Send Failed",
+        description: "Failed to send email. Please try again.",
+        variant: "destructive"
       });
     } finally {
       setIsExporting(false);
@@ -120,158 +159,153 @@ export default function ExportModal({ isOpen, results, onClose }: ExportModalPro
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6">
-          <div className="flex items-center justify-between">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center space-x-2">
+            <Download className="w-5 h-5" />
+            <span>Export Results</span>
+          </DialogTitle>
+          <DialogDescription>
+            Export {results.length} results as a professional report
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-6">
+          {/* Format Selection */}
+          <div>
+            <Label className="text-base font-semibold mb-3 block">Export Format</Label>
+            <RadioGroup value={exportFormat} onValueChange={setExportFormat}>
+              <div className="space-y-3">
+                {exportFormats.map((format) => (
+                  <div key={format.id} className="flex items-center space-x-3">
+                    <RadioGroupItem 
+                      value={format.id} 
+                      id={format.id}
+                      disabled={format.premium && !isPro}
+                    />
+                    <Label 
+                      htmlFor={format.id} 
+                      className={`flex-1 cursor-pointer ${format.premium && !isPro ? 'opacity-50' : ''}`}
+                    >
+                      <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-3">
+                          <format.icon className="w-5 h-5" />
+                          <div>
+                            <div className="font-medium flex items-center space-x-2">
+                              <span>{format.name}</span>
+                              {format.premium && <Crown className="w-4 h-4 text-yellow-500" />}
+                            </div>
+                            <div className="text-sm text-gray-500">{format.description}</div>
+                          </div>
+                        </div>
+                        {format.premium && !isPro && (
+                          <Badge className="bg-yellow-100 text-yellow-800">Pro</Badge>
+                        )}
+                      </div>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </RadioGroup>
+          </div>
+
+          <Separator />
+
+          {/* Customization Options */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">Customization</Label>
+            
             <div>
-              <h2 className="text-2xl font-bold text-google-gray-dark">Export Results</h2>
-              <p className="text-google-gray">Export {results.length} gap analysis results</p>
+              <Label htmlFor="title">Report Title</Label>
+              <Input
+                id="title"
+                value={customTitle}
+                onChange={(e) => setCustomTitle(e.target.value)}
+                placeholder="Market Gap Analysis Report"
+              />
             </div>
-            <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
-              <X className="w-5 h-5" />
-            </Button>
+
+            <div>
+              <Label htmlFor="intro">Executive Summary</Label>
+              <Textarea
+                id="intro"
+                value={customIntro}
+                onChange={(e) => setCustomIntro(e.target.value)}
+                placeholder="Add a custom introduction or executive summary..."
+                rows={3}
+              />
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="details"
+                checked={includeDetails}
+                onChange={(e) => setIncludeDetails(e.target.checked)}
+                className="rounded"
+              />
+              <Label htmlFor="details">Include detailed analysis and recommendations</Label>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Email Option */}
+          <div className="space-y-4">
+            <Label className="text-base font-semibold flex items-center space-x-2">
+              <Mail className="w-4 h-4" />
+              <span>Email Report</span>
+            </Label>
+            
+            <div className="flex space-x-2">
+              <Input
+                value={emailRecipient}
+                onChange={(e) => setEmailRecipient(e.target.value)}
+                placeholder="recipient@company.com"
+                type="email"
+              />
+              <Button 
+                onClick={handleSendEmail} 
+                disabled={isExporting || !emailRecipient}
+                variant="outline"
+              >
+                <Mail className="w-4 h-4 mr-1" />
+                Send
+              </Button>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-between pt-4">
+            <div className="text-sm text-gray-500">
+              {results.length} result{results.length !== 1 ? 's' : ''} selected
+            </div>
+            <div className="flex space-x-2">
+              <Button variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleExport} 
+                disabled={isExporting}
+                className="min-w-[120px]"
+              >
+                {isExporting ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Exporting...</span>
+                  </div>
+                ) : (
+                  <>
+                    <Download className="w-4 h-4 mr-1" />
+                    Export
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
-
-        <div className="p-6">
-          <Tabs defaultValue="download" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="download">Download</TabsTrigger>
-              <TabsTrigger value="share">Share via Email</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="download" className="space-y-6">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="format">Export Format</Label>
-                  <Select value={exportFormat} onValueChange={(value: "pdf" | "csv" | "pitch") => setExportFormat(value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select format" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="pdf">
-                        <div className="flex items-center">
-                          <FileText className="w-4 h-4 mr-2" />
-                          PDF Report
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="csv">
-                        <div className="flex items-center">
-                          <Table className="w-4 h-4 mr-2" />
-                          CSV Data
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="pitch">
-                        <div className="flex items-center">
-                          <Presentation className="w-4 h-4 mr-2" />
-                          Pitch Deck
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Export Preview</h3>
-                  {exportFormat === "pdf" && (
-                    <div className="text-sm text-gray-600">
-                      <p>• Professional PDF report with executive summary</p>
-                      <p>• Detailed analysis for each opportunity</p>
-                      <p>• Market size and feasibility ratings</p>
-                      <p>• Action plan recommendations</p>
-                    </div>
-                  )}
-                  {exportFormat === "csv" && (
-                    <div className="text-sm text-gray-600">
-                      <p>• Structured data for analysis</p>
-                      <p>• All opportunity details in spreadsheet format</p>
-                      <p>• Sortable and filterable columns</p>
-                      <p>• Compatible with Excel and Google Sheets</p>
-                    </div>
-                  )}
-                  {exportFormat === "pitch" && (
-                    <div className="text-sm text-gray-600">
-                      <p>• Investor-ready presentation slides</p>
-                      <p>• Market opportunity highlights</p>
-                      <p>• Business model suggestions</p>
-                      <p>• Competitive analysis framework</p>
-                    </div>
-                  )}
-                </div>
-
-                <Button 
-                  onClick={handleExport} 
-                  disabled={isExporting}
-                  className="w-full"
-                >
-                  {isExporting ? (
-                    "Generating..."
-                  ) : (
-                    <>
-                      <Download className="w-4 h-4 mr-2" />
-                      Export {exportFormat.toUpperCase()}
-                    </>
-                  )}
-                </Button>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="share" className="space-y-6">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="email">Recipient Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={emailRecipient}
-                    onChange={(e) => setEmailRecipient(e.target.value)}
-                    placeholder="investor@example.com"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Custom Message (Optional)</Label>
-                  <Textarea
-                    id="message"
-                    value={customMessage}
-                    onChange={(e) => setCustomMessage(e.target.value)}
-                    placeholder="Hi, I wanted to share some exciting market opportunities I discovered..."
-                    rows={3}
-                  />
-                </div>
-
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2 flex items-center">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Email Preview
-                  </h3>
-                  <div className="text-sm text-gray-600">
-                    <p><strong>Subject:</strong> Market Gap Analysis Report - {results.length} Opportunities</p>
-                    <p><strong>Attachment:</strong> GapFinder_Analysis_Report.pdf</p>
-                    <p><strong>Content:</strong> Professional report with opportunity details and action plans</p>
-                  </div>
-                </div>
-
-                <Button 
-                  onClick={handleEmailShare} 
-                  disabled={isExporting || !emailRecipient}
-                  className="w-full"
-                >
-                  {isExporting ? (
-                    "Sending..."
-                  ) : (
-                    <>
-                      <Mail className="w-4 h-4 mr-2" />
-                      Send Email Report
-                    </>
-                  )}
-                </Button>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

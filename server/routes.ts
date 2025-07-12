@@ -6,15 +6,16 @@ import { analyzeGaps } from "./services/gemini";
 import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
 import { exportResults, sendEmailReport } from "./routes/export";
 import { register, login, logout, getProfile, updateProfile } from "./routes/auth";
+import { exportResults, sendEmailReport } from "./routes/export";
 import { requireAuth, optionalAuth } from "./middleware/auth";
 import Stripe from "stripe";
 
 if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+  console.warn('STRIPE_SECRET_KEY not found. Stripe functionality will be disabled.');
 }
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2023-10-16",
-});
+}) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Authentication routes
@@ -179,7 +180,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const user = (req as any).user;
       
-      if (!user.stripeSubscriptionId) {
+      if (!user.stripeSubscriptionId || !stripe) {
         return res.json({ status: 'none', plan: 'free' });
       }
 
@@ -195,6 +196,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: 'Failed to get subscription status' });
     }
   });
+
+  // Export routes
+  app.post('/api/export', requireAuth, exportResults);
+  app.post('/api/send-report', requireAuth, sendEmailReport);
 
   const httpServer = createServer(app);
   return httpServer;
