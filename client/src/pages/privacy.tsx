@@ -12,7 +12,7 @@ export default function Privacy() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Sparkles className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">NotYetBuilt</span>
+            <span className="text-2xl font-bold text-gray-900">Unbuilt</span>
           </div>
           <div className="flex items-center space-x-4">
             <Button variant="ghost" onClick={() => setLocation("/")}>
@@ -90,8 +90,8 @@ export default function Privacy() {
               <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
               <p className="text-gray-600">
                 If you have questions about this Privacy Policy, please contact us at 
-                <a href="mailto:privacy@notyetbuilt.tech" className="text-blue-600 hover:underline ml-1">
-                  privacy@notyetbuilt.tech
+                <a href="mailto:privacy@unbuilt.cloud" className="text-blue-600 hover:underline ml-1">
+                  privacy@unbuilt.cloud
                 </a>
               </p>
             </section>

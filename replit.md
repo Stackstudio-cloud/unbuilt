@@ -1,8 +1,8 @@
-# NotYetBuilt - Innovation Gap Analysis Platform
+# Unbuilt - Innovation Gap Analysis Platform
 
 ## Overview
 
-NotYetBuilt (formerly GapFinder) is a full-stack web application that helps entrepreneurs and innovators identify market gaps and untapped opportunities. The platform uses AI-powered analysis to discover what's missing in various industries and markets, providing detailed insights about feasibility, market potential, and innovation opportunities.
+Unbuilt (formerly GapFinder) is a full-stack web application that helps entrepreneurs and innovators identify market gaps and untapped opportunities. The platform uses AI-powered analysis to discover what's missing in various industries and markets, providing detailed insights about feasibility, market potential, and innovation opportunities.
 
 **Strategic Integration Ready**: Built as a standalone platform with architecture designed for future integration with StackFast (AI-powered project planning tool) to create a complete innovation-to-execution ecosystem.
 
@@ -124,7 +124,7 @@ Preferred communication style: Simple, everyday language.
 - Architecture designed for future StackFast integration
 - **LATEST**: Complete user authentication system with registration and login
 - **LATEST**: Professional business website with About, Privacy Policy, and Terms of Service
-- **LATEST**: Rebranded from "GapFinder" to "NotYetBuilt" for domain availability and business legitimacy
+- **LATEST**: Final rebrand to "Unbuilt" with unbuilt.cloud domain ($3-16/year vs $150 for .tech)
 - **LATEST**: Search limits enforcement (Free: 5 searches/month, Pro: unlimited)
 - **LATEST**: Production-ready platform foundation for Stripe integration and monetization
 
