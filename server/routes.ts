@@ -1,13 +1,23 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { authService } from "./auth";
 import { analyzeGaps } from "./services/gemini";
 import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
 import { exportResults, sendEmailReport } from "./routes/export";
+import { register, login, logout, getProfile, updateProfile } from "./routes/auth";
+import { requireAuth, optionalAuth } from "./middleware/auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Search endpoint
-  app.post("/api/search", async (req, res) => {
+  // Authentication routes
+  app.post("/api/auth/register", register);
+  app.post("/api/auth/login", login);
+  app.post("/api/auth/logout", logout);
+  app.get("/api/auth/profile", requireAuth, getProfile);
+  app.patch("/api/auth/profile", requireAuth, updateProfile);
+
+  // Search endpoint - now requires authentication and checks limits
+  app.post("/api/search", requireAuth, async (req, res) => {
     try {
       const { query } = insertSearchSchema.parse(req.body);
       

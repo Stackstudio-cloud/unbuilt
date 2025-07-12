@@ -6,11 +6,19 @@ import Layout from "@/components/layout";
 import SearchBar from "@/components/search-bar";
 import LoadingModal from "@/components/loading-modal";
 import { apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/hooks/use-auth";
 import type { Search } from "@shared/schema";
 
 export default function Home() {
   const [, setLocation] = useLocation();
   const [isSearching, setIsSearching] = useState(false);
+  const { user } = useAuth();
+
+  // If user is not authenticated, redirect to landing page
+  if (!user) {
+    setLocation("/landing");
+    return null;
+  }
 
   const { data: recentSearches } = useQuery({
     queryKey: ["/api/searches"],
@@ -23,6 +31,12 @@ export default function Home() {
     try {
       const response = await apiRequest("POST", "/api/search", { query });
       const data = await response.json();
+      
+      if (data.upgradeRequired) {
+        // Handle upgrade required
+        setLocation("/auth/upgrade");
+        return;
+      }
       
       // Navigate to results page with search ID
       setLocation(`/search/${data.search.id}`);
@@ -39,10 +53,10 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-light text-google-gray-dark mb-2">
-              What should exist but doesn't?
+              Welcome back, {user.name}!
             </h1>
             <p className="text-lg text-google-gray">
-              Discover gaps in innovation and untapped opportunities
+              What should exist but doesn't? Discover gaps in innovation and untapped opportunities
             </p>
           </div>
           

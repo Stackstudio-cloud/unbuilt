@@ -1,136 +1,106 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Search, TrendingUp, FileText, Users, Sparkles, Target, Zap } from "lucide-react";
+import { Sparkles, TrendingUp, BarChart3, Users, CheckCircle, ArrowRight, Star } from "lucide-react";
 
 export default function Landing() {
+  const [, setLocation] = useLocation();
   const [email, setEmail] = useState("");
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle email signup
-    console.log("Email signup:", email);
+  const handleGetStarted = () => {
+    setLocation("/auth/register");
+  };
+
+  const handleSignIn = () => {
+    setLocation("/auth/login");
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-2">
-              <Sparkles className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">GapFinder</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/trending" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Trending
-              </Link>
-              <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Search
-              </Link>
-              <Button>Get Started</Button>
-            </div>
+      {/* Header */}
+      <header className="border-b bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Sparkles className="w-8 h-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">GapFinder</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" onClick={handleSignIn}>
+              Sign In
+            </Button>
+            <Button onClick={handleGetStarted}>
+              Get Started
+            </Button>
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Badge className="mb-4 bg-blue-100 text-blue-800">AI-Powered Market Analysis</Badge>
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Discover What Should Exist
-            <span className="text-blue-600"> But Doesn't</span>
+      <section className="py-24 px-4">
+        <div className="container mx-auto text-center">
+          <Badge className="mb-6 bg-blue-100 text-blue-800 border-blue-200">
+            🚀 Discover What's Missing in the Market
+          </Badge>
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            Find Market Gaps & <span className="text-blue-600">Unlock Opportunities</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Uncover hidden market opportunities and innovation gaps with AI-powered analysis. 
-            Turn market insights into actionable business ideas.
+            The only AI-powered platform that reveals untapped market opportunities, 
+            helping entrepreneurs and innovators discover what doesn't exist yet but should.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                Start Discovering <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-            <Button size="lg" variant="outline">
-              Watch Demo
+            <Button size="lg" className="px-8 py-6 text-lg" onClick={handleGetStarted}>
+              Start Finding Gaps
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <Button size="lg" variant="outline" className="px-8 py-6 text-lg" onClick={handleSignIn}>
+              View Demo
             </Button>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 bg-white">
+        <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Powerful Features for Market Discovery
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Why Choose GapFinder?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Everything you need to identify, analyze, and act on market opportunities
+            <p className="text-lg text-gray-600">
+              Turn market gaps into million-dollar opportunities
             </p>
           </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="border-0 shadow-lg">
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="border-blue-100 hover:shadow-lg transition-shadow">
               <CardHeader>
-                <Search className="w-8 h-8 text-blue-600 mb-2" />
-                <CardTitle>AI-Powered Analysis</CardTitle>
+                <TrendingUp className="w-12 h-12 text-blue-600 mb-4" />
+                <CardTitle className="text-xl">AI-Powered Analysis</CardTitle>
                 <CardDescription>
-                  Advanced AI identifies gaps across technology, services, products, and business models
+                  Our advanced AI scans markets and identifies real opportunities that competitors miss
                 </CardDescription>
               </CardHeader>
             </Card>
-
-            <Card className="border-0 shadow-lg">
+            
+            <Card className="border-blue-100 hover:shadow-lg transition-shadow">
               <CardHeader>
-                <TrendingUp className="w-8 h-8 text-green-600 mb-2" />
-                <CardTitle>Market Intelligence</CardTitle>
+                <BarChart3 className="w-12 h-12 text-blue-600 mb-4" />
+                <CardTitle className="text-xl">Detailed Market Insights</CardTitle>
                 <CardDescription>
-                  Real-time trending insights and market potential analysis for every opportunity
+                  Get feasibility scores, market size estimates, and innovation ratings for every opportunity
                 </CardDescription>
               </CardHeader>
             </Card>
-
-            <Card className="border-0 shadow-lg">
+            
+            <Card className="border-blue-100 hover:shadow-lg transition-shadow">
               <CardHeader>
-                <FileText className="w-8 h-8 text-purple-600 mb-2" />
-                <CardTitle>Professional Reports</CardTitle>
+                <Users className="w-12 h-12 text-blue-600 mb-4" />
+                <CardTitle className="text-xl">Export & Share</CardTitle>
                 <CardDescription>
-                  Export comprehensive reports, pitch decks, and data for stakeholders
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <Target className="w-8 h-8 text-red-600 mb-2" />
-                <CardTitle>Feasibility Scoring</CardTitle>
-                <CardDescription>
-                  Evaluate opportunities with innovation scores, market size, and feasibility ratings
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <Zap className="w-8 h-8 text-yellow-600 mb-2" />
-                <CardTitle>Instant Insights</CardTitle>
-                <CardDescription>
-                  Get detailed gap analysis in seconds with actionable next steps
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <Users className="w-8 h-8 text-indigo-600 mb-2" />
-                <CardTitle>Collaboration Ready</CardTitle>
-                <CardDescription>
-                  Save, share, and collaborate on market opportunities with your team
+                  Generate professional reports, pitch decks, and presentations for investors and teams
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -139,103 +109,110 @@ export default function Landing() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Simple, Transparent Pricing
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg text-gray-600">
               Choose the plan that fits your innovation needs
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-2 hover:border-blue-500 transition-colors">
+          
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Free Plan */}
+            <Card className="border-2 border-gray-200 hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl">Free</CardTitle>
-                <div className="text-3xl font-bold text-gray-900">$0</div>
-                <CardDescription>Perfect for exploring</CardDescription>
+                <div className="text-4xl font-bold text-gray-900 mb-2">$0</div>
+                <CardDescription>Perfect for exploring ideas</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    5 searches per month
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Basic export options
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Community support
-                  </li>
-                </ul>
-                <Button className="w-full mt-6" variant="outline">
+              <CardContent className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>5 searches per month</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Basic gap analysis</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Save results</span>
+                </div>
+                <Button className="w-full mt-6" onClick={handleGetStarted}>
                   Get Started Free
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-blue-500 shadow-lg scale-105">
+            {/* Pro Plan */}
+            <Card className="border-2 border-blue-500 hover:shadow-lg transition-shadow relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <Badge className="bg-blue-500 text-white">Most Popular</Badge>
+              </div>
               <CardHeader className="text-center">
-                <Badge className="mb-2 bg-blue-100 text-blue-800">Most Popular</Badge>
                 <CardTitle className="text-2xl">Pro</CardTitle>
-                <div className="text-3xl font-bold text-gray-900">$29<span className="text-sm text-gray-500">/month</span></div>
-                <CardDescription>For serious innovators</CardDescription>
+                <div className="text-4xl font-bold text-gray-900 mb-2">$29</div>
+                <CardDescription>For serious entrepreneurs</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Unlimited searches
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Advanced export formats
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Priority support
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Trending insights
-                  </li>
-                </ul>
-                <Button className="w-full mt-6">
+              <CardContent className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Unlimited searches</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Advanced AI analysis</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Export to PDF/CSV</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Trending insights</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Priority support</span>
+                </div>
+                <Button className="w-full mt-6" onClick={handleGetStarted}>
                   Start Pro Trial
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:border-purple-500 transition-colors">
+            {/* Enterprise Plan */}
+            <Card className="border-2 border-gray-200 hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl">Enterprise</CardTitle>
-                <div className="text-3xl font-bold text-gray-900">$299<span className="text-sm text-gray-500">/month</span></div>
-                <CardDescription>For teams and organizations</CardDescription>
+                <div className="text-4xl font-bold text-gray-900 mb-2">$299</div>
+                <CardDescription>For teams & organizations</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Everything in Pro
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Team collaboration
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    API access
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-600 mr-2">✓</span>
-                    Custom integrations
-                  </li>
-                </ul>
-                <Button className="w-full mt-6" variant="outline">
+              <CardContent className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Everything in Pro</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Team collaboration</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Custom integrations</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>Dedicated support</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  <span>API access</span>
+                </div>
+                <Button className="w-full mt-6" onClick={handleGetStarted}>
                   Contact Sales
                 </Button>
               </CardContent>
@@ -245,71 +222,32 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-blue-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+      <section className="py-20 px-4 bg-blue-600 text-white">
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">
             Ready to Discover Your Next Big Opportunity?
           </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Join thousands of innovators using GapFinder to uncover market opportunities
+          <p className="text-xl mb-8 opacity-90">
+            Join thousands of entrepreneurs who've found their breakthrough with GapFinder
           </p>
-          <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-blue-300"
-              required
-            />
-            <Button type="submit" className="bg-white text-blue-600 hover:bg-gray-100">
-              Get Started
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-6" onClick={handleGetStarted}>
+              Start Finding Gaps Today
             </Button>
-          </form>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <Sparkles className="w-6 h-6 text-blue-400" />
-                <span className="text-lg font-bold">GapFinder</span>
-              </div>
-              <p className="text-gray-400">
-                Discover market opportunities with AI-powered gap analysis
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Features</a></li>
-                <li><a href="#" className="hover:text-white">Pricing</a></li>
-                <li><a href="#" className="hover:text-white">API</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">About</a></li>
-                <li><a href="#" className="hover:text-white">Blog</a></li>
-                <li><a href="#" className="hover:text-white">Careers</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Help Center</a></li>
-                <li><a href="#" className="hover:text-white">Contact</a></li>
-                <li><a href="#" className="hover:text-white">Privacy</a></li>
-              </ul>
-            </div>
+      <footer className="bg-gray-900 text-white py-12 px-4">
+        <div className="container mx-auto text-center">
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <Sparkles className="w-6 h-6" />
+            <span className="text-xl font-bold">GapFinder</span>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 GapFinder. All rights reserved.</p>
-          </div>
+          <p className="text-gray-400">
+            © 2025 GapFinder. All rights reserved. Built for innovators, by innovators.
+          </p>
         </div>
       </footer>
     </div>

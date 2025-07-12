@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, integer, boolean, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -7,13 +7,13 @@ export const users = pgTable("users", {
   email: text("email").unique().notNull(),
   password: text("password").notNull(),
   name: text("name"),
-  plan: text("plan").default("free").notNull(),
+  plan: text("plan").default("free").notNull(), // free, pro, enterprise
   searchCount: integer("search_count").default(0).notNull(),
   lastResetDate: timestamp("last_reset_date").defaultNow().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   stripeCustomerId: text("stripe_customer_id"),
-  subscriptionStatus: text("subscription_status").default("inactive"),
+  subscriptionStatus: text("subscription_status").default("inactive"), // active, inactive, cancelled
   subscriptionId: text("subscription_id"),
   preferences: jsonb("preferences").default({}),
   isActive: boolean("is_active").default(true).notNull(),
@@ -26,28 +26,6 @@ export const sessions = pgTable("sessions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const searches = pgTable("searches", {
-  id: serial("id").primaryKey(),
-  query: text("query").notNull(),
-  timestamp: timestamp("timestamp").defaultNow().notNull(),
-  resultsCount: integer("results_count").notNull().default(0),
-  userId: integer("user_id").references(() => users.id),
-});
-
-export const searchResults = pgTable("search_results", {
-  id: serial("id").primaryKey(),
-  searchId: integer("search_id").references(() => searches.id).notNull(),
-  title: text("title").notNull(),
-  description: text("description").notNull(),
-  category: text("category").notNull(),
-  feasibility: text("feasibility").notNull(), // "high", "medium", "low"
-  marketPotential: text("market_potential").notNull(), // "high", "medium", "low"
-  innovationScore: integer("innovation_score").notNull(), // 1-10
-  marketSize: text("market_size").notNull(),
-  gapReason: text("gap_reason").notNull(),
-  isSaved: boolean("is_saved").default(false).notNull(),
-});
-
 export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
   password: true,
@@ -58,23 +36,6 @@ export const insertSessionSchema = createInsertSchema(sessions).pick({
   id: true,
   userId: true,
   expiresAt: true,
-});
-
-export const insertSearchSchema = createInsertSchema(searches).pick({
-  query: true,
-  userId: true,
-});
-
-export const insertSearchResultSchema = createInsertSchema(searchResults).pick({
-  searchId: true,
-  title: true,
-  description: true,
-  category: true,
-  feasibility: true,
-  marketPotential: true,
-  innovationScore: true,
-  marketSize: true,
-  gapReason: true,
 });
 
 export const loginSchema = z.object({
@@ -94,10 +55,6 @@ export type Session = typeof sessions.$inferSelect;
 export type InsertSession = z.infer<typeof insertSessionSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type RegisterData = z.infer<typeof registerSchema>;
-export type InsertSearch = z.infer<typeof insertSearchSchema>;
-export type Search = typeof searches.$inferSelect;
-export type InsertSearchResult = z.infer<typeof insertSearchResultSchema>;
-export type SearchResult = typeof searchResults.$inferSelect;
 
 export const PLAN_LIMITS = {
   free: { searches: 5, exports: 3 },
