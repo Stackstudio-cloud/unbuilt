@@ -27,6 +27,9 @@ export default function Landing() {
             <span className="text-2xl font-bold text-gray-900">GapFinder</span>
           </div>
           <div className="flex items-center space-x-4">
+            <Button variant="ghost" onClick={() => setLocation("/about")}>
+              About
+            </Button>
             <Button variant="ghost" onClick={handleSignIn}>
               Sign In
             </Button>
@@ -240,14 +243,50 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Sparkles className="w-6 h-6" />
-            <span className="text-xl font-bold">GapFinder</span>
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <Sparkles className="w-6 h-6" />
+                <span className="text-xl font-bold">GapFinder</span>
+              </div>
+              <p className="text-gray-400 text-sm">
+                AI-powered market gap discovery platform for entrepreneurs and innovators.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Product</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><button onClick={() => setLocation("/about")} className="hover:text-white">About</button></li>
+                <li><button onClick={() => setLocation("/trending")} className="hover:text-white">Features</button></li>
+                <li><button onClick={handleGetStarted} className="hover:text-white">Pricing</button></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><button onClick={() => setLocation("/about")} className="hover:text-white">About Us</button></li>
+                <li><a href="mailto:support@gapfinder.com" className="hover:text-white">Contact</a></li>
+                <li><a href="mailto:careers@gapfinder.com" className="hover:text-white">Careers</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li><button onClick={() => setLocation("/privacy")} className="hover:text-white">Privacy Policy</button></li>
+                <li><button onClick={() => setLocation("/terms")} className="hover:text-white">Terms of Service</button></li>
+              </ul>
+            </div>
           </div>
-          <p className="text-gray-400">
-            © 2025 GapFinder. All rights reserved. Built for innovators, by innovators.
-          </p>
+          
+          <div className="border-t border-gray-800 pt-8 text-center">
+            <p className="text-gray-400 text-sm">
+              © 2025 GapFinder Technologies. All rights reserved. Business Registration: Pending
+            </p>
+          </div>
         </div>
       </footer>
     </div>

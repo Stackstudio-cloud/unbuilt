@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import Landing from "@/pages/landing";
+import About from "@/pages/about";
+import Privacy from "@/pages/privacy";
+import Terms from "@/pages/terms";
 import SearchResults from "@/pages/search-results";
 import SavedResults from "@/pages/saved-results";
 import SearchHistory from "@/pages/search-history";
@@ -22,6 +25,9 @@ function Router() {
     <Switch>
       <Route path="/" component={user ? Home : Landing} />
       <Route path="/landing" component={Landing} />
+      <Route path="/about" component={About} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/terms" component={Terms} />
       <Route path="/home" component={Home} />
       <Route path="/search/:id" component={SearchResults} />
       <Route path="/saved" component={SavedResults} />
