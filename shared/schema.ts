@@ -15,6 +15,8 @@ export const users = pgTable("users", {
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
   subscriptionStatus: text("subscription_status").default("inactive"),
+  trialUsed: boolean("trial_used").default(false).notNull(),
+  trialExpiration: timestamp("trial_expiration"),
   preferences: jsonb("preferences").default({}),
   isActive: boolean("is_active").default(true).notNull(),
 });

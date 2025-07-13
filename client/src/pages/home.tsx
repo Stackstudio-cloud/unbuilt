@@ -60,7 +60,7 @@ export default function Home() {
   };
 
   const handleStartTrial = () => {
-    setLocation("/subscribe");
+    setLocation("/free-trial");
   };
 
   const handleCloseTour = () => {

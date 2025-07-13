@@ -17,6 +17,7 @@ import Register from "@/pages/auth/register";
 import ForgotPassword from "@/pages/auth/forgot-password";
 import ResetPassword from "@/pages/auth/reset-password";
 import Subscribe from "@/pages/subscribe";
+import FreeTrial from "@/pages/free-trial";
 import NotFound from "@/pages/not-found";
 import { useAuth, initializeAuth } from "./hooks/use-auth";
 import { useEffect } from "react";
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/history" component={SearchHistory} />
       <Route path="/trending" component={Trending} />
       <Route path="/subscribe" component={Subscribe} />
+      <Route path="/free-trial" component={FreeTrial} />
       <Route path="/auth/login" component={Login} />
       <Route path="/auth/register" component={Register} />
       <Route path="/auth/forgot-password" component={ForgotPassword} />

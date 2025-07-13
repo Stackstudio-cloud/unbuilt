@@ -176,6 +176,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Activate free trial
+  app.post('/api/activate-trial', requireAuth, async (req, res) => {
+    try {
+      const user = (req as any).user;
+      
+      // Check if user is already on a paid plan
+      if (user.plan === 'pro' || user.plan === 'enterprise') {
+        return res.status(400).json({ error: 'User already has an active subscription' });
+      }
+      
+      // Check if user has already used trial
+      if (user.trialUsed) {
+        return res.status(400).json({ error: 'Free trial has already been used' });
+      }
+      
+      // Set trial expiration to 7 days from now
+      const trialExpiration = new Date();
+      trialExpiration.setDate(trialExpiration.getDate() + 7);
+      
+      // Update user to Pro trial
+      await authService.updateUserProfile(user.id, {
+        plan: 'pro',
+        trialUsed: true,
+        trialExpiration: trialExpiration.toISOString(),
+        subscriptionStatus: 'trialing'
+      });
+      
+      res.json({ 
+        success: true, 
+        message: 'Free trial activated successfully',
+        trialExpiration: trialExpiration.toISOString()
+      });
+    } catch (error) {
+      console.error('Trial activation error:', error);
+      res.status(500).json({ error: 'Failed to activate trial' });
+    }
+  });
+
   // Check subscription status
   app.get('/api/subscription-status', requireAuth, async (req, res) => {
     try {
