@@ -25,7 +25,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch("/api/auth/profile", requireAuth, updateProfile);
   app.post("/api/auth/forgot-password", forgotPassword);
   app.post("/api/auth/reset-password", resetPassword);
-  app.post("/api/auth/reset-password", resetPassword);
 
   // Search endpoint - now requires authentication and checks limits
   app.post("/api/search", requireAuth, async (req, res) => {

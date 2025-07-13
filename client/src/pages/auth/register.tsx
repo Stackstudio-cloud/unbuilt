@@ -37,12 +37,12 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-gray-900 dark:from-gray-900 dark:via-gray-800 dark:to-black flex items-center justify-center p-4">
+      <Card className="w-full max-w-md premium-card hover-glow">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center mb-4">
-            <Sparkles className="w-8 h-8 text-blue-600 mr-2" />
-            <span className="text-2xl font-bold text-gray-900">GapFinder</span>
+            <Sparkles className="w-8 h-8 text-purple-400 mr-2" />
+            <span className="text-2xl font-bold neon-glow">Unbuilt</span>
           </div>
           <CardTitle className="text-2xl">Create Account</CardTitle>
           <CardDescription>
@@ -132,7 +132,7 @@ export default function Register() {
               
               <Button 
                 type="submit" 
-                className="w-full"
+                className="w-full btn-premium"
                 disabled={loading}
               >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -142,11 +142,11 @@ export default function Register() {
           </Form>
           
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
               <button
                 onClick={() => setLocation("/auth/login")}
-                className="text-blue-600 hover:text-blue-800 font-medium"
+                className="text-purple-500 hover:text-purple-700 font-medium hover:underline"
               >
                 Sign in
               </button>
