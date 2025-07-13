@@ -12,6 +12,7 @@ import {
 } from '@shared/schema';
 import crypto from 'crypto';
 import { db } from '../db';
+import { sendPasswordResetEmail } from '../services/email';
 
 export async function register(req: Request, res: Response) {
   try {
@@ -154,10 +155,15 @@ export async function forgotPassword(req: Request, res: Response) {
       VALUES ($1, $2, $3)
     `, [user.id, resetToken, expiresAt]);
     
-    // In a real app, you would send an email here
-    // For demo purposes, we'll just log the reset link
-    const resetLink = `${req.protocol}://${req.get('host')}/auth/reset-password?token=${resetToken}`;
-    console.log(`Password reset link for ${user.email}: ${resetLink}`);
+    // Send password reset email
+    const emailSent = await sendPasswordResetEmail(user.email, resetToken);
+    
+    if (!emailSent) {
+      console.error(`Failed to send password reset email to ${user.email}`);
+      // Still return success to avoid revealing user existence
+    } else {
+      console.log(`Password reset email sent successfully to ${user.email}`);
+    }
     
     res.json({ success: true, message: 'Password reset email sent if account exists' });
   } catch (error) {
