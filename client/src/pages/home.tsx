@@ -5,6 +5,8 @@ import { Clock, Crown, Zap, Target, Lightbulb } from "lucide-react";
 import Layout from "@/components/layout";
 import PremiumSearchBar from "@/components/premium-search-bar";
 import LoadingModal from "@/components/loading-modal";
+import OnboardingTour, { useOnboardingTour } from "@/components/onboarding-tour";
+import FreeTrialBanner from "@/components/free-trial-banner";
 import { apiRequest } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/use-auth";
 import type { Search } from "@shared/schema";
@@ -12,7 +14,17 @@ import type { Search } from "@shared/schema";
 export default function Home() {
   const [, setLocation] = useLocation();
   const [isSearching, setIsSearching] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const { user } = useAuth();
+  const { shouldShowTour, markTourAsShown } = useOnboardingTour();
+
+  React.useEffect(() => {
+    if (shouldShowTour) {
+      // Show tour after a brief delay for better UX
+      const timer = setTimeout(() => setShowOnboarding(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [shouldShowTour]);
 
   // If user is not authenticated, redirect to landing page
   if (!user) {
@@ -45,6 +57,15 @@ export default function Home() {
     } finally {
       setIsSearching(false);
     }
+  };
+
+  const handleStartTrial = () => {
+    setLocation("/subscribe");
+  };
+
+  const handleCloseTour = () => {
+    setShowOnboarding(false);
+    markTourAsShown();
   };
 
   return (
@@ -89,6 +110,9 @@ export default function Home() {
               </div>
             )}
           </div>
+          
+          {/* Free Trial Banner */}
+          <FreeTrialBanner onStartTrial={handleStartTrial} />
 
           {/* Premium Search Bar */}
           <div className="mb-16">
@@ -133,6 +157,12 @@ export default function Home() {
         isOpen={isSearching}
         title="Analyzing Market Gaps"
         message="Our AI is exploring untapped opportunities in your search area..."
+      />
+      
+      <OnboardingTour
+        isOpen={showOnboarding}
+        onClose={handleCloseTour}
+        onStartTrial={handleStartTrial}
       />
     </Layout>
   );
