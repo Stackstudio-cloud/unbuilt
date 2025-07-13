@@ -1,6 +1,17 @@
 import { Request, Response } from 'express';
 import { authService } from '../auth';
-import { loginSchema, registerSchema, type LoginData, type RegisterData } from '@shared/schema';
+import { 
+  loginSchema, 
+  registerSchema, 
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  type LoginData, 
+  type RegisterData,
+  type ForgotPasswordData,
+  type ResetPasswordData
+} from '@shared/schema';
+import crypto from 'crypto';
+import { db } from '../db';
 
 export async function register(req: Request, res: Response) {
   try {
@@ -118,5 +129,84 @@ export async function updateProfile(req: Request, res: Response) {
   } catch (error) {
     console.error('Profile update error:', error);
     res.status(500).json({ error: 'Failed to update profile' });
+  }
+}
+
+export async function forgotPassword(req: Request, res: Response) {
+  try {
+    const data: ForgotPasswordData = forgotPasswordSchema.parse(req.body);
+    
+    // Check if user exists
+    const user = await authService.getUserByEmail(data.email);
+    if (!user) {
+      // Don't reveal that user doesn't exist for security
+      return res.json({ success: true, message: 'Password reset email sent if account exists' });
+    }
+    
+    // Generate secure reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 1); // Token expires in 1 hour
+    
+    // Store reset token in database
+    await db.execute(`
+      INSERT INTO password_reset_tokens (user_id, token, expires_at)
+      VALUES ($1, $2, $3)
+    `, [user.id, resetToken, expiresAt]);
+    
+    // In a real app, you would send an email here
+    // For demo purposes, we'll just log the reset link
+    const resetLink = `${req.protocol}://${req.get('host')}/auth/reset-password?token=${resetToken}`;
+    console.log(`Password reset link for ${user.email}: ${resetLink}`);
+    
+    res.json({ success: true, message: 'Password reset email sent if account exists' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(400).json({ error: 'Failed to process password reset request' });
+  }
+}
+
+export async function resetPassword(req: Request, res: Response) {
+  try {
+    const data: ResetPasswordData = resetPasswordSchema.parse(req.body);
+    
+    // Find valid reset token
+    const tokenResult = await db.execute(`
+      SELECT prt.*, u.id as user_id 
+      FROM password_reset_tokens prt
+      JOIN users u ON prt.user_id = u.id
+      WHERE prt.token = $1 
+        AND prt.expires_at > NOW() 
+        AND prt.used = false
+      LIMIT 1
+    `, [data.token]);
+    
+    if (!tokenResult.rows || tokenResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Invalid or expired reset token' });
+    }
+    
+    const tokenRecord = tokenResult.rows[0];
+    
+    // Hash new password
+    const hashedPassword = await authService.hashPassword(data.password);
+    
+    // Update user password
+    await db.execute(`
+      UPDATE users 
+      SET password = $1, updated_at = NOW()
+      WHERE id = $2
+    `, [hashedPassword, tokenRecord.user_id]);
+    
+    // Mark token as used
+    await db.execute(`
+      UPDATE password_reset_tokens 
+      SET used = true 
+      WHERE token = $1
+    `, [data.token]);
+    
+    res.json({ success: true, message: 'Password reset successfully' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(400).json({ error: 'Failed to reset password' });
   }
 }

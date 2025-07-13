@@ -5,8 +5,7 @@ import { authService } from "./auth";
 import { analyzeGaps } from "./services/gemini";
 import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
 import { exportResults, sendEmailReport } from "./routes/export";
-import { register, login, logout, getProfile, updateProfile } from "./routes/auth";
-import { exportResults, sendEmailReport } from "./routes/export";
+import { register, login, logout, getProfile, updateProfile, forgotPassword, resetPassword } from "./routes/auth";
 import { requireAuth, optionalAuth } from "./middleware/auth";
 import Stripe from "stripe";
 
@@ -24,6 +23,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/logout", logout);
   app.get("/api/auth/profile", requireAuth, getProfile);
   app.patch("/api/auth/profile", requireAuth, updateProfile);
+  app.post("/api/auth/forgot-password", forgotPassword);
+  app.post("/api/auth/reset-password", resetPassword);
+  app.post("/api/auth/reset-password", resetPassword);
 
   // Search endpoint - now requires authentication and checks limits
   app.post("/api/search", requireAuth, async (req, res) => {

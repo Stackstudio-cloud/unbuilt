@@ -14,6 +14,8 @@ import SearchHistory from "@/pages/search-history";
 import Trending from "@/pages/trending";
 import Login from "@/pages/auth/login";
 import Register from "@/pages/auth/register";
+import ForgotPassword from "@/pages/auth/forgot-password";
+import ResetPassword from "@/pages/auth/reset-password";
 import Subscribe from "@/pages/subscribe";
 import NotFound from "@/pages/not-found";
 import { useAuth, initializeAuth } from "./hooks/use-auth";
@@ -37,6 +39,8 @@ function Router() {
       <Route path="/subscribe" component={Subscribe} />
       <Route path="/auth/login" component={Login} />
       <Route path="/auth/register" component={Register} />
+      <Route path="/auth/forgot-password" component={ForgotPassword} />
+      <Route path="/auth/reset-password" component={ResetPassword} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -21,6 +21,7 @@ export default function Register() {
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
       name: "",
     },
   });
@@ -97,6 +98,24 @@ export default function Register() {
                       <Input
                         type="password"
                         placeholder="Create a password (min 6 characters)"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Confirm your password"
                         {...field}
                       />
                     </FormControl>
