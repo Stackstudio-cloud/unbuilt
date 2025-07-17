@@ -18,22 +18,22 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-gray-900 dark:from-gray-900 dark:via-gray-800 dark:to-black">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm">
+      <header className="border-b border-purple-500/20 bg-black/20 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Sparkles className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Unbuilt</span>
+            <Sparkles className="w-8 h-8 text-purple-400" />
+            <span className="text-2xl font-bold neon-glow">Unbuilt</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => setLocation("/about")}>
+            <Button variant="ghost" onClick={() => setLocation("/about")} className="text-gray-300 hover:text-white">
               About
             </Button>
-            <Button variant="ghost" onClick={handleSignIn}>
+            <Button variant="ghost" onClick={handleSignIn} className="text-gray-300 hover:text-white">
               Sign In
             </Button>
-            <Button onClick={handleGetStarted}>
+            <Button onClick={handleGetStarted} className="btn-premium">
               Get Started
             </Button>
           </div>
@@ -43,22 +43,22 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="py-24 px-4">
         <div className="container mx-auto text-center">
-          <Badge className="mb-6 bg-blue-100 text-blue-800 border-blue-200">
+          <Badge className="mb-6 bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 border-purple-500/30">
             🚀 Discover What's Missing in the Market
           </Badge>
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Discover What's Still <span className="text-blue-600">Unbuilt</span>
+          <h1 className="text-5xl font-bold text-white mb-6">
+            Discover What's Still <span className="neon-glow bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Unbuilt</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
             The only AI-powered platform that reveals untapped market opportunities, 
             helping entrepreneurs and innovators discover what doesn't exist yet but should.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="px-8 py-6 text-lg" onClick={handleGetStarted}>
+            <Button size="lg" className="px-8 py-6 text-lg btn-premium" onClick={handleGetStarted}>
               Start Finding Gaps
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="px-8 py-6 text-lg" onClick={handleSignIn}>
+            <Button size="lg" variant="outline" className="px-8 py-6 text-lg border-purple-500/30 text-purple-300 hover:bg-purple-500/10" onClick={handleSignIn}>
               View Demo
             </Button>
           </div>
@@ -66,43 +66,43 @@ export default function Landing() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-20 px-4 bg-black/20 backdrop-blur-sm">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose GapFinder?
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Why Choose Unbuilt?
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               Turn market gaps into million-dollar opportunities
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-blue-100 hover:shadow-lg transition-shadow">
+            <Card className="premium-card hover-glow">
               <CardHeader>
-                <TrendingUp className="w-12 h-12 text-blue-600 mb-4" />
-                <CardTitle className="text-xl">AI-Powered Analysis</CardTitle>
-                <CardDescription>
+                <TrendingUp className="w-12 h-12 text-purple-400 mb-4" />
+                <CardTitle className="text-xl text-white">AI-Powered Analysis</CardTitle>
+                <CardDescription className="text-gray-300">
                   Our advanced AI scans markets and identifies real opportunities that competitors miss
                 </CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="border-blue-100 hover:shadow-lg transition-shadow">
+            <Card className="premium-card hover-glow">
               <CardHeader>
-                <BarChart3 className="w-12 h-12 text-blue-600 mb-4" />
-                <CardTitle className="text-xl">Detailed Market Insights</CardTitle>
-                <CardDescription>
+                <BarChart3 className="w-12 h-12 text-blue-400 mb-4" />
+                <CardTitle className="text-xl text-white">Detailed Market Insights</CardTitle>
+                <CardDescription className="text-gray-300">
                   Get feasibility scores, market size estimates, and innovation ratings for every opportunity
                 </CardDescription>
               </CardHeader>
             </Card>
             
-            <Card className="border-blue-100 hover:shadow-lg transition-shadow">
+            <Card className="premium-card hover-glow">
               <CardHeader>
-                <Users className="w-12 h-12 text-blue-600 mb-4" />
-                <CardTitle className="text-xl">Export & Share</CardTitle>
-                <CardDescription>
+                <Users className="w-12 h-12 text-cyan-400 mb-4" />
+                <CardTitle className="text-xl text-white">Export & Share</CardTitle>
+                <CardDescription className="text-gray-300">
                   Generate professional reports, pitch decks, and presentations for investors and teams
                 </CardDescription>
               </CardHeader>
@@ -112,110 +112,110 @@ export default function Landing() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-20 px-4 bg-gray-50">
+      <section className="py-20 px-4 bg-gradient-to-br from-purple-900/10 to-blue-900/10">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-white mb-4">
               Simple, Transparent Pricing
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               Choose the plan that fits your innovation needs
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Free Plan */}
-            <Card className="border-2 border-gray-200 hover:shadow-lg transition-shadow">
+            <Card className="premium-card border-gray-600/30">
               <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Free</CardTitle>
-                <div className="text-4xl font-bold text-gray-900 mb-2">$0</div>
-                <CardDescription>Perfect for exploring ideas</CardDescription>
+                <CardTitle className="text-2xl text-white">Free</CardTitle>
+                <div className="text-4xl font-bold text-white mb-2">$0</div>
+                <CardDescription className="text-gray-400">Perfect for exploring ideas</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>5 searches per month</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">5 searches per month</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Basic gap analysis</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Basic gap analysis</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Save results</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Save results</span>
                 </div>
-                <Button className="w-full mt-6" onClick={handleGetStarted}>
+                <Button className="w-full mt-6 btn-premium" onClick={handleGetStarted}>
                   Get Started Free
                 </Button>
               </CardContent>
             </Card>
 
             {/* Pro Plan */}
-            <Card className="border-2 border-blue-500 hover:shadow-lg transition-shadow relative">
+            <Card className="premium-card border-purple-500/50 relative hover-glow">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <Badge className="bg-blue-500 text-white">Most Popular</Badge>
+                <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white">Most Popular</Badge>
               </div>
               <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Pro</CardTitle>
-                <div className="text-4xl font-bold text-gray-900 mb-2">$29</div>
-                <CardDescription>For serious entrepreneurs</CardDescription>
+                <CardTitle className="text-2xl text-white">Pro</CardTitle>
+                <div className="text-4xl font-bold neon-glow mb-2">$29</div>
+                <CardDescription className="text-gray-400">For serious entrepreneurs</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Unlimited searches</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Unlimited searches</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Advanced AI analysis</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Advanced AI analysis</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Export to PDF/CSV</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Export to PDF/CSV</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Trending insights</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Trending insights</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Priority support</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Priority support</span>
                 </div>
-                <Button className="w-full mt-6" onClick={handleGetStarted}>
+                <Button className="w-full mt-6 btn-premium" onClick={handleGetStarted}>
                   Start Pro Trial
                 </Button>
               </CardContent>
             </Card>
 
             {/* Enterprise Plan */}
-            <Card className="border-2 border-gray-200 hover:shadow-lg transition-shadow">
+            <Card className="premium-card border-gray-600/30">
               <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Enterprise</CardTitle>
-                <div className="text-4xl font-bold text-gray-900 mb-2">$299</div>
-                <CardDescription>For teams & organizations</CardDescription>
+                <CardTitle className="text-2xl text-white">Enterprise</CardTitle>
+                <div className="text-4xl font-bold text-white mb-2">$299</div>
+                <CardDescription className="text-gray-400">For teams & organizations</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Everything in Pro</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Everything in Pro</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Team collaboration</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Team collaboration</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Custom integrations</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Custom integrations</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Dedicated support</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">Dedicated support</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>API access</span>
+                  <CheckCircle className="w-5 h-5 text-green-400" />
+                  <span className="text-gray-300">API access</span>
                 </div>
-                <Button className="w-full mt-6" onClick={handleGetStarted}>
+                <Button className="w-full mt-6 btn-premium" onClick={handleGetStarted}>
                   Contact Sales
                 </Button>
               </CardContent>
@@ -225,16 +225,16 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-blue-600 text-white">
+      <section className="py-20 px-4 bg-gradient-to-r from-purple-900 to-blue-900">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">
+          <h2 className="text-3xl font-bold text-white mb-6">
             Ready to Discover Your Next Big Opportunity?
           </h2>
-          <p className="text-xl mb-8 opacity-90">
+          <p className="text-xl text-gray-300 mb-8">
             Join thousands of entrepreneurs who've discovered what's still Unbuilt
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-6" onClick={handleGetStarted}>
+            <Button size="lg" className="btn-premium px-8 py-6 text-lg" onClick={handleGetStarted}>
               Start Finding Gaps Today
             </Button>
           </div>
@@ -242,7 +242,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
+      <footer className="bg-black/40 backdrop-blur-sm text-white py-12 px-4 border-t border-purple-500/20">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
