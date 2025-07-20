@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
 // Note that the newest Gemini model series is "gemini-2.5-flash" or "gemini-2.5-pro"
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+const hasApiKey = !!process.env.GEMINI_API_KEY;
+const ai = hasApiKey ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! }) : null;
 
 export interface GapAnalysisResult {
   title: string;
@@ -15,6 +16,23 @@ export interface GapAnalysisResult {
 }
 
 export async function analyzeGaps(query: string): Promise<GapAnalysisResult[]> {
+  if (!ai || !hasApiKey) {
+    console.log(`Gemini API not configured - would analyze gaps for query: ${query}`);
+    // Return demo data for development/testing
+    return [
+      {
+        title: "Demo: Smart Meeting Room Optimizer",
+        description: "AI-powered system that automatically adjusts room temperature, lighting, and acoustics based on meeting type and participant count. Currently meetings rely on manual adjustments.",
+        category: "Tech That's Missing",
+        feasibility: "high",
+        marketPotential: "medium",
+        innovationScore: 7,
+        marketSize: "$450M",
+        gapReason: "IoT integration complexity and lack of standardized building management systems"
+      }
+    ];
+  }
+
   const systemPrompt = `You are an expert innovation analyst and market researcher who identifies market gaps and untapped opportunities. Always respond with valid JSON in the exact format specified.`;
 
   const prompt = `Analyze the query "${query}" and identify 5-8 gaps in existing solutions - things that don't exist yet but should exist.
