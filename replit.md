@@ -134,7 +134,7 @@ Preferred communication style: Simple, everyday language.
   - Professional Export System (PDF reports, CSV data, investor pitch decks)
   - AI-Powered Strategic Insights with risk analysis and recommendations
 
-**July 20, 2025**:
+**July 21, 2025**:
 - **MIGRATION COMPLETE**: Successfully migrated from Replit Agent to native Replit environment
 - **NEW THEME**: Implemented "Neon Flame" theme with purple/red/orange/white color scheme
   - Native dark mode as default for optimal neon flame aesthetics
@@ -148,6 +148,9 @@ Preferred communication style: Simple, everyday language.
   - App now starts without API keys (uses demo data)
   - Secure development environment with graceful degradation
   - PostgreSQL database provisioned and configured
+- **BUG FIXES**: Resolved fetch API issues with GET/HEAD requests containing body
+  - Fixed query client configuration for proper HTTP method handling
+  - Authentication working correctly with expected 401 responses for development
 
 ## Current Status
 
