@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupSimpleAuth, isAuthenticated } from "./simpleAuth";
 import { analyzeGaps } from "./services/gemini";
 import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
 import { exportResults, sendEmailReport } from "./routes/export";
@@ -15,8 +15,8 @@ const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SEC
 }) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
+  // Simple auth setup
+  await setupSimpleAuth(app);
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {

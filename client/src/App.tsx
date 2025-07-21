@@ -23,23 +23,17 @@ import { useAuth } from "./hooks/useAuth";
 import { useEffect } from "react";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Home} />
-          <Route path="/search/:id" component={SearchResults} />
-          <Route path="/saved" component={SavedResults} />
-          <Route path="/history" component={SearchHistory} />
-          <Route path="/trending" component={Trending} />
-          <Route path="/subscribe" component={Subscribe} />
-          <Route path="/free-trial" component={FreeTrial} />
-        </>
-      )}
+      <Route path="/" component={user ? Home : Landing} />
+      <Route path="/search/:id" component={SearchResults} />
+      <Route path="/saved" component={SavedResults} />
+      <Route path="/history" component={SearchHistory} />
+      <Route path="/trending" component={Trending} />
+      <Route path="/subscribe" component={Subscribe} />
+      <Route path="/free-trial" component={FreeTrial} />
       <Route path="/about" component={About} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
