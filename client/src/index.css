@@ -162,12 +162,12 @@
   /* Flame Backgrounds */
   .flame-bg {
     background: 
-      radial-gradient(circle at 50% 50%, hsl(var(--background)) 30%, transparent 70%),
+      radial-gradient(circle at 50% 50%, hsl(var(--background)) 40%, transparent 70%),
       linear-gradient(135deg, 
         hsl(var(--background)) 0%,
-        hsl(var(--neon-purple) / 0.08) 25%,
-        hsl(var(--neon-pink) / 0.06) 50%,
-        hsl(var(--neon-red) / 0.08) 75%,
+        hsl(var(--neon-purple) / 0.12) 25%,
+        hsl(var(--neon-pink) / 0.10) 50%,
+        hsl(var(--neon-red) / 0.12) 75%,
         hsl(var(--background)) 100%);
   }
   

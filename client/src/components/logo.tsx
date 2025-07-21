@@ -29,6 +29,7 @@ export default function Logo({
           src={logoImage} 
           alt="Unbuilt - Discover Market Opportunities"
           className="w-full h-full object-contain animate-pulse-glow"
+          key="unbuilt-logo-transparent"
         />
       </div>
     </div>
@@ -49,6 +50,7 @@ export function LogoIcon({ className = '', size = 'md' }: { className?: string; 
         src={logoImage} 
         alt="Unbuilt"
         className="w-full h-full object-contain"
+        key="unbuilt-icon-transparent"
       />
     </div>
   );
