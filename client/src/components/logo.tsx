@@ -31,7 +31,7 @@ export default function Logo({
         <img 
           src={logoSvg} 
           alt="Unbuilt - Discover Market Opportunities"
-          className="w-full h-full object-contain animate-pulse-glow logo-svg"
+          className="w-full h-full object-contain"
           key="unbuilt-logo-svg"
         />
       </div>
@@ -52,7 +52,7 @@ export function LogoIcon({ className = '', size = 'md' }: { className?: string; 
       <img 
         src={logoSvg} 
         alt="Unbuilt"
-        className="w-full h-full object-contain logo-svg"
+        className="w-full h-full object-contain"
         key="unbuilt-icon-svg"
       />
     </div>
