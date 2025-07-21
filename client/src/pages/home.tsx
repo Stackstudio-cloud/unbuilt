@@ -72,7 +72,7 @@ export default function Home() {
     <Layout>
       <div className="relative min-h-screen">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-cyan-900/20 dark:from-purple-900/40 dark:via-blue-900/40 dark:to-cyan-900/40" />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-orange-900/20" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent_50%)]" />
         
         <div className="relative max-w-6xl mx-auto px-4 py-16">
@@ -142,7 +142,7 @@ export default function Home() {
                         <span className="font-medium">{search.query}</span>
                       </div>
                       <span className="text-xs text-muted-foreground">
-                        {new Date(search.createdAt).toLocaleDateString()}
+                        {new Date(search.timestamp).toLocaleDateString()}
                       </span>
                     </div>
                   </button>

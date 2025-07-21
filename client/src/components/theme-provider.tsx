@@ -27,7 +27,11 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    () => {
+      // Native dark mode - always default to dark for neon flame theme
+      const stored = localStorage.getItem(storageKey) as Theme;
+      return stored || "dark";
+    }
   )
 
   useEffect(() => {

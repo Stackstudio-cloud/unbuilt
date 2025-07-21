@@ -1,157 +1,133 @@
 import React from 'react';
+import logoImage from '@assets/1753127411749_1753127688357.png';
 
 interface LogoProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'default' | 'white' | 'dark';
+  showText?: boolean;
 }
 
-export default function Logo({ className = '', size = 'md', variant = 'default' }: LogoProps) {
+export default function Logo({ 
+  className = '', 
+  size = 'md', 
+  variant = 'default',
+  showText = true 
+}: LogoProps) {
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-10 h-10',
-    lg: 'w-12 h-12'
+    lg: 'w-12 h-12',
+    xl: 'w-16 h-16'
   };
 
   const textSizes = {
     sm: 'text-lg',
     md: 'text-xl',
-    lg: 'text-2xl'
-  };
-
-  const getGradientColors = () => {
-    switch (variant) {
-      case 'white':
-        return 'from-white to-gray-200';
-      case 'dark':
-        return 'from-gray-800 to-gray-900';
-      default:
-        return 'from-purple-600 via-blue-600 to-cyan-500';
-    }
-  };
-
-  const getTextColor = () => {
-    switch (variant) {
-      case 'white':
-        return 'text-white';
-      case 'dark':
-        return 'text-gray-900';
-      default:
-        return 'text-gray-900 dark:text-white';
-    }
+    lg: 'text-2xl',
+    xl: 'text-3xl'
   };
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
-      {/* Logo Icon */}
-      <div className={`${sizeClasses[size]} relative`}>
-        <svg
-          viewBox="0 0 40 40"
-          className="w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Background circle with gradient */}
-          <defs>
-            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" className="stop-purple-600" />
-              <stop offset="50%" className="stop-blue-600" />
-              <stop offset="100%" className="stop-cyan-500" />
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-              <feMerge> 
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          
-          {/* Main circle */}
-          <circle
-            cx="20"
-            cy="20"
-            r="18"
-            fill="url(#logoGradient)"
-            className="drop-shadow-lg"
-            filter="url(#glow)"
-          />
-          
-          {/* Letter "U" in modern style */}
-          <path
-            d="M12 10 L12 22 Q12 28 18 28 L22 28 Q28 28 28 22 L28 10"
-            stroke="white"
-            strokeWidth="3"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="drop-shadow-sm"
-          />
-          
-          {/* Small dot accent */}
-          <circle
-            cx="32"
-            cy="12"
-            r="2"
-            fill="white"
-            className="animate-pulse"
-          />
-        </svg>
+    <div className={`flex items-center space-x-3 ${className}`}>
+      {/* Logo Image */}
+      <div className={`${sizeClasses[size]} relative flex-shrink-0`}>
+        <img 
+          src={logoImage} 
+          alt="Unbuilt - Discover Market Opportunities"
+          className="w-full h-full object-contain animate-pulse-glow"
+        />
       </div>
       
       {/* Text */}
-      <span className={`font-bold ${textSizes[size]} ${getTextColor()} tracking-tight`}>
-        Unbuilt
-      </span>
+      {showText && (
+        <span className={`font-bold ${textSizes[size]} flame-text tracking-tight`}>
+          UNBUILT
+        </span>
+      )}
     </div>
   );
 }
 
-export function LogoIcon({ className = '', size = 'md' }: { className?: string; size?: 'sm' | 'md' | 'lg' }) {
+export function LogoIcon({ className = '', size = 'md' }: { className?: string; size?: 'sm' | 'md' | 'lg' | 'xl' }) {
   const sizeClasses = {
     sm: 'w-6 h-6',
     md: 'w-8 h-8',
-    lg: 'w-10 h-10'
+    lg: 'w-10 h-10',
+    xl: 'w-12 h-12'
+  };
+
+  return (
+    <div className={`${sizeClasses[size]} ${className} flex-shrink-0`}>
+      <img 
+        src={logoImage} 
+        alt="Unbuilt"
+        className="w-full h-full object-contain"
+      />
+    </div>
+  );
+}
+
+// Fallback SVG Logo (if image fails to load)
+export function LogoSVG({ className = "", size = 'md' }: LogoProps) {
+  const sizeClasses = {
+    sm: 'w-8 h-8',
+    md: 'w-12 h-12', 
+    lg: 'w-16 h-16',
+    xl: 'w-20 h-20'
   };
 
   return (
     <div className={`${sizeClasses[size]} ${className}`}>
       <svg
-        viewBox="0 0 40 40"
-        className="w-full h-full"
+        viewBox="0 0 100 100"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-full"
       >
         <defs>
-          <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" className="stop-purple-600" />
-            <stop offset="50%" className="stop-blue-600" />
-            <stop offset="100%" className="stop-cyan-500" />
+          <linearGradient id="flame-logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="hsl(var(--neon-purple))" />
+            <stop offset="33%" stopColor="hsl(var(--neon-pink))" />
+            <stop offset="66%" stopColor="hsl(var(--neon-red))" />
+            <stop offset="100%" stopColor="hsl(var(--neon-orange))" />
           </linearGradient>
+          
+          <filter id="flame-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feMorphology operator="dilate" radius="2"/>
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge> 
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/> 
+            </feMerge>
+          </filter>
         </defs>
         
-        <circle
-          cx="20"
-          cy="20"
-          r="18"
-          fill="url(#iconGradient)"
-          className="drop-shadow-lg"
-        />
+        {/* Construction scene with flame effects */}
+        <g filter="url(#flame-glow)">
+          {/* Cloud base */}
+          <ellipse cx="50" cy="65" rx="40" ry="12" fill="url(#flame-logo-gradient)" opacity="0.4"/>
+          
+          {/* Building structures */}
+          <rect x="30" y="35" width="8" height="30" fill="url(#flame-logo-gradient)" rx="2"/>
+          <rect x="40" y="25" width="12" height="40" fill="url(#flame-logo-gradient)" rx="3"/>
+          <rect x="54" y="30" width="10" height="35" fill="url(#flame-logo-gradient)" rx="2"/>
+          
+          {/* Crane structure */}
+          <rect x="68" y="15" width="4" height="50" fill="url(#flame-logo-gradient)"/>
+          <rect x="50" y="15" width="25" height="3" fill="url(#flame-logo-gradient)"/>
+          
+          {/* Hook and cable */}
+          <line x1="72" y1="18" x2="72" y2="35" stroke="url(#flame-logo-gradient)" strokeWidth="2"/>
+          <circle cx="72" cy="37" r="3" fill="url(#flame-logo-gradient)"/>
+        </g>
         
-        <path
-          d="M12 10 L12 22 Q12 28 18 28 L22 28 Q28 28 28 22 L28 10"
-          stroke="white"
-          strokeWidth="3"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        
-        <circle
-          cx="32"
-          cy="12"
-          r="2"
-          fill="white"
-          className="animate-pulse"
-        />
+        {/* Floating construction elements */}
+        <g className="animate-float">
+          <rect x="15" y="25" width="4" height="4" fill="hsl(var(--neon-orange))" opacity="0.7" rx="1"/>
+          <circle cx="85" cy="40" r="2" fill="hsl(var(--neon-pink))" opacity="0.6"/>
+          <polygon points="20,50 24,54 20,58 16,54" fill="hsl(var(--neon-purple))" opacity="0.5"/>
+        </g>
       </svg>
     </div>
   );
