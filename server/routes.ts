@@ -1,22 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { authService } from "./auth";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import { analyzeGaps } from "./services/gemini";
 import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
 import { exportResults, sendEmailReport } from "./routes/export";
-import { register, login, logout, getProfile, updateProfile, forgotPassword, resetPassword } from "./routes/auth";
-import { 
-  googleAuth, 
-  googleCallback, 
-  googleCallbackSuccess, 
-  githubAuth, 
-  githubCallback, 
-  githubCallbackSuccess 
-} from "./routes/oauth";
-import { requireAuth, optionalAuth } from "./middleware/auth";
-import session from "express-session";
-import passport from "./passport";
 import Stripe from "stripe";
 
 if (!process.env.STRIPE_SECRET_KEY) {
@@ -27,77 +15,31 @@ const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SEC
 }) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Configure session middleware
-  app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  }));
+  // Auth middleware
+  await setupAuth(app);
 
-  // Initialize Passport middleware
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-  // Authentication routes
-  app.post("/api/auth/register", register);
-  app.post("/api/auth/login", login);
-  app.post("/api/auth/logout", logout);
-  app.get("/api/auth/profile", requireAuth, getProfile);
-  app.patch("/api/auth/profile", requireAuth, updateProfile);
-  app.post("/api/auth/forgot-password", forgotPassword);
-  app.post("/api/auth/reset-password", resetPassword);
-
-  // OAuth routes - graceful handling of missing credentials
-  app.get("/api/auth/google", (req, res) => {
-    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-      return res.status(501).json({ 
-        error: 'Google OAuth not configured', 
-        message: 'Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.',
-        setup_guide: 'See OAUTH_SETUP.md for instructions'
-      });
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
     }
-    return googleAuth()(req, res);
   });
-  
-  app.get("/api/auth/google/callback", (req, res, next) => {
-    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-      return res.redirect('/auth/login?error=oauth_not_configured');
-    }
-    return googleCallback()(req, res, next);
-  }, googleCallbackSuccess);
-  
-  app.get("/api/auth/github", (req, res) => {
-    if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
-      return res.status(501).json({ 
-        error: 'GitHub OAuth not configured', 
-        message: 'Please set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET environment variables.',
-        setup_guide: 'See OAUTH_SETUP.md for instructions'
-      });
-    }
-    return githubAuth()(req, res);
-  });
-  
-  app.get("/api/auth/github/callback", (req, res, next) => {
-    if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
-      return res.redirect('/auth/login?error=oauth_not_configured');
-    }
-    return githubCallback()(req, res, next);
-  }, githubCallbackSuccess);
 
-  // Search endpoint - now requires authentication and checks limits
-  app.post("/api/search", requireAuth, async (req, res) => {
+  // Search endpoint - now requires authentication
+  app.post("/api/search", isAuthenticated, async (req, res) => {
     try {
       const { query } = insertSearchSchema.parse(req.body);
+      const userId = (req.user as any).claims.sub;
       
       // Create search record
-      const search = await storage.createSearch({ query });
+      const search = await storage.createSearch({ query, userId });
       
-      // Analyze gaps using OpenAI
+      // Analyze gaps using Gemini
       const gaps = await analyzeGaps(query);
       
       // Create search results
@@ -179,12 +121,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/email-report", sendEmailReport);
 
   // Stripe subscription routes
-  app.post('/api/create-subscription', requireAuth, async (req, res) => {
+  app.post('/api/create-subscription', isAuthenticated, async (req, res) => {
     try {
       const { plan } = req.body;
       const user = (req as any).user;
 
-      if (!user.email) {
+      if (!user.claims.email) {
         return res.status(400).json({ error: 'User email required' });
       }
 
@@ -200,12 +142,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         customer = await stripe.customers.retrieve(user.stripeCustomerId);
       } else {
         customer = await stripe.customers.create({
-          email: user.email,
-          name: user.username,
+          email: user.claims.email,
+          name: user.claims.first_name + ' ' + user.claims.last_name,
         });
         
         // Update user with Stripe customer ID
-        await authService.updateUserProfile(user.id, { 
+        await storage.upsertUser({ 
+          id: user.claims.sub,
           stripeCustomerId: customer.id 
         });
       }
@@ -221,7 +164,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // Update user with subscription info
-      await authService.updateUserProfile(user.id, {
+      await storage.upsertUser({
+        id: user.claims.sub,
         stripeSubscriptionId: subscription.id,
         plan: plan
       });
@@ -240,7 +184,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Activate free trial
-  app.post('/api/activate-trial', requireAuth, async (req, res) => {
+  app.post('/api/activate-trial', isAuthenticated, async (req, res) => {
     try {
       const user = (req as any).user;
       
@@ -259,10 +203,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       trialExpiration.setDate(trialExpiration.getDate() + 7);
       
       // Update user to Pro trial
-      await authService.updateUserProfile(user.id, {
+      await storage.upsertUser({
+        id: user.claims.sub,
         plan: 'pro',
         trialUsed: true,
-        trialExpiration: trialExpiration.toISOString(),
+        trialExpiration: trialExpiration,
         subscriptionStatus: 'trialing'
       });
       
@@ -278,7 +223,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Check subscription status
-  app.get('/api/subscription-status', requireAuth, async (req, res) => {
+  app.get('/api/subscription-status', isAuthenticated, async (req, res) => {
     try {
       const user = (req as any).user;
       
@@ -300,8 +245,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Export routes
-  app.post('/api/export', requireAuth, exportResults);
-  app.post('/api/send-report', requireAuth, sendEmailReport);
+  app.post('/api/export', isAuthenticated, exportResults);
+  app.post('/api/send-report', isAuthenticated, sendEmailReport);
 
   const httpServer = createServer(app);
   return httpServer;

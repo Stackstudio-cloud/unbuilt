@@ -1,20 +1,32 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Session storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: text("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  email: text("email").unique().notNull(),
-  password: text("password"), // Optional for OAuth users
-  name: text("name"),
-  avatar: text("avatar"), // Profile picture URL from OAuth providers
-  provider: text("provider").default("local").notNull(), // local, google, github
-  providerId: text("provider_id"), // OAuth provider's user ID
+  id: text("id").primaryKey().notNull(),
+  email: text("email").unique(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  profileImageUrl: text("profile_image_url"),
   plan: text("plan").default("free").notNull(),
   searchCount: integer("search_count").default(0).notNull(),
   lastResetDate: timestamp("last_reset_date").defaultNow().notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
   subscriptionStatus: text("subscription_status").default("inactive"),
@@ -24,19 +36,12 @@ export const users = pgTable("users", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
-export const sessions = pgTable("sessions", {
-  id: text("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
-  expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
 export const searches = pgTable("searches", {
   id: serial("id").primaryKey(),
   query: text("query").notNull(),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
   resultsCount: integer("results_count").notNull().default(0),
-  userId: integer("user_id").references(() => users.id),
+  userId: text("user_id").references(() => users.id),
 });
 
 export const searchResults = pgTable("search_results", {
@@ -53,20 +58,8 @@ export const searchResults = pgTable("search_results", {
   isSaved: boolean("is_saved").default(false).notNull(),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  email: true,
-  password: true,
-  name: true,
-  avatar: true,
-  provider: true,
-  providerId: true,
-});
-
-export const insertSessionSchema = createInsertSchema(sessions).pick({
-  id: true,
-  userId: true,
-  expiresAt: true,
-});
+export type UpsertUser = typeof users.$inferInsert;
+export type User = typeof users.$inferSelect;
 
 export const insertSearchSchema = createInsertSchema(searches).pick({
   query: true,

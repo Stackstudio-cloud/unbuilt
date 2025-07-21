@@ -1,92 +1,87 @@
-import { searches, searchResults, type Search, type SearchResult, type InsertSearch, type InsertSearchResult } from "@shared/schema";
+import {
+  users,
+  searches,
+  searchResults,
+  type User,
+  type UpsertUser,
+} from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
+// Interface for storage operations
 export interface IStorage {
-  // Search operations
-  createSearch(search: InsertSearch): Promise<Search>;
-  getSearches(): Promise<Search[]>;
-  getSearchById(id: number): Promise<Search | undefined>;
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
   
-  // Search result operations
-  createSearchResult(result: InsertSearchResult): Promise<SearchResult>;
-  getSearchResults(searchId: number): Promise<SearchResult[]>;
-  getAllSavedResults(): Promise<SearchResult[]>;
-  getSearchResultById(id: number): Promise<SearchResult | undefined>;
-  updateSearchResult(id: number, updates: Partial<SearchResult>): Promise<SearchResult | undefined>;
-  deleteSearchResult(id: number): Promise<boolean>;
+  // Search operations
+  createSearch(search: { query: string; userId?: string }): Promise<{ id: number; query: string; timestamp: Date; resultsCount: number; userId: string | null }>;
+  getSearches(userId?: string): Promise<any[]>;
+  
+  // Search results operations
+  createSearchResult(result: any): Promise<any>;
+  getSearchResults(searchId: number): Promise<any[]>;
+  updateSearchResult(id: number, updates: any): Promise<any>;
 }
 
 export class DatabaseStorage implements IStorage {
-  async createSearch(insertSearch: InsertSearch): Promise<Search> {
-    const [search] = await db
-      .insert(searches)
-      .values(insertSearch)
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
       .returning();
-    return search;
+    return user;
   }
 
-  async getSearches(): Promise<Search[]> {
-    return await db
-      .select()
-      .from(searches)
-      .orderBy(desc(searches.timestamp));
+  // Search operations
+  async createSearch(search: { query: string; userId?: string }) {
+    const [newSearch] = await db.insert(searches).values({
+      query: search.query,
+      userId: search.userId || null,
+      resultsCount: 0,
+    }).returning();
+    return newSearch;
   }
 
-  async getSearchById(id: number): Promise<Search | undefined> {
-    const [search] = await db.select().from(searches).where(eq(searches.id, id));
-    return search || undefined;
+  async getSearches(userId?: string) {
+    if (userId) {
+      return await db.select().from(searches).where(eq(searches.userId, userId));
+    }
+    return await db.select().from(searches);
   }
 
-  async createSearchResult(insertResult: InsertSearchResult): Promise<SearchResult> {
-    const [result] = await db
-      .insert(searchResults)
-      .values(insertResult)
-      .returning();
-    
-    // Update search results count
-    await db
-      .update(searches)
-      .set({ resultsCount: sql`${searches.resultsCount} + 1` })
-      .where(eq(searches.id, insertResult.searchId));
-    
-    return result;
+  // Search results operations
+  async createSearchResult(result: any) {
+    const [newResult] = await db.insert(searchResults).values(result).returning();
+    return newResult;
   }
 
-  async getSearchResults(searchId: number): Promise<SearchResult[]> {
-    return await db
-      .select()
-      .from(searchResults)
-      .where(eq(searchResults.searchId, searchId));
+  async getSearchResults(searchId: number) {
+    return await db.select().from(searchResults).where(eq(searchResults.searchId, searchId));
   }
 
-  async getAllSavedResults(): Promise<SearchResult[]> {
-    return await db
-      .select()
-      .from(searchResults)
-      .where(eq(searchResults.isSaved, true));
-  }
-
-  async getSearchResultById(id: number): Promise<SearchResult | undefined> {
-    const [result] = await db.select().from(searchResults).where(eq(searchResults.id, id));
-    return result || undefined;
-  }
-
-  async updateSearchResult(id: number, updates: Partial<SearchResult>): Promise<SearchResult | undefined> {
-    const [result] = await db
-      .update(searchResults)
+  async updateSearchResult(id: number, updates: any) {
+    const [updated] = await db.update(searchResults)
       .set(updates)
       .where(eq(searchResults.id, id))
       .returning();
-    return result || undefined;
-  }
-
-  async deleteSearchResult(id: number): Promise<boolean> {
-    const result = await db
-      .delete(searchResults)
-      .where(eq(searchResults.id, id))
-      .returning();
-    return result.length > 0;
+    return updated;
   }
 }
 
