@@ -22,10 +22,10 @@ export default function Logo({
   showText = false 
 }: LogoProps) {
   const sizeClasses = {
-    sm: 'w-12 h-12',
-    md: 'w-16 h-16',
-    lg: 'w-20 h-20',
-    xl: 'w-24 h-24'
+    sm: 'w-18 h-18',
+    md: 'w-24 h-24',
+    lg: 'w-30 h-30',
+    xl: 'w-36 h-36'
   };
 
   return (
@@ -45,10 +45,10 @@ export default function Logo({
 
 export function LogoIcon({ className = '', size = 'md' }: { className?: string; size?: 'sm' | 'md' | 'lg' | 'xl' }) {
   const sizeClasses = {
-    sm: 'w-10 h-10',
-    md: 'w-12 h-12',
-    lg: 'w-16 h-16',
-    xl: 'w-20 h-20'
+    sm: 'w-15 h-15',
+    md: 'w-18 h-18',
+    lg: 'w-24 h-24',
+    xl: 'w-30 h-30'
   };
 
   return (
