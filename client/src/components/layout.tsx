@@ -15,8 +15,8 @@ export default function Layout({ children }: LayoutProps) {
   const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-background transition-colors">
-      <header className="glass-dark dark:glass sticky top-0 z-50 border-b border-purple-500/20">
+    <div className="min-h-screen bg-background transition-colors flame-bg">
+      <header className="flame-glass sticky top-0 z-50 neon-flame-border-red">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
@@ -61,7 +61,7 @@ export default function Layout({ children }: LayoutProps) {
                   
                   {(user.plan === 'free' || !user.plan) && (
                     <Link href="/subscribe">
-                      <Button size="sm" className="btn-premium ml-2 animate-pulse-glow">
+                      <Button size="sm" className="btn-flame ml-2 animate-pulse-glow">
                         <Crown className="w-4 h-4 mr-1" />
                         Upgrade Pro
                       </Button>

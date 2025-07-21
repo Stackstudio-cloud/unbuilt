@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, TrendingUp, BarChart3, Users, CheckCircle, ArrowRight, Star } from "lucide-react";
+import Logo from "@/components/logo";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
@@ -18,14 +19,11 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-gray-900 dark:from-gray-900 dark:via-gray-800 dark:to-black">
+    <div className="min-h-screen dark flame-bg">
       {/* Header */}
-      <header className="border-b border-purple-500/20 bg-black/20 backdrop-blur-sm">
+      <header className="flame-glass neon-flame-border">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Sparkles className="w-8 h-8 text-purple-400" />
-            <span className="text-2xl font-bold neon-glow">Unbuilt</span>
-          </div>
+          <Logo size="lg" />
           <div className="flex items-center space-x-4">
             <Button variant="ghost" onClick={() => setLocation("/about")} className="text-gray-300 hover:text-white">
               About
@@ -33,7 +31,7 @@ export default function Landing() {
             <Button variant="ghost" onClick={handleSignIn} className="text-gray-300 hover:text-white">
               Sign In
             </Button>
-            <Button onClick={handleGetStarted} className="btn-premium">
+            <Button onClick={handleGetStarted} className="btn-flame">
               Get Started
             </Button>
           </div>
@@ -47,14 +45,14 @@ export default function Landing() {
             🚀 Discover What's Missing in the Market
           </Badge>
           <h1 className="text-5xl font-bold text-white mb-6">
-            Discover What's Still <span className="neon-glow bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Unbuilt</span>
+            Discover What's Still <span className="flame-text">Unbuilt</span>
           </h1>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
             The only AI-powered platform that reveals untapped market opportunities, 
             helping entrepreneurs and innovators discover what doesn't exist yet but should.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="px-8 py-6 text-lg btn-premium" onClick={handleGetStarted}>
+            <Button size="lg" className="px-8 py-6 text-lg btn-flame" onClick={handleGetStarted}>
               Start Finding Gaps
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
