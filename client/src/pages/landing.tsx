@@ -223,30 +223,32 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-900 to-blue-900">
+      <section className="py-20 px-4 flame-bg">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">
-            Ready to Discover Your Next Big Opportunity?
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Join thousands of entrepreneurs who've discovered what's still Unbuilt
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-premium px-8 py-6 text-lg" onClick={handleGetStarted}>
-              Start Finding Gaps Today
-            </Button>
+          <div className="flame-glass neon-flame-border p-12 rounded-lg max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-white mb-6 flame-text">
+              Ready to Discover Your Next Big Opportunity?
+            </h2>
+            <p className="text-xl text-gray-200 mb-8 drop-shadow-md">
+              Join thousands of entrepreneurs who've discovered what's still Unbuilt
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="btn-flame px-8 py-6 text-lg hover-lift" onClick={handleGetStarted}>
+                Start Finding Gaps Today
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-black/40 backdrop-blur-sm text-white py-12 px-4 border-t border-purple-500/20">
+      <footer className="flame-glass border-t neon-flame-border text-white py-12 px-4">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Sparkles className="w-6 h-6" />
-                <span className="text-xl font-bold">Unbuilt</span>
+                <Logo size="sm" />
               </div>
               <p className="text-gray-400 text-sm">
                 AI-powered platform for discovering products, services, and solutions that don't exist yet.
@@ -280,8 +282,8 @@ export default function Landing() {
             </div>
           </div>
           
-          <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-gray-400 text-sm">
+          <div className="border-t border-purple-500/30 pt-8 text-center">
+            <p className="text-gray-300 text-sm drop-shadow-md">
               © 2025 Unbuilt Technologies. All rights reserved. Business Registration: Pending
             </p>
           </div>
