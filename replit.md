@@ -139,7 +139,9 @@ Preferred communication style: Simple, everyday language.
 - **NEW THEME**: Implemented "Neon Flame" theme with purple/red/orange/white color scheme
   - Native dark mode as default for optimal neon flame aesthetics
   - Custom CSS classes: flame-text, flame-glow, btn-flame, neon-flame-border
-  - Flame gradient backgrounds with darker center for better text readability
+  - **DESIGN DIRECTION**: "Massive black hole" aesthetic approved by user - creates mysterious, intriguing vibe perfect for discovering what doesn't exist yet
+  - Ultra-dark gradient backgrounds with high color opacity for dramatic contrast
+  - Flame gradient backgrounds optimized for laptop viewing
 - **LOGO UPDATE**: Created custom transparent SVG logo with flame theme
   - Solved black background transparency issues with native SVG approach
   - Clean, professional logo without animations or glow effects
@@ -149,9 +151,11 @@ Preferred communication style: Simple, everyday language.
   - App now starts without API keys (uses demo data)
   - Secure development environment with graceful degradation
   - PostgreSQL database provisioned and configured
+  - Health check endpoint added at /health for proper Replit deployment detection
 - **BUG FIXES**: Resolved fetch API issues with GET/HEAD requests containing body
   - Fixed query client configuration for proper HTTP method handling
   - Authentication working correctly with expected 401 responses for development
+  - **DEPLOYMENT**: Successfully running at production URL with proper external routing
 
 ## Current Status
 
