@@ -4,6 +4,8 @@ import logoSvg from '@assets/unbuilt-transparent.svg';
 
 import Unbuilt2 from "@assets/Unbuilt2.png";
 
+import UNBUILT from "@assets/UNBUILT.png";
+
 // Using SVG logo for true transparency
 
 interface LogoProps {
@@ -31,7 +33,7 @@ export default function Logo({
       {/* Logo Image - No text needed since it's a text logo */}
       <div className={`${sizeClasses[size]} relative flex-shrink-0 logo-container`}>
         <img 
-          src={Unbuilt2} 
+          src={UNBUILT} 
           alt="Unbuilt - Discover Market Opportunities"
           className="w-full h-full object-contain"
           key="unbuilt-logo-svg"
