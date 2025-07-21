@@ -44,10 +44,10 @@ export default function Landing() {
           <Badge className="mb-6 bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 border-purple-500/30">
             🚀 Discover What's Missing in the Market
           </Badge>
-          <h1 className="text-5xl font-bold text-white mb-6">
-            Discover What's Still <span className="flame-text">Unbuilt</span>
+          <h1 className="text-5xl font-bold text-white mb-6 drop-shadow-lg">
+            Discover What's Still <span className="flame-text drop-shadow-lg">Unbuilt</span>
           </h1>
-          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto drop-shadow-md">
             The only AI-powered platform that reveals untapped market opportunities, 
             helping entrepreneurs and innovators discover what doesn't exist yet but should.
           </p>

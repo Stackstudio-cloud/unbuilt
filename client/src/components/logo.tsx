@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImage from '@assets/1753127411749_1753127688357.png';
+import logoImage from '@assets/Unbuilt_1753129411859.png';
 
 interface LogoProps {
   className?: string;
@@ -12,25 +12,18 @@ export default function Logo({
   className = '', 
   size = 'md', 
   variant = 'default',
-  showText = true 
+  showText = false 
 }: LogoProps) {
   const sizeClasses = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16'
-  };
-
-  const textSizes = {
-    sm: 'text-lg',
-    md: 'text-xl',
-    lg: 'text-2xl',
-    xl: 'text-3xl'
+    sm: 'w-12 h-12',
+    md: 'w-16 h-16',
+    lg: 'w-20 h-20',
+    xl: 'w-24 h-24'
   };
 
   return (
-    <div className={`flex items-center space-x-3 ${className}`}>
-      {/* Logo Image */}
+    <div className={`flex items-center ${className}`}>
+      {/* Logo Image - No text needed since it's a text logo */}
       <div className={`${sizeClasses[size]} relative flex-shrink-0`}>
         <img 
           src={logoImage} 
@@ -38,23 +31,16 @@ export default function Logo({
           className="w-full h-full object-contain animate-pulse-glow"
         />
       </div>
-      
-      {/* Text */}
-      {showText && (
-        <span className={`font-bold ${textSizes[size]} flame-text tracking-tight`}>
-          UNBUILT
-        </span>
-      )}
     </div>
   );
 }
 
 export function LogoIcon({ className = '', size = 'md' }: { className?: string; size?: 'sm' | 'md' | 'lg' | 'xl' }) {
   const sizeClasses = {
-    sm: 'w-6 h-6',
-    md: 'w-8 h-8',
-    lg: 'w-10 h-10',
-    xl: 'w-12 h-12'
+    sm: 'w-10 h-10',
+    md: 'w-12 h-12',
+    lg: 'w-16 h-16',
+    xl: 'w-20 h-20'
   };
 
   return (
