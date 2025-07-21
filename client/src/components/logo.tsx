@@ -2,6 +2,8 @@ import React from 'react';
 import logoImage from '@assets/Unbuilt_1753129411859.png';
 import logoSvg from '@assets/unbuilt-transparent.svg';
 
+import Unbuilt2 from "@assets/Unbuilt2.png";
+
 // Using SVG logo for true transparency
 
 interface LogoProps {
@@ -29,7 +31,7 @@ export default function Logo({
       {/* Logo Image - No text needed since it's a text logo */}
       <div className={`${sizeClasses[size]} relative flex-shrink-0 logo-container`}>
         <img 
-          src={logoSvg} 
+          src={Unbuilt2} 
           alt="Unbuilt - Discover Market Opportunities"
           className="w-full h-full object-contain"
           key="unbuilt-logo-svg"
