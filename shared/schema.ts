@@ -59,7 +59,6 @@ export const searchResults = pgTable("search_results", {
 });
 
 export type UpsertUser = typeof users.$inferInsert;
-export type User = typeof users.$inferSelect;
 
 export const insertSearchSchema = createInsertSchema(searches).pick({
   query: true,
@@ -112,7 +111,10 @@ export const resetPasswordSchema = z.object({
   path: ["confirmPassword"],
 });
 
-export type User = typeof users.$inferSelect;
+// Create the insert schemas
+export const insertUserSchema = createInsertSchema(users);
+export const insertSessionSchema = createInsertSchema(sessions);
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Session = typeof sessions.$inferSelect;
 export type InsertSession = z.infer<typeof insertSessionSchema>;

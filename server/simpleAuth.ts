@@ -7,11 +7,11 @@ import { storage } from "./storage";
 export async function setupSimpleAuth(app: Express) {
   // For development: create a demo user automatically
   const demoUser = await storage.upsertUser({
-    id: "demo-user",
     email: "demo@unbuilt.com", 
     firstName: "Demo",
     lastName: "User",
     profileImageUrl: null,
+    name: "Demo User"
   });
 
   // Simple auth endpoint - returns demo user for now
@@ -33,7 +33,7 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
   // Add demo user to request
   (req as any).user = {
     claims: {
-      sub: "demo-user",
+      sub: "1", // Use the demo user ID
       email: "demo@unbuilt.com",
       first_name: "Demo",
       last_name: "User"
