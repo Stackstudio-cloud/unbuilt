@@ -1,7 +1,7 @@
 import React from 'react';
 import logoImage from '@assets/Unbuilt_1753129411859.png';
 
-import Unbuilt2 from "@assets/Unbuilt2.png";
+// Using the new transparent logo
 
 interface LogoProps {
   className?: string;
@@ -26,12 +26,17 @@ export default function Logo({
   return (
     <div className={`flex items-center ${className}`}>
       {/* Logo Image - No text needed since it's a text logo */}
-      <div className={`${sizeClasses[size]} relative flex-shrink-0`}>
+      <div className={`${sizeClasses[size]} relative flex-shrink-0 logo-transparent`}>
         <img 
-          src={Unbuilt2} 
+          src={logoImage} 
           alt="Unbuilt - Discover Market Opportunities"
-          className="w-full h-full object-contain animate-pulse-glow ml-[-2px] mr-[-2px] pl-[0px] pr-[0px]"
+          className="w-full h-full object-contain animate-pulse-glow"
           key="unbuilt-logo-transparent"
+          style={{ 
+            backgroundColor: 'transparent',
+            mixBlendMode: 'screen',
+            filter: 'brightness(1.1) contrast(1.2)'
+          }}
         />
       </div>
     </div>
@@ -47,12 +52,17 @@ export function LogoIcon({ className = '', size = 'md' }: { className?: string; 
   };
 
   return (
-    <div className={`${sizeClasses[size]} ${className} flex-shrink-0`}>
+    <div className={`${sizeClasses[size]} ${className} flex-shrink-0 logo-transparent`}>
       <img 
         src={logoImage} 
         alt="Unbuilt"
         className="w-full h-full object-contain"
         key="unbuilt-icon-transparent"
+        style={{ 
+          backgroundColor: 'transparent',
+          mixBlendMode: 'screen',
+          filter: 'brightness(1.1) contrast(1.2)'
+        }}
       />
     </div>
   );
