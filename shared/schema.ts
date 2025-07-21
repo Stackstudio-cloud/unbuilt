@@ -5,8 +5,11 @@ import { z } from "zod";
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   email: text("email").unique().notNull(),
-  password: text("password").notNull(),
+  password: text("password"), // Optional for OAuth users
   name: text("name"),
+  avatar: text("avatar"), // Profile picture URL from OAuth providers
+  provider: text("provider").default("local").notNull(), // local, google, github
+  providerId: text("provider_id"), // OAuth provider's user ID
   plan: text("plan").default("free").notNull(),
   searchCount: integer("search_count").default(0).notNull(),
   lastResetDate: timestamp("last_reset_date").defaultNow().notNull(),
@@ -54,6 +57,9 @@ export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
   password: true,
   name: true,
+  avatar: true,
+  provider: true,
+  providerId: true,
 });
 
 export const insertSessionSchema = createInsertSchema(sessions).pick({
@@ -86,10 +92,16 @@ export const loginSchema = z.object({
 
 export const registerSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6),
+  password: z.string().min(6, "Password must be at least 6 characters").optional(),
+  confirmPassword: z.string().min(6).optional(),
   name: z.string().min(2).max(100),
-}).refine((data) => data.password === data.confirmPassword, {
+}).refine((data) => {
+  // Only validate password match if password is provided (for local auth)
+  if (data.password && data.confirmPassword) {
+    return data.password === data.confirmPassword;
+  }
+  return true;
+}, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
 });

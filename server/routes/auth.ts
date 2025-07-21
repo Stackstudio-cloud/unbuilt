@@ -18,6 +18,11 @@ export async function register(req: Request, res: Response) {
   try {
     const data: RegisterData = registerSchema.parse(req.body);
     
+    // For local registration, password is required
+    if (!data.password) {
+      return res.status(400).json({ error: 'Password is required for registration' });
+    }
+    
     // Check if user already exists
     const existingUser = await authService.getUserByEmail(data.email);
     if (existingUser) {
@@ -25,7 +30,11 @@ export async function register(req: Request, res: Response) {
     }
     
     // Create new user
-    const user = await authService.createUser(data);
+    const user = await authService.createUser({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    });
     
     // Create session
     const sessionId = await authService.createSession(user.id);
@@ -38,8 +47,8 @@ export async function register(req: Request, res: Response) {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
     
-    // Return user data (without password)
-    const { password, ...userWithoutPassword } = user;
+    // Return user data (without sensitive fields)
+    const { password: _, ...userWithoutPassword } = user;
     res.json({ user: userWithoutPassword, success: true });
   } catch (error) {
     console.error('Registration error:', error);
@@ -68,8 +77,8 @@ export async function login(req: Request, res: Response) {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
     
-    // Return user data (without password)
-    const { password, ...userWithoutPassword } = user;
+    // Return user data (without sensitive fields)
+    const { password: _, ...userWithoutPassword } = user;
     res.json({ user: userWithoutPassword, success: true });
   } catch (error) {
     console.error('Login error:', error);
@@ -99,7 +108,8 @@ export async function getProfile(req: Request, res: Response) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
     
-    const { password, ...userWithoutPassword } = req.user;
+    const user = req.user as any;
+    const { password: _, ...userWithoutPassword } = user;
     res.json({ user: userWithoutPassword });
   } catch (error) {
     console.error('Profile error:', error);
@@ -114,9 +124,10 @@ export async function updateProfile(req: Request, res: Response) {
     }
     
     const { name, preferences } = req.body;
+    const user = req.user as any;
     
     // Update user profile
-    const updatedUser = await authService.updateUserProfile(req.user.id, {
+    const updatedUser = await authService.updateUserProfile(user.id, {
       name,
       preferences,
     });
@@ -125,7 +136,7 @@ export async function updateProfile(req: Request, res: Response) {
       return res.status(404).json({ error: 'User not found' });
     }
     
-    const { password, ...userWithoutPassword } = updatedUser;
+    const { password: _, ...userWithoutPassword } = updatedUser;
     res.json({ user: userWithoutPassword });
   } catch (error) {
     console.error('Profile update error:', error);

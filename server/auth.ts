@@ -13,11 +13,30 @@ export class AuthService {
   }
 
   async createUser(userData: InsertUser): Promise<User> {
-    const hashedPassword = await this.hashPassword(userData.password);
+    const hashedPassword = userData.password ? await this.hashPassword(userData.password) : null;
     
     const [user] = await db.insert(users).values({
       ...userData,
       password: hashedPassword,
+    }).returning();
+    
+    return user;
+  }
+
+  async createOAuthUser(userData: {
+    email: string;
+    name?: string;
+    avatar?: string;
+    provider: string;
+    providerId: string;
+  }): Promise<User> {
+    const [user] = await db.insert(users).values({
+      email: userData.email,
+      name: userData.name,
+      avatar: userData.avatar,
+      provider: userData.provider,
+      providerId: userData.providerId,
+      password: null, // OAuth users don't have passwords
     }).returning();
     
     return user;
@@ -35,7 +54,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.getUserByEmail(email);
-    if (!user) return null;
+    if (!user || !user.password) return null;
     
     const isValid = await this.verifyPassword(password, user.password);
     if (!isValid) return null;
@@ -78,16 +97,19 @@ export class AuthService {
     await db.update(users).set({
       plan,
       subscriptionStatus: subscriptionData?.status || 'active',
-      subscriptionId: subscriptionData?.id,
+      stripeSubscriptionId: subscriptionData?.id,
       stripeCustomerId: subscriptionData?.customerId,
       updatedAt: new Date(),
     }).where(eq(users.id, userId));
   }
 
   async incrementSearchCount(userId: number): Promise<void> {
-    await db.update(users).set({
-      searchCount: users.searchCount + 1,
-    }).where(eq(users.id, userId));
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    if (user) {
+      await db.update(users).set({
+        searchCount: user.searchCount + 1,
+      }).where(eq(users.id, userId));
+    }
   }
 
   async resetSearchCount(userId: number): Promise<void> {

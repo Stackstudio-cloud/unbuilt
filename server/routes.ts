@@ -6,7 +6,17 @@ import { analyzeGaps } from "./services/gemini";
 import { insertSearchSchema, insertSearchResultSchema } from "@shared/schema";
 import { exportResults, sendEmailReport } from "./routes/export";
 import { register, login, logout, getProfile, updateProfile, forgotPassword, resetPassword } from "./routes/auth";
+import { 
+  googleAuth, 
+  googleCallback, 
+  googleCallbackSuccess, 
+  githubAuth, 
+  githubCallback, 
+  githubCallbackSuccess 
+} from "./routes/oauth";
 import { requireAuth, optionalAuth } from "./middleware/auth";
+import session from "express-session";
+import passport from "./passport";
 import Stripe from "stripe";
 
 if (!process.env.STRIPE_SECRET_KEY) {
@@ -17,6 +27,22 @@ const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SEC
 }) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Configure session middleware
+  app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  }));
+
+  // Initialize Passport middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   // Authentication routes
   app.post("/api/auth/register", register);
   app.post("/api/auth/login", login);
@@ -25,6 +51,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch("/api/auth/profile", requireAuth, updateProfile);
   app.post("/api/auth/forgot-password", forgotPassword);
   app.post("/api/auth/reset-password", resetPassword);
+
+  // OAuth routes
+  app.get("/api/auth/google", googleAuth());
+  app.get("/api/auth/google/callback", googleCallback(), googleCallbackSuccess);
+  app.get("/api/auth/github", githubAuth());
+  app.get("/api/auth/github/callback", githubCallback(), githubCallbackSuccess);
 
   // Search endpoint - now requires authentication and checks limits
   app.post("/api/search", requireAuth, async (req, res) => {
