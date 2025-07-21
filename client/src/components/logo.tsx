@@ -1,6 +1,8 @@
 import React from 'react';
 import logoImage from '@assets/Unbuilt_1753129411859.png';
 
+import Unbuilt2 from "@assets/Unbuilt2.png";
+
 interface LogoProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -26,9 +28,9 @@ export default function Logo({
       {/* Logo Image - No text needed since it's a text logo */}
       <div className={`${sizeClasses[size]} relative flex-shrink-0`}>
         <img 
-          src={logoImage} 
+          src={Unbuilt2} 
           alt="Unbuilt - Discover Market Opportunities"
-          className="w-full h-full object-contain animate-pulse-glow"
+          className="w-full h-full object-contain animate-pulse-glow ml-[-2px] mr-[-2px] pl-[0px] pr-[0px]"
           key="unbuilt-logo-transparent"
         />
       </div>
