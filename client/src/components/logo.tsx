@@ -1,7 +1,8 @@
 import React from 'react';
 import logoImage from '@assets/Unbuilt_1753129411859.png';
+import logoSvg from '@assets/unbuilt-transparent.svg';
 
-// Using the new transparent logo
+// Using SVG logo for true transparency
 
 interface LogoProps {
   className?: string;
@@ -26,17 +27,12 @@ export default function Logo({
   return (
     <div className={`flex items-center ${className}`}>
       {/* Logo Image - No text needed since it's a text logo */}
-      <div className={`${sizeClasses[size]} relative flex-shrink-0 logo-transparent`}>
+      <div className={`${sizeClasses[size]} relative flex-shrink-0 logo-container`}>
         <img 
-          src={logoImage} 
+          src={logoSvg} 
           alt="Unbuilt - Discover Market Opportunities"
-          className="w-full h-full object-contain animate-pulse-glow"
-          key="unbuilt-logo-transparent"
-          style={{ 
-            backgroundColor: 'transparent',
-            mixBlendMode: 'screen',
-            filter: 'brightness(1.1) contrast(1.2)'
-          }}
+          className="w-full h-full object-contain animate-pulse-glow logo-svg"
+          key="unbuilt-logo-svg"
         />
       </div>
     </div>
@@ -52,17 +48,12 @@ export function LogoIcon({ className = '', size = 'md' }: { className?: string; 
   };
 
   return (
-    <div className={`${sizeClasses[size]} ${className} flex-shrink-0 logo-transparent`}>
+    <div className={`${sizeClasses[size]} ${className} flex-shrink-0 logo-container`}>
       <img 
-        src={logoImage} 
+        src={logoSvg} 
         alt="Unbuilt"
-        className="w-full h-full object-contain"
-        key="unbuilt-icon-transparent"
-        style={{ 
-          backgroundColor: 'transparent',
-          mixBlendMode: 'screen',
-          filter: 'brightness(1.1) contrast(1.2)'
-        }}
+        className="w-full h-full object-contain logo-svg"
+        key="unbuilt-icon-svg"
       />
     </div>
   );
