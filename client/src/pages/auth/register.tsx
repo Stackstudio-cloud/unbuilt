@@ -59,7 +59,20 @@ export default function Register() {
               type="button"
               variant="outline"
               className="w-full"
-              onClick={() => window.location.href = "/api/auth/google"}
+              onClick={async () => {
+                try {
+                  const response = await fetch('/api/auth/google');
+                  if (response.status === 501) {
+                    const data = await response.json();
+                    setError(data.message || 'Google OAuth not configured. Please contact administrator.');
+                    return;
+                  }
+                  // If successful, redirect to Google OAuth
+                  window.location.href = "/api/auth/google";
+                } catch (error) {
+                  setError('Google registration temporarily unavailable. Please try email registration.');
+                }
+              }}
             >
               <SiGoogle className="w-4 h-4 mr-2" />
               Continue with Google
@@ -69,7 +82,20 @@ export default function Register() {
               type="button"
               variant="outline"
               className="w-full"
-              onClick={() => window.location.href = "/api/auth/github"}
+              onClick={async () => {
+                try {
+                  const response = await fetch('/api/auth/github');
+                  if (response.status === 501) {
+                    const data = await response.json();
+                    setError(data.message || 'GitHub OAuth not configured. Please contact administrator.');
+                    return;
+                  }
+                  // If successful, redirect to GitHub OAuth
+                  window.location.href = "/api/auth/github";
+                } catch (error) {
+                  setError('GitHub registration temporarily unavailable. Please try email registration.');
+                }
+              }}
             >
               <Github className="w-4 h-4 mr-2" />
               Continue with GitHub

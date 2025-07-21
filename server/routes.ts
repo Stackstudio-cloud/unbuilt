@@ -52,11 +52,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/forgot-password", forgotPassword);
   app.post("/api/auth/reset-password", resetPassword);
 
-  // OAuth routes
-  app.get("/api/auth/google", googleAuth());
-  app.get("/api/auth/google/callback", googleCallback(), googleCallbackSuccess);
-  app.get("/api/auth/github", githubAuth());
-  app.get("/api/auth/github/callback", githubCallback(), githubCallbackSuccess);
+  // OAuth routes - graceful handling of missing credentials
+  app.get("/api/auth/google", (req, res) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+      return res.status(501).json({ 
+        error: 'Google OAuth not configured', 
+        message: 'Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.',
+        setup_guide: 'See OAUTH_SETUP.md for instructions'
+      });
+    }
+    return googleAuth()(req, res);
+  });
+  
+  app.get("/api/auth/google/callback", (req, res, next) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+      return res.redirect('/auth/login?error=oauth_not_configured');
+    }
+    return googleCallback()(req, res, next);
+  }, googleCallbackSuccess);
+  
+  app.get("/api/auth/github", (req, res) => {
+    if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+      return res.status(501).json({ 
+        error: 'GitHub OAuth not configured', 
+        message: 'Please set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET environment variables.',
+        setup_guide: 'See OAUTH_SETUP.md for instructions'
+      });
+    }
+    return githubAuth()(req, res);
+  });
+  
+  app.get("/api/auth/github/callback", (req, res, next) => {
+    if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+      return res.redirect('/auth/login?error=oauth_not_configured');
+    }
+    return githubCallback()(req, res, next);
+  }, githubCallbackSuccess);
 
   // Search endpoint - now requires authentication and checks limits
   app.post("/api/search", requireAuth, async (req, res) => {

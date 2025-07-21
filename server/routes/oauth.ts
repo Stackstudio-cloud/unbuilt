@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import passport from '../passport';
+import passport from 'passport';
+import '../passport'; // Import to register strategies
 import { authService } from '../auth';
 
 export function googleAuth() {
