@@ -199,8 +199,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "User not found" });
       }
       
-      // Check if user has already used trial
-      if (user.trialUsed) {
+      // Check if user has already used trial (allow demo user to re-activate for testing)
+      if (user.trialUsed && user.email !== 'test@example.com') {
         return res.status(400).json({ error: "Free trial has already been used" });
       }
       
