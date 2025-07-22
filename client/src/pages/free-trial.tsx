@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Sparkles, Star, Clock, Zap } from 'lucide-react';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import Layout from '@/components/layout';
@@ -12,11 +12,11 @@ import Layout from '@/components/layout';
 export default function FreeTrial() {
   const [, setLocation] = useLocation();
   const [isActivating, setIsActivating] = useState(false);
-  const { user, getProfile } = useAuth();
+  const { user } = useAuth();
   const { toast } = useToast();
 
-  // Redirect if already on Pro plan
-  if (user?.plan === 'pro') {
+  // Redirect if already on Pro plan  
+  if ((user as any)?.plan === 'pro') {
     setLocation('/');
     return null;
   }
@@ -28,9 +28,6 @@ export default function FreeTrial() {
       const data = await response.json();
       
       if (data.success) {
-        // Refresh user profile to get updated plan
-        await getProfile();
-        
         toast({
           title: "Free Trial Activated!",
           description: "You now have 7 days of Pro features. Enjoy unlimited searches and premium tools!",
@@ -55,9 +52,9 @@ export default function FreeTrial() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-cyan-900/20 dark:from-purple-900/40 dark:via-blue-900/40 dark:to-cyan-900/40 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 to-black flex items-center justify-center p-4">
         <div className="max-w-2xl w-full">
-          <Card className="premium-card">
+          <Card className="flame-card text-white border-purple-500/30">
             <CardHeader className="text-center">
               <div className="flex items-center justify-center mb-4">
                 <div className="relative">

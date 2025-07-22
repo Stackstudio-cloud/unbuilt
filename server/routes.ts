@@ -30,6 +30,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Trial activation endpoint
+  app.post('/api/activate-trial', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      if (user.trialUsed) {
+        return res.status(400).json({ error: "Trial already used" });
+      }
+      
+      // Activate trial
+      const trialExpiration = new Date();
+      trialExpiration.setDate(trialExpiration.getDate() + 7); // 7 days trial
+      
+      await storage.upsertUser({
+        ...user,
+        plan: 'pro',
+        trialUsed: true,
+        trialExpiration,
+        subscriptionStatus: 'trialing'
+      });
+      
+      res.json({ success: true, message: "Trial activated successfully" });
+    } catch (error) {
+      console.error("Trial activation error:", error);
+      res.status(500).json({ error: "Failed to activate trial" });
+    }
+  });
+
   // Search endpoint - now requires authentication
   app.post("/api/search", isAuthenticated, async (req, res) => {
     try {
