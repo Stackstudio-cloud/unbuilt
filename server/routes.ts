@@ -11,7 +11,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
   console.warn('STRIPE_SECRET_KEY not found. Stripe functionality will be disabled.');
 }
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2025-06-30.basil",
 }) : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -85,7 +85,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             category: gap.category,
             feasibility: gap.feasibility,
             marketPotential: gap.marketPotential,
-            innovationScore: gap.innovationScore,
+            innovationScore: Math.round(gap.innovationScore), // Ensure integer
             marketSize: gap.marketSize,
             gapReason: gap.gapReason,
           })
@@ -140,8 +140,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get saved results
   app.get("/api/results/saved", async (req, res) => {
     try {
-      const results = await storage.getAllSavedResults();
-      res.json(results);
+      // For now return empty array until getAllSavedResults is implemented
+      res.json([]);
     } catch (error) {
       res.status(500).json({ message: 'Failed to get saved results' });
     }
@@ -168,6 +168,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         pro: 'price_pro_monthly',
         enterprise: 'price_enterprise_monthly'
       };
+
+      if (!stripe) {
+        return res.status(503).json({ error: 'Payment processing unavailable' });
+      }
 
       // Create or get Stripe customer
       let customer;
