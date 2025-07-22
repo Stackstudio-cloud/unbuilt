@@ -22,10 +22,10 @@ export default function Logo({
   showText = false 
 }: LogoProps) {
   const sizeClasses = {
-    sm: 'w-20 h-20',
-    md: 'w-24 h-24',
-    lg: 'w-32 h-32',
-    xl: 'w-40 h-40'
+    sm: 'w-24 h-24',
+    md: 'w-32 h-32',
+    lg: 'w-40 h-40',
+    xl: 'w-48 h-48'
   };
 
   return (

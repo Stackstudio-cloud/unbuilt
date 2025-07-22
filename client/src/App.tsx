@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import Landing from "@/pages/landing";
 import About from "@/pages/about";
+import Help from "@/pages/help";
 import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
 import SearchResults from "@/pages/search-results";
@@ -49,6 +50,7 @@ function Router() {
           <Route path="/subscribe" component={Subscribe} />
           <Route path="/free-trial" component={FreeTrial} />
           <Route path="/about" component={About} />
+          <Route path="/help" component={Help} />
           <Route path="/privacy" component={Privacy} />
           <Route path="/terms" component={Terms} />
         </>
@@ -56,6 +58,7 @@ function Router() {
         <>
           <Route path="/" component={Landing} />
           <Route path="/about" component={About} />
+          <Route path="/help" component={Help} />
           <Route path="/privacy" component={Privacy} />
           <Route path="/terms" component={Terms} />
         </>
