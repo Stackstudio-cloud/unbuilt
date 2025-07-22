@@ -6,7 +6,7 @@
 
 > Discover what doesn't exist yet. Find market gaps and untapped opportunities with AI-powered analysis.
 
-![Unbuilt Homepage](./attached_assets/image_1753217050165.png)
+![Unbuilt Demo](./docs/demo.gif)
 
 ## 🚀 Live Demo
 
@@ -16,19 +16,20 @@ Demo credentials for testing:
 - **Email:** test@example.com
 - **Password:** demo123
 
-## 📸 Screenshots
+## 📸 Platform Demo
 
-### Main Dashboard
+The demo GIF above showcases:
+- **Homepage Interface** - Clean search experience with flame-themed dark design
+- **AI-Powered Results** - Comprehensive market gap analysis with innovation scores
+- **Professional Navigation** - Enhanced header with prominent branding and help system
+- **Responsive Design** - Mobile-first approach with intuitive user experience
+
+### Key Interface Elements
 ![Main Dashboard](./attached_assets/image_1753217050165.png)
 *AI-powered gap discovery with comprehensive search interface*
 
-### Search Results & Analysis
 ![Search Results](./attached_assets/image_1753217115376.png)
 *Detailed market opportunities with innovation scores and feasibility ratings*
-
-### Professional Navigation
-![Navigation](./attached_assets/image_1753222778176.png)
-*Enhanced header with prominent logo and comprehensive help documentation*
 
 ## 🌟 Overview
 
