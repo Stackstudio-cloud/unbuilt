@@ -5,14 +5,17 @@ import { storage } from "./storage";
 // No complex OAuth, no external dependencies, just clean and simple
 
 export async function setupSimpleAuth(app: Express) {
-  // For development: create a demo user automatically
-  const demoUser = await storage.upsertUser({
-    email: "demo@unbuilt.com", 
-    firstName: "Demo",
-    lastName: "User",
-    profileImageUrl: null,
-    name: "Demo User"
-  });
+  // For development: get or create demo user
+  let demoUser = await storage.getUser("1");
+  if (!demoUser) {
+    demoUser = await storage.upsertUser({
+      email: "demo@unbuilt.com", 
+      firstName: "Demo",
+      lastName: "User",
+      profileImageUrl: null,
+      name: "Demo User"
+    });
+  }
 
   // Simple auth endpoint - returns demo user for now
   app.get('/api/auth/user', async (req, res) => {
