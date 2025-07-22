@@ -87,14 +87,14 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="relative min-h-screen">
+      <div className="relative">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-orange-900/20" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent_50%)]" />
         
-        <div className="relative max-w-6xl mx-auto px-4 py-16">
+        <div className="relative max-w-6xl mx-auto px-4 py-8">
           {/* Hero Section */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             <div className="animate-float mb-8">
               <h1 className="text-6xl font-bold mb-6">
                 <span className="neon-glow">Discover What's</span>
@@ -129,7 +129,7 @@ export default function Home() {
           </div>
 
           {/* Premium Search Bar */}
-          <div className="mb-16" id="search-input">
+          <div className="mb-8" id="search-input">
             <PremiumSearchBar
               onSearch={handleSearch}
               loading={isSearching}
@@ -139,7 +139,7 @@ export default function Home() {
 
           {/* Recent Searches */}
           {recentSearches && recentSearches.length > 0 && (
-            <div className="mt-16">
+            <div className="mt-8">
               <h2 className="text-2xl font-bold mb-6 text-center">
                 <span className="neon-text">Recent Discoveries</span>
               </h2>

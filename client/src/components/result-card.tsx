@@ -84,7 +84,7 @@ export default function ResultCard({ result, onSave, onShare, onViewDetails }: R
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow p-6">
+    <div className="bg-gray-800 rounded-lg border border-gray-700 shadow-sm hover:shadow-md transition-shadow p-6 neon-flame-border">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${getCategoryColor(result.category)}`}>
@@ -92,11 +92,11 @@ export default function ResultCard({ result, onSave, onShare, onViewDetails }: R
           </span>
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${getFeasibilityColor(result.feasibility)}`}></div>
-            <span className="text-xs text-google-gray capitalize">{result.feasibility} Feasibility</span>
+            <span className="text-xs text-gray-300 capitalize">{result.feasibility} Feasibility</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${getMarketPotentialColor(result.marketPotential)}`}></div>
-            <span className="text-xs text-google-gray capitalize">{result.marketPotential} Market Potential</span>
+            <span className="text-xs text-gray-300 capitalize">{result.marketPotential} Market Potential</span>
           </div>
         </div>
         <div className="flex items-center space-x-2">
@@ -104,7 +104,7 @@ export default function ResultCard({ result, onSave, onShare, onViewDetails }: R
             variant="ghost"
             size="sm"
             onClick={handleSave}
-            className={`p-2 ${isSaved ? 'text-google-blue' : 'text-google-gray hover:text-google-blue'}`}
+            className={`p-2 ${isSaved ? 'text-orange-400' : 'text-gray-400 hover:text-orange-400'}`}
           >
             <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
           </Button>
@@ -112,35 +112,35 @@ export default function ResultCard({ result, onSave, onShare, onViewDetails }: R
             variant="ghost"
             size="sm"
             onClick={() => onShare(result)}
-            className="p-2 text-google-gray hover:text-google-blue"
+            className="p-2 text-gray-400 hover:text-orange-400"
           >
             <Share2 className="w-4 h-4" />
           </Button>
         </div>
       </div>
       
-      <h3 className="text-lg font-medium text-google-gray-dark mb-3">{result.title}</h3>
-      <p className="text-google-gray mb-4">{result.description}</p>
+      <h3 className="text-lg font-medium text-white mb-3">{result.title}</h3>
+      <p className="text-gray-300 mb-4">{result.description}</p>
       
       <div className={`border-l-4 ${getBorderColor(result.category)} pl-4 mb-4`}>
-        <h4 className="font-medium text-google-gray-dark mb-2">Why This Gap Exists:</h4>
-        <p className="text-sm text-google-gray">{result.gapReason}</p>
+        <h4 className="font-medium text-white mb-2">Why This Gap Exists:</h4>
+        <p className="text-sm text-gray-300">{result.gapReason}</p>
       </div>
       
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center text-sm text-google-gray">
-            <Lightbulb className="w-4 h-4 mr-1" />
+          <div className="flex items-center text-sm text-gray-300">
+            <Lightbulb className="w-4 h-4 mr-1 text-orange-400" />
             Innovation Score: {result.innovationScore}/10
           </div>
-          <div className="flex items-center text-sm text-google-gray">
-            <TrendingUp className="w-4 h-4 mr-1" />
+          <div className="flex items-center text-sm text-gray-300">
+            <TrendingUp className="w-4 h-4 mr-1 text-orange-400" />
             Market Size: {result.marketSize}
           </div>
         </div>
         <Button 
           variant="ghost" 
-          className="text-google-blue hover:text-google-blue-dark text-sm font-medium"
+          className="text-orange-400 hover:text-orange-300 text-sm font-medium"
           onClick={() => onViewDetails(result)}
         >
           Action Plan <ArrowRight className="w-4 h-4 ml-1" />
