@@ -30,38 +30,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Trial activation endpoint
-  app.post('/api/activate-trial', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      
-      if (user.trialUsed) {
-        return res.status(400).json({ error: "Trial already used" });
-      }
-      
-      // Activate trial
-      const trialExpiration = new Date();
-      trialExpiration.setDate(trialExpiration.getDate() + 7); // 7 days trial
-      
-      await storage.upsertUser({
-        ...user,
-        plan: 'pro',
-        trialUsed: true,
-        trialExpiration,
-        subscriptionStatus: 'trialing'
-      });
-      
-      res.json({ success: true, message: "Trial activated successfully" });
-    } catch (error) {
-      console.error("Trial activation error:", error);
-      res.status(500).json({ error: "Failed to activate trial" });
-    }
-  });
+
 
   // Search endpoint - now requires authentication
   app.post("/api/search", isAuthenticated, async (req, res) => {
@@ -221,18 +190,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Activate free trial
-  app.post('/api/activate-trial', isAuthenticated, async (req, res) => {
+  app.post('/api/trial/activate', isAuthenticated, async (req, res) => {
     try {
-      const user = (req as any).user;
+      const userId = (req as any).user.claims.sub;
+      const user = await storage.getUser(userId);
       
-      // Check if user is already on a paid plan
-      if (user.plan === 'pro' || user.plan === 'enterprise') {
-        return res.status(400).json({ error: 'User already has an active subscription' });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
       }
       
       // Check if user has already used trial
       if (user.trialUsed) {
-        return res.status(400).json({ error: 'Free trial has already been used' });
+        return res.status(400).json({ error: "Free trial has already been used" });
       }
       
       // Set trial expiration to 7 days from now
@@ -241,7 +210,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Update user to Pro trial
       await storage.upsertUser({
-        id: user.claims.sub,
+        id: userId,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profileImageUrl: user.profileImageUrl,
         plan: 'pro',
         trialUsed: true,
         trialExpiration: trialExpiration,

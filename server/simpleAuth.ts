@@ -9,11 +9,11 @@ export async function setupSimpleAuth(app: Express) {
   let demoUser = await storage.getUser("1");
   if (!demoUser) {
     demoUser = await storage.upsertUser({
-      email: "demo@unbuilt.com", 
+      id: "1",
+      email: "test@example.com", 
       firstName: "Demo",
       lastName: "User",
-      profileImageUrl: null,
-      name: "Demo User"
+      profileImageUrl: null
     });
   }
 
