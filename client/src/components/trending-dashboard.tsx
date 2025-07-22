@@ -79,11 +79,11 @@ export default function TrendingDashboard() {
   const data = trendingData || mockTrendingData;
 
   return (
-    <div className="space-y-6">
+    <div className="trending-content space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-google-gray-dark">Trending Now</h2>
-          <p className="text-google-gray">Discover what opportunities are heating up</p>
+          <h2 className="text-2xl font-bold text-white">Trending Now</h2>
+          <p className="text-gray-300">Discover what opportunities are heating up</p>
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -187,12 +187,12 @@ export default function TrendingDashboard() {
                   </div>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-gray-600">Searches</p>
-                      <p className="font-medium">{category.count}</p>
+                      <p className="text-gray-400">Searches</p>
+                      <p className="font-medium text-white">{category.count}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Avg Innovation Score</p>
-                      <p className="font-medium">{category.avgInnovation}/10</p>
+                      <p className="text-gray-400">Avg Innovation Score</p>
+                      <p className="font-medium text-white">{category.avgInnovation}/10</p>
                     </div>
                   </div>
                   <div className="mt-3">
@@ -211,8 +211,8 @@ export default function TrendingDashboard() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="font-medium">{search.query}</h3>
-                      <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
+                      <h3 className="font-medium text-white">{search.query}</h3>
+                      <div className="flex items-center space-x-4 text-sm text-gray-400 mt-1">
                         <span className="flex items-center">
                           <Clock className="w-3 h-3 mr-1" />
                           {search.timestamp}
@@ -237,7 +237,7 @@ export default function TrendingDashboard() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <Badge variant="outline">{result.category}</Badge>
-                    <div className="flex items-center space-x-4 text-sm text-gray-600">
+                    <div className="flex items-center space-x-4 text-sm text-gray-400">
                       <span className="flex items-center">
                         <Users className="w-3 h-3 mr-1" />
                         {result.saves} saves
@@ -245,10 +245,10 @@ export default function TrendingDashboard() {
                       <span>{result.views} views</span>
                     </div>
                   </div>
-                  <h3 className="font-semibold">{result.title}</h3>
+                  <h3 className="font-semibold text-white">{result.title}</h3>
                   <div className="mt-3 flex justify-between items-center">
                     <Progress value={(result.saves / result.views) * 100} className="h-2 flex-1 mr-4" />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-400">
                       {Math.round((result.saves / result.views) * 100)}% save rate
                     </span>
                   </div>

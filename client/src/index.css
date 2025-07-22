@@ -72,6 +72,7 @@
 .flame-glass nav button,
 .flame-glass nav a button,
 header nav button,
+/* Header text contrast fixes */
 header nav a button {
   color: white !important;
 }
@@ -81,6 +82,32 @@ header nav a button {
 header nav button:hover,
 header nav a button:hover {
   color: hsl(var(--neon-purple)) !important;
+}
+
+/* Modal and dialog background fixes */
+[role="dialog"] {
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+.export-modal [data-radix-dialog-content] {
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+/* Trending page text contrast fixes */
+.trending-content h2, 
+.trending-content h3, 
+.trending-content .font-semibold,
+.trending-content .font-medium {
+  color: white !important;
+}
+
+.trending-content p, 
+.trending-content .text-gray-600,
+.trending-content .text-gray-500 {
+  color: hsl(var(--muted-foreground)) !important;
 }
 
 /* Logo positioning fix */

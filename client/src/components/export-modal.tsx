@@ -160,13 +160,13 @@ export default function ExportModal({ isOpen, results, onClose }: ExportModalPro
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl bg-card border-border">
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
+          <DialogTitle className="flex items-center space-x-2 text-card-foreground">
             <Download className="w-5 h-5" />
             <span>Export Results</span>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-muted-foreground">
             Export {results.length} results as a professional report
           </DialogDescription>
         </DialogHeader>
@@ -188,7 +188,7 @@ export default function ExportModal({ isOpen, results, onClose }: ExportModalPro
                       htmlFor={format.id} 
                       className={`flex-1 cursor-pointer ${format.premium && !isPro ? 'opacity-50' : ''}`}
                     >
-                      <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                      <div className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/50">
                         <div className="flex items-center space-x-3">
                           <format.icon className="w-5 h-5" />
                           <div>
@@ -196,7 +196,7 @@ export default function ExportModal({ isOpen, results, onClose }: ExportModalPro
                               <span>{format.name}</span>
                               {format.premium && <Crown className="w-4 h-4 text-yellow-500" />}
                             </div>
-                            <div className="text-sm text-gray-500">{format.description}</div>
+                            <div className="text-sm text-muted-foreground">{format.description}</div>
                           </div>
                         </div>
                         {format.premium && !isPro && (
