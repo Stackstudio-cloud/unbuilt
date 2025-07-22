@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
-import Landing from "@/pages/Landing";
+import Landing from "@/pages/landing";
 import About from "@/pages/about";
 import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
@@ -25,18 +25,41 @@ import { useEffect } from "react";
 function Router() {
   const { isAuthenticated, isLoading, user } = useAuth();
   
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Switch>
-      <Route path="/" component={user ? Home : Landing} />
-      <Route path="/search/:id" component={SearchResults} />
-      <Route path="/saved" component={SavedResults} />
-      <Route path="/history" component={SearchHistory} />
-      <Route path="/trending" component={Trending} />
-      <Route path="/subscribe" component={Subscribe} />
-      <Route path="/free-trial" component={FreeTrial} />
-      <Route path="/about" component={About} />
-      <Route path="/privacy" component={Privacy} />
-      <Route path="/terms" component={Terms} />
+      {isAuthenticated ? (
+        <>
+          <Route path="/" component={Home} />
+          <Route path="/search/:id" component={SearchResults} />
+          <Route path="/saved" component={SavedResults} />
+          <Route path="/history" component={SearchHistory} />
+          <Route path="/trending" component={Trending} />
+          <Route path="/subscribe" component={Subscribe} />
+          <Route path="/free-trial" component={FreeTrial} />
+          <Route path="/about" component={About} />
+          <Route path="/privacy" component={Privacy} />
+          <Route path="/terms" component={Terms} />
+        </>
+      ) : (
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="/about" component={About} />
+          <Route path="/privacy" component={Privacy} />
+          <Route path="/terms" component={Terms} />
+        </>
+      )}
       <Route component={NotFound} />
     </Switch>
   );

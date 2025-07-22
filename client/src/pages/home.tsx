@@ -8,7 +8,7 @@ import LoadingModal from "@/components/loading-modal";
 import OnboardingTour, { useOnboardingTour } from "@/components/onboarding-tour";
 import FreeTrialBanner from "@/components/free-trial-banner";
 import { apiRequest } from "@/lib/queryClient";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/useAuth";
 import type { Search } from "@shared/schema";
 
 export default function Home() {
@@ -26,9 +26,8 @@ export default function Home() {
     }
   }, [shouldShowTour]);
 
-  // If user is not authenticated, redirect to landing page
+  // If user is not authenticated, return null (App.tsx handles routing)
   if (!user) {
-    setLocation("/landing");
     return null;
   }
 
@@ -96,15 +95,15 @@ export default function Home() {
               <div className="flex items-center justify-center space-x-4 mb-8">
                 <div className="premium-card dark:premium-card px-6 py-3 rounded-full">
                   <span className="text-sm font-medium">
-                    Welcome back, <span className="neon-text">{user.name || user.email}</span>
+                    Welcome back, <span className="neon-text">{(user as any)?.name || (user as any)?.email || 'User'}</span>
                   </span>
-                  {user.plan === 'pro' && (
+                  {(user as any)?.plan === 'pro' && (
                     <Crown className="inline w-4 h-4 ml-2 text-yellow-500" />
                   )}
                 </div>
-                {user.plan === 'free' && (
+                {(user as any)?.plan === 'free' && (
                   <div className="text-sm text-muted-foreground">
-                    {user.searchCount || 0}/5 searches used this month
+                    {(user as any)?.searchCount || 0}/5 searches used this month
                   </div>
                 )}
               </div>
