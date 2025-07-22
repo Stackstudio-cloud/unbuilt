@@ -87,8 +87,12 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="relative">
-        <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="relative bg-gray-900 min-h-screen">
+        {/* Background Effects - Fixed positioning */}
+        <div className="fixed inset-0 bg-gradient-to-br from-purple-900/15 via-pink-900/15 to-orange-900/15 pointer-events-none z-0" />
+        <div className="fixed inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(168,85,247,0.08),transparent_50%)] pointer-events-none z-0" />
+        
+        <div className="relative max-w-6xl mx-auto px-4 py-8 z-10">
           {/* Hero Section */}
           <div className="text-center mb-8">
             <div className="animate-float mb-8">
@@ -98,7 +102,7 @@ export default function Home() {
                 <span className="neon-glow">Still Unbuilt</span>
               </h1>
             </div>
-            <p className="text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+            <p className="text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
               Find untapped market opportunities and innovation gaps using AI-powered analysis.
               <br />
               <span className="text-purple-400">Turn hidden potential into your next big venture.</span>
@@ -107,9 +111,9 @@ export default function Home() {
             {/* User Status Badge */}
             {user && (
               <div className="flex items-center justify-center space-x-4 mb-8">
-                <div className="premium-card dark:premium-card px-6 py-3 rounded-full">
-                  <span className="text-sm font-medium">
-                    Welcome back, <span className="neon-text">{(user as any)?.firstName || (user as any)?.email || 'User'}</span>
+                <div className="bg-gray-800 border border-gray-700 px-6 py-3 rounded-full">
+                  <span className="text-sm font-medium text-white">
+                    Welcome back, <span className="text-purple-400">{(user as any)?.firstName || (user as any)?.email || 'User'}</span>
                   </span>
                   {(user as any)?.plan === 'pro' && (
                     <Crown className="inline w-4 h-4 ml-2 text-yellow-500" />
@@ -136,22 +140,22 @@ export default function Home() {
           {/* Recent Searches */}
           {recentSearches && recentSearches.length > 0 && (
             <div className="mt-8">
-              <h2 className="text-2xl font-bold mb-6 text-center">
-                <span className="neon-text">Recent Discoveries</span>
+              <h2 className="text-2xl font-bold mb-6 text-center text-white">
+                <span className="text-purple-400">Recent Discoveries</span>
               </h2>
               <div className="grid gap-4 max-w-2xl mx-auto">
                 {recentSearches.map((search) => (
                   <button
                     key={search.id}
                     onClick={() => setLocation(`/search/${search.id}`)}
-                    className="premium-card dark:premium-card rounded-lg p-4 hover-glow transition-all"
+                    className="bg-gray-800 border border-gray-700 rounded-lg p-4 hover:bg-gray-750 transition-all text-white"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <Clock className="w-4 h-4 text-purple-400" />
                         <span className="font-medium">{search.query}</span>
                       </div>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-gray-400">
                         {new Date(search.timestamp).toLocaleDateString()}
                       </span>
                     </div>
