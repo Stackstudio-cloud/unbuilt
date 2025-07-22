@@ -5,8 +5,9 @@ import { Clock, Crown, Zap, Target, Lightbulb } from "lucide-react";
 import Layout from "@/components/layout";
 import PremiumSearchBar from "@/components/premium-search-bar";
 import LoadingModal from "@/components/loading-modal";
-import OnboardingTour, { useOnboardingTour } from "@/components/onboarding-tour";
-import FreeTrialBanner from "@/components/free-trial-banner";
+import OnboardingTour from "@/components/onboarding-tour";
+import FreeTrialModal from "@/components/free-trial-modal";
+import UsageTracker from "@/components/usage-tracker";
 import { apiRequest } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/useAuth";
 import type { Search } from "@shared/schema";
@@ -15,8 +16,16 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const [isSearching, setIsSearching] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showTrialModal, setShowTrialModal] = useState(false);
   const { user } = useAuth();
-  const { shouldShowTour, markTourAsShown } = useOnboardingTour();
+  
+  // Simple onboarding tour state management
+  const hasSeenTour = localStorage.getItem('unbuilt-tour-completed') === 'true';
+  const shouldShowTour = !hasSeenTour;
+  
+  const markTourAsShown = () => {
+    localStorage.setItem('unbuilt-tour-completed', 'true');
+  };
 
   React.useEffect(() => {
     if (shouldShowTour) {
@@ -59,12 +68,21 @@ export default function Home() {
   };
 
   const handleStartTrial = () => {
-    setLocation("/free-trial");
+    setShowTrialModal(true);
   };
 
   const handleCloseTour = () => {
     setShowOnboarding(false);
     markTourAsShown();
+  };
+
+  const handleUpgrade = () => {
+    setShowTrialModal(true);
+  };
+
+  const handleTrialSuccess = () => {
+    // Trial activated successfully - user can now search unlimited
+    setShowTrialModal(false);
   };
 
   return (
@@ -95,26 +113,23 @@ export default function Home() {
               <div className="flex items-center justify-center space-x-4 mb-8">
                 <div className="premium-card dark:premium-card px-6 py-3 rounded-full">
                   <span className="text-sm font-medium">
-                    Welcome back, <span className="neon-text">{(user as any)?.name || (user as any)?.email || 'User'}</span>
+                    Welcome back, <span className="neon-text">{(user as any)?.firstName || (user as any)?.email || 'User'}</span>
                   </span>
                   {(user as any)?.plan === 'pro' && (
                     <Crown className="inline w-4 h-4 ml-2 text-yellow-500" />
                   )}
                 </div>
-                {(user as any)?.plan === 'free' && (
-                  <div className="text-sm text-muted-foreground">
-                    {(user as any)?.searchCount || 0}/5 searches used this month
-                  </div>
-                )}
               </div>
             )}
           </div>
           
-          {/* Free Trial Banner */}
-          <FreeTrialBanner onStartTrial={handleStartTrial} />
+          {/* Usage Tracker */}
+          <div className="mb-8">
+            <UsageTracker onUpgrade={handleUpgrade} />
+          </div>
 
           {/* Premium Search Bar */}
-          <div className="mb-16">
+          <div className="mb-16" id="search-input">
             <PremiumSearchBar
               onSearch={handleSearch}
               loading={isSearching}
@@ -162,6 +177,12 @@ export default function Home() {
         isOpen={showOnboarding}
         onClose={handleCloseTour}
         onStartTrial={handleStartTrial}
+      />
+      
+      <FreeTrialModal
+        isOpen={showTrialModal}
+        onClose={() => setShowTrialModal(false)}
+        onSuccess={handleTrialSuccess}
       />
     </Layout>
   );
