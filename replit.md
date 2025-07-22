@@ -200,10 +200,17 @@ Preferred communication style: Simple, everyday language.
 
 - **PROFESSIONAL DEMO GIF**: High-quality animated showcase for GitHub README
   - **8-Frame Journey**: Complete platform walkthrough using pristine current screenshots (no old buggy versions)
-  - **3-Second Intervals**: Professional timing for comfortable viewing of each feature
+  - **FIXED TIMING**: Corrected from 0.3 to 3.0 seconds per frame for comfortable viewing
   - **Comprehensive Coverage**: Welcome tour, search interface, gap analysis, action plans, business resources, funding strategies, and documentation
-  - **Optimized Quality**: 1067KB GIF with ImageMagick optimization maintaining crisp text and flame-themed UI
+  - **Optimized Quality**: 916KB GIF with ImageMagick optimization maintaining crisp text and flame-themed UI
   - **GitHub Ready**: Professional presentation showcasing the complete Unbuilt experience from onboarding to advanced features
+
+- **CRITICAL UI FIXES**: Resolved major text contrast and background issues
+  - **Trending Page**: Fixed white-on-white text making content completely unreadable
+  - **Export Modal**: Added solid background to prevent transparency mixing with other screens
+  - **Text Contrast**: Updated all gray text colors to ensure proper visibility in dark theme
+  - **Modal Backgrounds**: Added explicit background styling to all dialog components
+  - **CSS Overrides**: Implemented targeted fixes for trending-content and modal components
 
 ## Current Status
 
