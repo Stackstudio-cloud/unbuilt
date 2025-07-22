@@ -24,10 +24,10 @@ export default function Layout({ children }: LayoutProps) {
       <header className="flame-glass sticky top-0 z-50 neon-flame-border-red">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo Section - Made More Prominent */}
+            {/* Logo Section - Made More Prominent & Properly Positioned */}
             <div className="flex items-center">
-              <Link href="/" className="hover:opacity-80 transition-opacity">
-                <Logo size="lg" />
+              <Link href="/" className="hover:opacity-80 transition-opacity flex items-center justify-center w-16 h-16">
+                <Logo size="md" />
               </Link>
             </div>
             
@@ -37,7 +37,7 @@ export default function Layout({ children }: LayoutProps) {
                 <Button 
                   variant={location === '/about' ? 'default' : 'ghost'} 
                   size="sm"
-                  className={location === '/about' ? 'neon-border-blue' : 'hover-glow text-white'}
+                  className={location === '/about' ? 'neon-border-blue text-white' : 'hover-glow text-white hover:text-purple-300'}
                 >
                   <Info className="w-4 h-4 mr-1" />
                   About
@@ -47,7 +47,7 @@ export default function Layout({ children }: LayoutProps) {
                 <Button 
                   variant={location === '/help' ? 'default' : 'ghost'} 
                   size="sm"
-                  className={location === '/help' ? 'neon-border-blue' : 'hover-glow text-white'}
+                  className={location === '/help' ? 'neon-border-blue text-white' : 'hover-glow text-white hover:text-purple-300'}
                 >
                   <HelpCircle className="w-4 h-4 mr-1" />
                   Help & Docs
@@ -59,7 +59,7 @@ export default function Layout({ children }: LayoutProps) {
                     <Button 
                       variant={location === '/trending' ? 'default' : 'ghost'} 
                       size="sm"
-                      className={location === '/trending' ? 'neon-border-blue' : 'hover-glow text-white'}
+                      className={location === '/trending' ? 'neon-border-blue text-white' : 'hover-glow text-white hover:text-purple-300'}
                     >
                       <TrendingUp className="w-4 h-4 mr-1" />
                       Trending
@@ -69,7 +69,7 @@ export default function Layout({ children }: LayoutProps) {
                     <Button 
                       variant={location === '/history' ? 'default' : 'ghost'} 
                       size="sm"
-                      className={location === '/history' ? 'neon-border-blue' : 'hover-glow text-white'}
+                      className={location === '/history' ? 'neon-border-blue text-white' : 'hover-glow text-white hover:text-purple-300'}
                     >
                       <History className="w-4 h-4 mr-1" />
                       History
@@ -79,7 +79,7 @@ export default function Layout({ children }: LayoutProps) {
                     <Button 
                       variant={location === '/saved' ? 'default' : 'ghost'} 
                       size="sm"
-                      className={location === '/saved' ? 'neon-border-blue' : 'hover-glow text-white'}
+                      className={location === '/saved' ? 'neon-border-blue text-white' : 'hover-glow text-white hover:text-purple-300'}
                     >
                       <Bookmark className="w-4 h-4 mr-1" />
                       Saved

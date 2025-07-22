@@ -68,6 +68,29 @@
   }
 }
 
+/* CRITICAL: Force white text in header navigation to prevent light-on-light issues */
+.flame-glass nav button,
+.flame-glass nav a button,
+header nav button,
+header nav a button {
+  color: white !important;
+}
+
+.flame-glass nav button:hover,
+.flame-glass nav a button:hover,
+header nav button:hover,
+header nav a button:hover {
+  color: hsl(var(--neon-purple)) !important;
+}
+
+/* Logo positioning fix */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
 @layer base {
   * {
     @apply border-border;
