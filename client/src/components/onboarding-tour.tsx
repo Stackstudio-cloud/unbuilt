@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { X, ArrowRight, ArrowLeft, Sparkles, Target, TrendingUp, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ThemeEnforcer } from "@/components/theme-enforcer";
+
 
 interface OnboardingTourProps {
   isOpen: boolean;
@@ -100,7 +100,7 @@ export default function OnboardingTour({ isOpen, onClose, onStartTrial }: Onboar
   };
 
   return (
-    <ThemeEnforcer>
+    <div>
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-lg bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-orange-900/95 border-purple-500/20 shadow-2xl">
           <CardContent className="p-6">
@@ -227,6 +227,6 @@ export default function OnboardingTour({ isOpen, onClose, onStartTrial }: Onboar
           }
         }
       `}</style>
-    </ThemeEnforcer>
+    </div>
   );
 }

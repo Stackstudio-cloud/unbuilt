@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import type { Search } from "@shared/schema";
-import { ThemeEnforcer } from "@/components/theme-enforcer";
+
 
 interface UsageTrackerProps {
   onUpgrade: () => void;
@@ -44,7 +44,6 @@ export default function UsageTracker({ onUpgrade, className = "" }: UsageTracker
 
   if (isProUser) {
     return (
-      <ThemeEnforcer>
         <Card className={`bg-gradient-to-r from-yellow-600/20 to-orange-600/20 border-yellow-500/30 ${className}`}>
           <CardContent className="p-4">
             <div className="flex items-center space-x-3">
@@ -56,12 +55,10 @@ export default function UsageTracker({ onUpgrade, className = "" }: UsageTracker
             </div>
           </CardContent>
         </Card>
-      </ThemeEnforcer>
     );
   }
 
   return (
-    <ThemeEnforcer>
       <Card className={`${shouldShowWarning ? 'bg-gradient-to-r from-red-600/20 to-orange-600/20 border-red-500/30' : 'bg-gradient-to-r from-purple-600/20 to-pink-600/20 border-purple-500/30'} ${className}`}>
         <CardContent className="p-4">
           <div className="space-y-3">
@@ -141,6 +138,5 @@ export default function UsageTracker({ onUpgrade, className = "" }: UsageTracker
           </div>
         </CardContent>
       </Card>
-    </ThemeEnforcer>
   );
 }

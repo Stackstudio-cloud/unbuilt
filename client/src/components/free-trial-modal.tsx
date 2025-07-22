@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { ThemeEnforcer } from "@/components/theme-enforcer";
+
 
 interface FreeTrialModalProps {
   isOpen: boolean;
@@ -89,7 +89,7 @@ export default function FreeTrialModal({ isOpen, onClose, onSuccess }: FreeTrial
   if (!isOpen) return null;
 
   return (
-    <ThemeEnforcer>
+    <div>
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-2xl bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-orange-900/95 border-purple-500/20 shadow-2xl">
           <CardHeader className="relative">
@@ -203,6 +203,6 @@ export default function FreeTrialModal({ isOpen, onClose, onSuccess }: FreeTrial
           </CardContent>
         </Card>
       </div>
-    </ThemeEnforcer>
+    </div>
   );
 }
