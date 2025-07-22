@@ -85,12 +85,12 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto w-full">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6">
+      <div className="bg-gray-800 rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto w-full neon-flame-border">
+        <div className="sticky top-0 bg-gray-800 border-b border-gray-700 p-6">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-google-gray-dark mb-2">{result.title}</h2>
-              <p className="text-google-gray mb-4">{result.description}</p>
+              <h2 className="text-2xl font-bold text-white mb-2">{result.title}</h2>
+              <p className="text-gray-300 mb-4">{result.description}</p>
               <div className="flex items-center space-x-4">
                 <Badge variant="outline" className="flex items-center">
                   <Calendar className="w-3 h-3 mr-1" />
@@ -106,7 +106,7 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                 </Badge>
               </div>
             </div>
-            <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
+            <Button variant="ghost" size="sm" onClick={onClose} className="p-2 text-gray-400 hover:text-white">
               <X className="w-5 h-5" />
             </Button>
           </div>
@@ -123,8 +123,8 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
 
             <TabsContent value="roadmap" className="space-y-6">
               <div className="grid gap-6">
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-google-gray-dark mb-2 flex items-center">
+                <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-600/30">
+                  <h3 className="font-semibold text-white mb-2 flex items-center">
                     <Target className="w-4 h-4 mr-2" />
                     Phase 1: Validation (0-2 months)
                   </h3>
@@ -143,7 +143,7 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                             <CheckCircle className="w-3 h-3 text-white" />
                           )}
                         </button>
-                        <span className={completedSteps.includes(index) ? 'line-through text-gray-500' : ''}>
+                        <span className={completedSteps.includes(index) ? 'line-through text-gray-500' : 'text-gray-300'}>
                           {step}
                         </span>
                       </div>
@@ -151,8 +151,8 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                   </div>
                 </div>
 
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-google-gray-dark mb-2 flex items-center">
+                <div className="bg-green-900/30 p-4 rounded-lg border border-green-600/30">
+                  <h3 className="font-semibold text-white mb-2 flex items-center">
                     <Lightbulb className="w-4 h-4 mr-2" />
                     Phase 2: Development (2-4 months)
                   </h3>
@@ -171,7 +171,7 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                             <CheckCircle className="w-3 h-3 text-white" />
                           )}
                         </button>
-                        <span className={completedSteps.includes(index + 10) ? 'line-through text-gray-500' : ''}>
+                        <span className={completedSteps.includes(index + 10) ? 'line-through text-gray-500' : 'text-gray-300'}>
                           {step}
                         </span>
                       </div>
@@ -179,8 +179,8 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                   </div>
                 </div>
 
-                <div className="bg-orange-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-google-gray-dark mb-2 flex items-center">
+                <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-600/30">
+                  <h3 className="font-semibold text-white mb-2 flex items-center">
                     <Users className="w-4 h-4 mr-2" />
                     Phase 3: Launch (4-6 months)
                   </h3>
@@ -199,7 +199,7 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                             <CheckCircle className="w-3 h-3 text-white" />
                           )}
                         </button>
-                        <span className={completedSteps.includes(index + 20) ? 'line-through text-gray-500' : ''}>
+                        <span className={completedSteps.includes(index + 20) ? 'line-through text-gray-500' : 'text-gray-300'}>
                           {step}
                         </span>
                       </div>
@@ -207,8 +207,8 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                   </div>
                 </div>
 
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-google-gray-dark mb-2 flex items-center">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-600/30">
+                  <h3 className="font-semibold text-white mb-2 flex items-center">
                     <DollarSign className="w-4 h-4 mr-2" />
                     Phase 4: Scale (6+ months)
                   </h3>
@@ -227,7 +227,7 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                             <CheckCircle className="w-3 h-3 text-white" />
                           )}
                         </button>
-                        <span className={completedSteps.includes(index + 30) ? 'line-through text-gray-500' : ''}>
+                        <span className={completedSteps.includes(index + 30) ? 'line-through text-gray-500' : 'text-gray-300'}>
                           {step}
                         </span>
                       </div>
@@ -236,7 +236,7 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
                 </div>
 
                 <div className="mt-4">
-                  <div className="flex justify-between text-sm mb-2">
+                  <div className="flex justify-between text-sm mb-2 text-gray-300">
                     <span>Progress: {completedSteps.length}/20 steps</span>
                     <span>{Math.round((completedSteps.length / 20) * 100)}%</span>
                   </div>
@@ -246,44 +246,44 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
             </TabsContent>
 
             <TabsContent value="research" className="space-y-4">
-              <div className="bg-yellow-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-google-gray-dark mb-3">Market Research Strategy</h3>
+              <div className="bg-yellow-900/30 p-4 rounded-lg border border-yellow-600/30">
+                <h3 className="font-semibold text-white mb-3">Market Research Strategy</h3>
                 <div className="space-y-3">
                   <div>
-                    <h4 className="font-medium mb-1">Target Customer Analysis</h4>
-                    <p className="text-sm text-google-gray">
+                    <h4 className="font-medium mb-1 text-white">Target Customer Analysis</h4>
+                    <p className="text-sm text-gray-300">
                       Identify and interview potential users. Create customer personas and understand pain points.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-1">Competitive Analysis</h4>
-                    <p className="text-sm text-google-gray">
+                    <h4 className="font-medium mb-1 text-white">Competitive Analysis</h4>
+                    <p className="text-sm text-gray-300">
                       Research existing solutions, their pricing, features, and customer feedback.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-1">Market Size Validation</h4>
-                    <p className="text-sm text-google-gray">
+                    <h4 className="font-medium mb-1 text-white">Market Size Validation</h4>
+                    <p className="text-sm text-gray-300">
                       Validate the {result.marketSize} market size estimate through industry reports and surveys.
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-semibold text-google-gray-dark mb-2">Why This Gap Exists</h4>
-                <p className="text-google-gray">{result.gapReason}</p>
+              <div className="border border-gray-600 rounded-lg p-4 bg-gray-700/30">
+                <h4 className="font-semibold text-white mb-2">Why This Gap Exists</h4>
+                <p className="text-gray-300">{result.gapReason}</p>
               </div>
             </TabsContent>
 
             <TabsContent value="resources" className="space-y-4">
               <div className="grid gap-4">
                 {resources.map((resource, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <div key={index} className="border border-gray-600 rounded-lg p-4 hover:shadow-md transition-shadow bg-gray-700/30">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h4 className="font-semibold text-google-gray-dark">{resource.name}</h4>
-                        <p className="text-sm text-google-gray">{resource.description}</p>
+                        <h4 className="font-semibold text-white">{resource.name}</h4>
+                        <p className="text-sm text-gray-300">{resource.description}</p>
                       </div>
                       <Button variant="outline" size="sm" asChild>
                         <a href={resource.url} target="_blank" rel="noopener noreferrer">
@@ -298,28 +298,28 @@ export default function ActionPlanModal({ isOpen, result, onClose }: ActionPlanM
 
             <TabsContent value="funding" className="space-y-4">
               <div className="grid gap-4">
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-google-gray-dark mb-2">Bootstrap Funding</h4>
-                  <p className="text-sm text-google-gray mb-2">Self-fund with personal savings or revenue</p>
-                  <p className="text-xs text-green-700">Best for: High feasibility projects with low initial costs</p>
+                <div className="bg-green-900/30 p-4 rounded-lg border border-green-600/30">
+                  <h4 className="font-semibold text-white mb-2">Bootstrap Funding</h4>
+                  <p className="text-sm text-gray-300 mb-2">Self-fund with personal savings or revenue</p>
+                  <p className="text-xs text-green-400">Best for: High feasibility projects with low initial costs</p>
                 </div>
 
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-google-gray-dark mb-2">Angel Investors</h4>
-                  <p className="text-sm text-google-gray mb-2">Individual investors providing $25K-$100K</p>
-                  <p className="text-xs text-blue-700">Best for: Proven concept with early traction</p>
+                <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-600/30">
+                  <h4 className="font-semibold text-white mb-2">Angel Investors</h4>
+                  <p className="text-sm text-gray-300 mb-2">Individual investors providing $25K-$100K</p>
+                  <p className="text-xs text-blue-400">Best for: Proven concept with early traction</p>
                 </div>
 
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-google-gray-dark mb-2">Venture Capital</h4>
-                  <p className="text-sm text-google-gray mb-2">Professional investors providing $500K+</p>
-                  <p className="text-xs text-purple-700">Best for: High-growth potential with large market</p>
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-600/30">
+                  <h4 className="font-semibold text-white mb-2">Venture Capital</h4>
+                  <p className="text-sm text-gray-300 mb-2">Professional investors providing $500K+</p>
+                  <p className="text-xs text-purple-400">Best for: High-growth potential with large market</p>
                 </div>
 
-                <div className="bg-orange-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-google-gray-dark mb-2">Crowdfunding</h4>
-                  <p className="text-sm text-google-gray mb-2">Public funding through platforms like Kickstarter</p>
-                  <p className="text-xs text-orange-700">Best for: Consumer products with broad appeal</p>
+                <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-600/30">
+                  <h4 className="font-semibold text-white mb-2">Crowdfunding</h4>
+                  <p className="text-sm text-gray-300 mb-2">Public funding through platforms like Kickstarter</p>
+                  <p className="text-xs text-orange-400">Best for: Consumer products with broad appeal</p>
                 </div>
               </div>
             </TabsContent>
