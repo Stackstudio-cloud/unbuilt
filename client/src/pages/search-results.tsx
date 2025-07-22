@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRoute } from "wouter";
-import { Filter, Grid, List, ChevronLeft, ChevronRight, Download, Search as SearchIcon, SlidersHorizontal } from "lucide-react";
+import { Filter, Grid, List, ChevronLeft, ChevronRight, Download, Search as SearchIcon, SlidersHorizontal, BarChart3, Eye } from "lucide-react";
 import Layout from "@/components/layout";
 import ResultCard from "@/components/result-card";
 import ShareModal from "@/components/share-modal";
 import ActionPlanModal from "@/components/action-plan-modal";
 import ExportModal from "@/components/export-modal";
+import SearchAnalyticsPanel from "@/components/search-analytics-panel";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { apiRequest } from "@/lib/queryClient";
 import type { Search, SearchResult } from "@shared/schema";
 
@@ -24,6 +26,7 @@ export default function SearchResults() {
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"results" | "analytics">("results");
   const [searchQuery, setSearchQuery] = useState("");
   const [innovationRange, setInnovationRange] = useState([1, 10]);
   const [feasibilityFilter, setFeasibilityFilter] = useState<string[]>(["high", "medium", "low"]);
@@ -52,7 +55,7 @@ export default function SearchResults() {
   const { data: results = [], isLoading: resultsLoading } = useQuery({
     queryKey: ["/api/search", searchId, "results"],
     enabled: !!searchId,
-  });
+  }) as { data: SearchResult[]; isLoading: boolean };
 
   const saveResultMutation = useMutation({
     mutationFn: async ({ id, isSaved }: { id: number; isSaved: boolean }) => {
@@ -149,42 +152,59 @@ export default function SearchResults() {
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex gap-8">
-          {/* Sidebar */}
-          <aside className="w-64 hidden lg:block">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-              <h3 className="font-medium text-google-gray-dark mb-3">Filter by Category</h3>
-              <div className="space-y-2">
-                {["Tech That's Missing", "Services That Don't Exist", "Products Nobody's Made", "Business Models"].map((category) => (
-                  <div key={category} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={category}
-                      checked={categoryFilters.includes(category)}
-                      onCheckedChange={() => handleCategoryFilter(category)}
-                    />
-                    <label htmlFor={category} className="text-sm cursor-pointer">
-                      {category}
-                    </label>
-                  </div>
-                ))}
+          {/* Sidebar - Only show for results view */}
+          {viewMode === "results" && (
+            <aside className="w-64 hidden lg:block">
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-4 mb-6">
+                <h3 className="font-medium text-white mb-3">Filter by Category</h3>
+                <div className="space-y-2">
+                  {["Tech That's Missing", "Services That Don't Exist", "Products Nobody's Made", "Business Models"].map((category) => (
+                    <div key={category} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={category}
+                        checked={categoryFilters.includes(category)}
+                        onCheckedChange={() => handleCategoryFilter(category)}
+                      />
+                      <label htmlFor={category} className="text-sm cursor-pointer text-gray-300">
+                        {category}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </aside>
+            </aside>
+          )}
 
           {/* Main Content */}
           <main className="flex-1">
             {/* Search Results Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-medium text-google-gray-dark">Gap Analysis Results</h2>
-                <p className="text-sm text-google-gray">
+                <h2 className="text-xl font-medium text-white">Gap Analysis Results</h2>
+                <p className="text-sm text-gray-400">
                   About {filteredResults.length} opportunities found for "{search?.query}"
                 </p>
               </div>
               <div className="flex items-center space-x-3">
+                {/* View Mode Toggle */}
+                <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as "results" | "analytics")}>
+                  <TabsList className="bg-gray-800 border-gray-700">
+                    <TabsTrigger value="results" className="flex items-center gap-2">
+                      <Eye className="w-4 h-4" />
+                      Results
+                    </TabsTrigger>
+                    <TabsTrigger value="analytics" className="flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4" />
+                      Analytics
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                
                 <Button 
                   variant="outline" 
                   size="sm"
                   onClick={() => setFiltersOpen(!filtersOpen)}
+                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   <SlidersHorizontal className="w-4 h-4 mr-2" />
                   Advanced Filters
@@ -193,29 +213,33 @@ export default function SearchResults() {
                   variant="outline" 
                   size="sm"
                   onClick={() => setExportModalOpen(true)}
+                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export
                 </Button>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="relevance">Sort by Relevance</SelectItem>
-                    <SelectItem value="feasibility">Sort by Feasibility</SelectItem>
-                    <SelectItem value="market-potential">Sort by Market Potential</SelectItem>
-                    <SelectItem value="innovation">Sort by Innovation Level</SelectItem>
-                  </SelectContent>
-                </Select>
+                {viewMode === "results" && (
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-48 bg-gray-800 border-gray-700 text-gray-300">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-800 border-gray-700">
+                      <SelectItem value="relevance">Sort by Relevance</SelectItem>
+                      <SelectItem value="feasibility">Sort by Feasibility</SelectItem>
+                      <SelectItem value="market-potential">Sort by Market Potential</SelectItem>
+                      <SelectItem value="innovation">Sort by Innovation Score</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
             </div>
 
-            {/* Advanced Filters Panel */}
-            <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
-              <CollapsibleContent>
-                <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                  <h3 className="font-semibold text-google-gray-dark mb-4">Advanced Filters</h3>
+            {/* Advanced Filters Panel - Only show for results view */}
+            {viewMode === "results" && (
+              <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+                <CollapsibleContent>
+                  <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6">
+                  <h3 className="font-semibold text-white mb-4">Advanced Filters</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Search Query Filter */}
                     <div>
@@ -320,52 +344,63 @@ export default function SearchResults() {
                 </div>
               </CollapsibleContent>
             </Collapsible>
+            )}
 
-            {/* Results */}
-            <div className="space-y-6">
-              {paginatedResults.map((result: SearchResult) => (
-                <ResultCard
-                  key={result.id}
-                  result={result}
-                  onSave={handleSaveResult}
-                  onShare={handleShareResult}
-                  onViewDetails={handleViewDetails}
-                />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center mt-8">
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                    disabled={currentPage === 1}
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </Button>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                    <Button
-                      key={page}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(page)}
-                    >
-                      {page}
-                    </Button>
+            {/* Content Views */}
+            {viewMode === "analytics" ? (
+              <SearchAnalyticsPanel results={filteredResults} query={search?.query || ""} />
+            ) : (
+              <>
+                {/* Results */}
+                <div className="space-y-6">
+                  {paginatedResults.map((result: SearchResult) => (
+                    <ResultCard
+                      key={result.id}
+                      result={result}
+                      onSave={handleSaveResult}
+                      onShare={handleShareResult}
+                      onViewDetails={handleViewDetails}
+                    />
                   ))}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                    disabled={currentPage === totalPages}
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </Button>
                 </div>
-              </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center mt-8">
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
+                        className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </Button>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                        <Button
+                          key={page}
+                          variant={currentPage === page ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(page)}
+                          className={currentPage === page ? "bg-orange-600 hover:bg-orange-700" : "border-gray-700 text-gray-300 hover:bg-gray-800"}
+                        >
+                          {page}
+                        </Button>
+                      ))}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                        disabled={currentPage === totalPages}
+                        className="border-gray-700 text-gray-300 hover:bg-gray-800"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </main>
         </div>
