@@ -1,11 +1,34 @@
 # Unbuilt - Innovation Gap Analysis Platform
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://89a6ca3c-71b2-4a86-94dd-a44feac472df.janeway.prod.repl.run/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://a89c34fb-a499-4213-be44-089e1af5a604-00-3v22fv7gmb01o.janeway.replit.dev/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black)](https://github.com/Stackstudio-cloud/unbuilt.Cloud)
 
 > Discover what doesn't exist yet. Find market gaps and untapped opportunities with AI-powered analysis.
 
-![Unbuilt Demo](./docs/demo-placeholder.svg)
+![Unbuilt Homepage](./attached_assets/image_1753217050165.png)
+
+## 🚀 Live Demo
+
+**Try Unbuilt now:** [https://a89c34fb-a499-4213-be44-089e1af5a604-00-3v22fv7gmb01o.janeway.replit.dev/](https://a89c34fb-a499-4213-be44-089e1af5a604-00-3v22fv7gmb01o.janeway.replit.dev/)
+
+Demo credentials for testing:
+- **Email:** test@example.com
+- **Password:** demo123
+
+## 📸 Screenshots
+
+### Main Dashboard
+![Main Dashboard](./attached_assets/image_1753217050165.png)
+*AI-powered gap discovery with comprehensive search interface*
+
+### Search Results & Analysis
+![Search Results](./attached_assets/image_1753217115376.png)
+*Detailed market opportunities with innovation scores and feasibility ratings*
+
+### Professional Navigation
+![Navigation](./attached_assets/image_1753222778176.png)
+*Enhanced header with prominent logo and comprehensive help documentation*
 
 ## 🌟 Overview
 
@@ -21,6 +44,9 @@ Unbuilt is a full-stack web application that helps entrepreneurs and innovators 
 - 📋 **Professional Export** - PDF reports, CSV data, and investor pitch decks
 - 🔐 **User Authentication** - Secure registration and login system
 - 💰 **Subscription Tiers** - Free (5 searches/month) and Pro (unlimited) plans
+- 🎨 **Professional UI** - Enhanced navigation with prominent branding and comprehensive help system
+- 📱 **Responsive Design** - Mobile-first approach with hamburger navigation
+- 🌙 **Dark Theme** - Neon flame aesthetic with perfect contrast optimization
 
 ## 🎨 Design Theme
 
@@ -122,25 +148,40 @@ The application will be available at `http://localhost:5000`
 - `npm run db:push` - Push schema changes to database
 - `npm run db:studio` - Open Drizzle Studio for database management
 
+### Demo Features
+
+The live demo includes:
+- **Full AI Search Functionality** - Real Google Gemini AI integration
+- **Complete User Interface** - All pages and features accessible
+- **Sample Data** - Pre-loaded search history and results
+- **Professional Navigation** - Enhanced header with About and Help pages
+- **Responsive Design** - Works perfectly on desktop and mobile devices
+
 ### API Endpoints
 
-- `GET /api/auth/profile` - Get current user profile
+- `GET /api/auth/user` - Get current user profile
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 - `POST /api/search` - Create new gap analysis search
-- `GET /api/search/:id` - Get search results
+- `GET /api/search/:id` - Get search results with detailed analysis
 - `GET /api/searches` - Get user's search history
+- `POST /api/trial/activate` - Activate free trial for Pro features
 - `GET /health` - Health check endpoint
 
 ## 📦 Deployment
 
-### Replit Deployment
+### Replit Deployment (Recommended)
 
 The application is configured for easy deployment on Replit:
 
 1. Import the repository to Replit
-2. Set environment variables in Replit Secrets
+2. Set environment variables in Replit Secrets:
+   - `DATABASE_URL` - Your PostgreSQL connection string
+   - `GEMINI_API_KEY` - Google Gemini API key
+   - `SESSION_SECRET` - Random string for session security
 3. Run the application - it will automatically bind to port 5000
+
+**Current Live Demo:** The application is currently deployed and accessible at the demo link above.
 
 ### Production Deployment
 
@@ -171,13 +212,31 @@ The application is configured for easy deployment on Replit:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🎯 Use Cases
+
+- **Entrepreneurs** - Identify untapped business opportunities before competitors
+- **Startups** - Validate market gaps and find product-market fit
+- **Investors** - Discover emerging market trends and investment opportunities
+- **Product Managers** - Research white space in existing markets
+- **Innovation Teams** - Generate breakthrough ideas for R&D initiatives
+- **Market Researchers** - Comprehensive gap analysis with AI-powered insights
+
 ## 🙏 Acknowledgments
 
 - Built with modern web technologies and best practices
 - UI components powered by Radix UI and shadcn/ui
 - AI analysis powered by Google Gemini 2.5 Pro
 - Database hosting provided by Neon Database
+- Deployed on Replit for seamless development and hosting
+
+## 📞 Support
+
+- **GitHub Issues** - Report bugs and request features
+- **Live Demo** - Test all features before implementation
+- **Documentation** - Comprehensive help system built into the app
 
 ---
 
 **Discover what's missing. Build what's next.** 🚀
+
+*Ready to find your next big opportunity? [Try the live demo now →](https://a89c34fb-a499-4213-be44-089e1af5a604-00-3v22fv7gmb01o.janeway.replit.dev/)*
