@@ -142,6 +142,9 @@ Preferred communication style: Simple, everyday language.
   - **DESIGN DIRECTION**: "Massive black hole" aesthetic approved by user - creates mysterious, intriguing vibe perfect for discovering what doesn't exist yet
   - Ultra-dark gradient backgrounds with high color opacity for dramatic contrast
   - Flame gradient backgrounds optimized for laptop viewing
+  - **THEME CONSISTENCY**: Comic-style text fields with white text shadows on dark backgrounds
+  - **TEXT VISIBILITY**: Global CSS enforcement prevents dark text on dark backgrounds
+  - **COMPONENT SYSTEM**: ThemeEnforcer components for future page consistency
 - **LOGO UPDATE**: Created custom transparent SVG logo with flame theme
   - Solved black background transparency issues with native SVG approach
   - Clean, professional logo without animations or glow effects

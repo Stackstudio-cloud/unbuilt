@@ -6,16 +6,16 @@ export default function Terms() {
   const [, setLocation] = useLocation();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 to-black theme-enforce-dark">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm">
+      <header className="border-b border-purple-500/30 bg-black/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Sparkles className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Unbuilt</span>
+            <Sparkles className="w-8 h-8 text-purple-400" />
+            <span className="text-2xl font-bold text-white flame-text">Unbuilt</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => setLocation("/")}>
+            <Button variant="ghost" onClick={() => setLocation("/")} className="text-white hover:text-purple-300">
               Home
             </Button>
           </div>
@@ -23,14 +23,14 @@ export default function Terms() {
       </header>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto bg-white rounded-lg p-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Terms of Service</h1>
-          <p className="text-sm text-gray-500 mb-8">Last updated: January 2025</p>
+        <div className="max-w-4xl mx-auto flame-card rounded-lg p-8 text-white">
+          <h1 className="text-4xl font-bold text-white neon-glow mb-8">Terms of Service</h1>
+          <p className="text-sm text-gray-400 mb-8">Last updated: January 2025</p>
 
           <div className="space-y-8">
             <section>
-              <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
-              <p className="text-gray-600">
+              <h2 className="text-2xl font-semibold mb-4 text-white">1. Acceptance of Terms</h2>
+              <p className="text-gray-300">
                 By accessing and using Unbuilt ("Service"), you accept and agree to be bound by 
                 the terms and provision of this agreement. If you do not agree to abide by the above, 
                 please do not use this service.

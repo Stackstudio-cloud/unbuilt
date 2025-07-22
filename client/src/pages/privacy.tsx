@@ -6,16 +6,16 @@ export default function Privacy() {
   const [, setLocation] = useLocation();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 to-black theme-enforce-dark">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm">
+      <header className="border-b border-purple-500/30 bg-black/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Sparkles className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Unbuilt</span>
+            <Sparkles className="w-8 h-8 text-purple-400" />
+            <span className="text-2xl font-bold text-white flame-text">Unbuilt</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => setLocation("/")}>
+            <Button variant="ghost" onClick={() => setLocation("/")} className="text-white hover:text-purple-300">
               Home
             </Button>
           </div>
@@ -23,18 +23,18 @@ export default function Privacy() {
       </header>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto bg-white rounded-lg p-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
-          <p className="text-sm text-gray-500 mb-8">Last updated: January 2025</p>
+        <div className="max-w-4xl mx-auto flame-card rounded-lg p-8 text-white">
+          <h1 className="text-4xl font-bold text-white neon-glow mb-8">Privacy Policy</h1>
+          <p className="text-sm text-gray-400 mb-8">Last updated: January 2025</p>
 
           <div className="space-y-8">
             <section>
-              <h2 className="text-2xl font-semibold mb-4">1. Information We Collect</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-2xl font-semibold mb-4 text-white">1. Information We Collect</h2>
+              <p className="text-gray-300 mb-4">
                 We collect information you provide directly to us, such as when you create an account, 
                 use our services, or contact us for support.
               </p>
-              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+              <ul className="list-disc pl-6 space-y-2 text-gray-300">
                 <li>Account information (name, email address)</li>
                 <li>Search queries and preferences</li>
                 <li>Usage data and analytics</li>
@@ -43,8 +43,8 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">2. How We Use Your Information</h2>
-              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+              <h2 className="text-2xl font-semibold mb-4 text-white">2. How We Use Your Information</h2>
+              <ul className="list-disc pl-6 space-y-2 text-gray-300">
                 <li>Provide and improve our AI-powered gap analysis services</li>
                 <li>Process payments and manage subscriptions</li>
                 <li>Send important updates about your account</li>
@@ -54,12 +54,12 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">3. Information Sharing</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-2xl font-semibold mb-4 text-white">3. Information Sharing</h2>
+              <p className="text-gray-300 mb-4">
                 We do not sell, trade, or otherwise transfer your personal information to third parties, 
                 except as described in this policy:
               </p>
-              <ul className="list-disc pl-6 space-y-2 text-gray-600">
+              <ul className="list-disc pl-6 space-y-2 text-gray-300">
                 <li>Service providers (Stripe for payments, hosting services)</li>
                 <li>Legal compliance when required by law</li>
                 <li>Business transfers (mergers, acquisitions)</li>

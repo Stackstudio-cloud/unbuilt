@@ -77,6 +77,30 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   }
+  
+  /* Enforce consistent text colors - NEVER allow invisible text */
+  * {
+    color: inherit;
+  }
+  
+  /* Override any accidental dark text on dark backgrounds */
+  .dark * {
+    color: hsl(var(--foreground));
+  }
+  
+  /* Light text classes for dark theme */
+  .text-light {
+    @apply text-white;
+  }
+  
+  /* Ensure form elements are always visible */
+  input, textarea, select {
+    @apply text-white bg-gray-900 border-gray-600;
+  }
+  
+  input::placeholder, textarea::placeholder {
+    @apply text-gray-400;
+  }
 }
 
 @layer components {
@@ -183,6 +207,119 @@
     box-shadow: 
       0 6px 25px hsl(var(--neon-purple) / 0.6),
       0 12px 40px hsl(var(--neon-pink) / 0.3);
+  }
+  
+  /* Comic-style Input Fields with White Text */
+  .comic-input {
+    @apply bg-gray-900 border-2 border-gray-600 rounded-lg px-4 py-3;
+    @apply text-white placeholder-gray-400;
+    @apply focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20;
+    @apply shadow-lg;
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s ease;
+  }
+  
+  .comic-input:focus {
+    transform: translateY(-1px);
+    box-shadow: 
+      0 6px 20px rgba(0, 0, 0, 0.4),
+      0 0 0 3px hsl(var(--neon-purple) / 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Comic-style Buttons */
+  .comic-button {
+    @apply font-bold rounded-lg px-6 py-3;
+    @apply text-white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .comic-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 6px 20px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  .comic-button:active {
+    transform: translateY(0);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Theme Consistency Enforcement */
+  .theme-enforce-dark {
+    @apply bg-black text-white;
+  }
+  
+  .theme-enforce-card {
+    @apply bg-gray-900 text-white border-gray-700;
+  }
+  
+  /* Muted text that's still readable on dark */
+  .text-muted-readable {
+    @apply text-gray-300;
+  }
+  
+  /* Override shadcn components to ensure visibility */
+  .dark [data-radix-popper-content-wrapper] {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+  
+  /* Global text visibility enforcement */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-white;
+  }
+  
+  p, span, div {
+    color: inherit;
+  }
+  
+  /* Ensure all text inputs are visible */
+  input[type="text"], 
+  input[type="email"], 
+  input[type="password"], 
+  textarea,
+  select {
+    @apply comic-input;
+  }
+  
+  /* Button consistency */
+  button {
+    @apply text-white;
+  }
+  
+  /* Link visibility */
+  a {
+    @apply text-purple-400 hover:text-purple-300;
+  }
+  
+  /* Form labels */
+  label {
+    @apply text-white font-medium;
+  }
+  
+  /* Card text enforcement */
+  .flame-card * {
+    color: inherit;
+  }
+  
+  .flame-card h1, 
+  .flame-card h2, 
+  .flame-card h3, 
+  .flame-card h4, 
+  .flame-card h5, 
+  .flame-card h6 {
+    @apply text-white;
   }
   
   /* Flame Backgrounds */
