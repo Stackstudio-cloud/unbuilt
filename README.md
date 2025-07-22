@@ -18,11 +18,13 @@ Demo credentials for testing:
 
 ## 📸 Platform Demo
 
-The demo GIF above showcases the complete Unbuilt experience:
-- **Clean Search Interface** - Homepage with flame-themed dark design and intuitive search
-- **AI-Powered Gap Analysis** - Real-time market opportunity discovery with innovation scores
-- **Comprehensive Results** - Detailed feasibility ratings, market potential, and actionable insights
-- **Professional UI** - Enhanced navigation with responsive design and optimal user experience
+The demo GIF above showcases the complete Unbuilt platform journey (3 seconds per frame):
+- **Welcome Tour** - Interactive onboarding that introduces users to AI-powered gap discovery
+- **Search Interface** - Clean homepage with flame-themed design and intelligent search suggestions
+- **Gap Analysis Results** - Detailed market opportunities with innovation scores and feasibility ratings  
+- **Action Plans** - Strategic priorities and step-by-step development roadmaps
+- **Business Tools** - Resource library with startup tools, funding strategies, and documentation
+- **Professional Experience** - Seamless navigation between features with responsive design
 
 ### Key Interface Elements
 ![Main Dashboard](./attached_assets/image_1753217050165.png)
