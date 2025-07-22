@@ -88,11 +88,7 @@ export default function Home() {
   return (
     <Layout>
       <div className="relative">
-        {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-orange-900/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent_50%)]" />
-        
-        <div className="relative max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto px-4 py-8">
           {/* Hero Section */}
           <div className="text-center mb-8">
             <div className="animate-float mb-8">
