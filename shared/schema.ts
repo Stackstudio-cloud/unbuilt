@@ -15,10 +15,12 @@ export const sessions = pgTable(
 );
 
 // User storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+// (IMPORTANT) This table stores user data for the application.
 export const users = pgTable("users", {
-  id: text("id").primaryKey().notNull(),
-  email: text("email").unique(),
+  id: serial("id").primaryKey(),
+  email: text("email").unique().notNull(),
+  password: text("password"),
+  name: text("name"),
   firstName: text("first_name"),
   lastName: text("last_name"),
   profileImageUrl: text("profile_image_url"),
@@ -34,6 +36,9 @@ export const users = pgTable("users", {
   trialExpiration: timestamp("trial_expiration"),
   preferences: jsonb("preferences").default({}),
   isActive: boolean("is_active").default(true).notNull(),
+  avatar: text("avatar"),
+  provider: text("provider").default("local").notNull(),
+  providerId: text("provider_id"),
 });
 
 export const searches = pgTable("searches", {
@@ -41,7 +46,7 @@ export const searches = pgTable("searches", {
   query: text("query").notNull(),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
   resultsCount: integer("results_count").notNull().default(0),
-  userId: text("user_id").references(() => users.id),
+  userId: integer("user_id").references(() => users.id),
 });
 
 export const searchResults = pgTable("search_results", {

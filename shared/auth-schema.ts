@@ -19,23 +19,10 @@ export const users = pgTable("users", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
-export const sessions = pgTable("sessions", {
-  id: text("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
-  expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
 export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
   password: true,
   name: true,
-});
-
-export const insertSessionSchema = createInsertSchema(sessions).pick({
-  id: true,
-  userId: true,
-  expiresAt: true,
 });
 
 export const loginSchema = z.object({
@@ -68,8 +55,6 @@ export const resetPasswordSchema = z.object({
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
-export type Session = typeof sessions.$inferSelect;
-export type InsertSession = z.infer<typeof insertSessionSchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type RegisterData = z.infer<typeof registerSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
