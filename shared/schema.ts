@@ -1,67 +1,75 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb, index } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb, index, unique, foreignKey } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// Session storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
-export const sessions = pgTable(
-  "sessions",
-  {
-    sid: text("sid").primaryKey(),
-    sess: jsonb("sess").notNull(),
-    expire: timestamp("expire").notNull(),
-  },
-  (table) => [index("IDX_session_expire").on(table.expire)],
-);
-
-// User storage table.
-// (IMPORTANT) This table stores user data for the application.
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  email: text("email").unique().notNull(),
-  password: text("password"),
-  name: text("name"),
-  firstName: text("first_name"),
-  lastName: text("last_name"),
-  profileImageUrl: text("profile_image_url"),
-  plan: text("plan").default("free").notNull(),
-  searchCount: integer("search_count").default(0).notNull(),
-  lastResetDate: timestamp("last_reset_date").defaultNow().notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-  stripeCustomerId: text("stripe_customer_id"),
-  stripeSubscriptionId: text("stripe_subscription_id"),
-  subscriptionStatus: text("subscription_status").default("inactive"),
-  trialUsed: boolean("trial_used").default(false).notNull(),
-  trialExpiration: timestamp("trial_expiration"),
-  preferences: jsonb("preferences").default({}),
-  isActive: boolean("is_active").default(true).notNull(),
-  avatar: text("avatar"),
-  provider: text("provider").default("local").notNull(),
-  providerId: text("provider_id"),
-});
-
 export const searches = pgTable("searches", {
-  id: serial("id").primaryKey(),
-  query: text("query").notNull(),
-  timestamp: timestamp("timestamp").defaultNow().notNull(),
-  resultsCount: integer("results_count").notNull().default(0),
-  userId: integer("user_id").references(() => users.id),
-});
+  id: serial().primaryKey().notNull(),
+  query: text().notNull(),
+  timestamp: timestamp({ mode: 'string' }).defaultNow().notNull(),
+  resultsCount: integer("results_count").default(0).notNull(),
+  userId: integer("user_id"),
+}, (table) => [
+  foreignKey({
+    columns: [table.userId],
+    foreignColumns: [users.id],
+    name: "searches_user_id_users_id_fk"
+  }),
+]);
 
 export const searchResults = pgTable("search_results", {
-  id: serial("id").primaryKey(),
-  searchId: integer("search_id").references(() => searches.id).notNull(),
-  title: text("title").notNull(),
-  description: text("description").notNull(),
-  category: text("category").notNull(),
-  feasibility: text("feasibility").notNull(), // "high", "medium", "low"
-  marketPotential: text("market_potential").notNull(), // "high", "medium", "low"
-  innovationScore: integer("innovation_score").notNull(), // 1-10
+  id: serial().primaryKey().notNull(),
+  searchId: integer("search_id").notNull(),
+  title: text().notNull(),
+  description: text().notNull(),
+  category: text().notNull(),
+  feasibility: text().notNull(),
+  marketPotential: text("market_potential").notNull(),
+  innovationScore: integer("innovation_score").notNull(),
   marketSize: text("market_size").notNull(),
   gapReason: text("gap_reason").notNull(),
   isSaved: boolean("is_saved").default(false).notNull(),
-});
+}, (table) => [
+  foreignKey({
+    columns: [table.searchId],
+    foreignColumns: [searches.id],
+    name: "search_results_search_id_searches_id_fk"
+  }),
+]);
+
+export const users = pgTable("users", {
+  id: serial().primaryKey().notNull(),
+  email: text().notNull(),
+  password: text(),
+  name: text(),
+  plan: text().default('free').notNull(),
+  searchCount: integer("search_count").default(0).notNull(),
+  lastResetDate: timestamp("last_reset_date", { mode: 'string' }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  subscriptionStatus: text("subscription_status").default('inactive'),
+  trialUsed: boolean("trial_used").default(false).notNull(),
+  trialExpiration: timestamp("trial_expiration", { mode: 'string' }),
+  preferences: jsonb().default({}),
+  isActive: boolean("is_active").default(true).notNull(),
+  avatar: text(),
+  provider: text().default('local').notNull(),
+  providerId: text("provider_id"),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  profileImageUrl: text("profile_image_url"),
+}, (table) => [
+  unique("users_email_unique").on(table.email),
+]);
+
+export const sessions = pgTable("sessions", {
+  sid: text().primaryKey().notNull(),
+  sess: jsonb().notNull(),
+  expire: timestamp({ mode: 'string' }).notNull(),
+}, (table) => [
+  index("IDX_session_expire").using("btree", table.expire.asc().nullsLast().op("timestamp_ops")),
+]);
 
 export type UpsertUser = typeof users.$inferInsert;
 
