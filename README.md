@@ -27,10 +27,7 @@ The demo GIF above showcases the complete Unbuilt platform journey (3 seconds pe
 - **Professional Experience** - Seamless navigation between features with responsive design
 
 ### Key Interface Elements
-![Main Dashboard](./attached_assets/image_1753217050165.png)
 *AI-powered gap discovery with comprehensive search interface*
-
-![Search Results](./attached_assets/image_1753217115376.png)
 *Detailed market opportunities with innovation scores and feasibility ratings*
 
 ## 🌟 Overview
@@ -68,36 +65,6 @@ Unbuilt features a unique "Neon Flame" theme with a mysterious "black hole" aest
 - PostgreSQL database
 - Google Gemini API key (optional for development)
 
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/unbuilt.git
-   cd unbuilt
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your database URL and API keys
-   ```
-
-4. **Set up the database**
-   ```bash
-   npm run db:push
-   ```
-
-5. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-The application will be available at `http://localhost:5000`
 
 ## 🏗️ Architecture
 
