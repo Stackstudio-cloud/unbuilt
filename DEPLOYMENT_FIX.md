@@ -5,17 +5,20 @@ During Replit deployment, you may encounter conflicts with SID and SESS columns 
 
 ## Solution
 
-### Method 1: Manual Database Reset (Recommended)
-Run these commands in sequence:
+### Method 1: SQL Schema Fix (Recommended for Deployment Conflicts)
+Run the deployment schema fix SQL script:
 
 ```bash
-# 1. Drop and recreate the sessions table
+# 1. Execute the schema fix SQL
+# Copy and run the DEPLOYMENT_SCHEMA_FIX.sql file contents
+
+# 2. Push the corrected schema
 npm run db:push
 
-# 2. Run the deployment fix script
+# 3. Run the deployment fix script
 node deployment-fix.js
 
-# 3. Verify the database is working
+# 4. Verify the database is working
 curl http://localhost:5000/health
 ```
 
