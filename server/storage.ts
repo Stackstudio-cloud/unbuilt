@@ -16,7 +16,7 @@ export interface IStorage {
   upsertUser(user: UpsertUser): Promise<User>;
   
   // Search operations
-  createSearch(search: { query: string; userId?: string }): Promise<{ id: number; query: string; timestamp: Date; resultsCount: number; userId: string | null }>;
+  createSearch(search: { query: string; userId?: string }): Promise<{ id: number; query: string; timestamp: Date; resultsCount: number; userId: number | null }>;
   getSearches(userId?: string): Promise<any[]>;
   
   // Search results operations
@@ -30,7 +30,7 @@ export class DatabaseStorage implements IStorage {
   // (IMPORTANT) these user operations are mandatory for Replit Auth.
 
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+    const [user] = await db.select().from(users).where(eq(users.id, parseInt(id)));
     return user;
   }
 
@@ -42,7 +42,7 @@ export class DatabaseStorage implements IStorage {
         target: users.id,
         set: {
           ...userData,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
         },
       })
       .returning();
@@ -53,15 +53,18 @@ export class DatabaseStorage implements IStorage {
   async createSearch(search: { query: string; userId?: string }) {
     const [newSearch] = await db.insert(searches).values({
       query: search.query,
-      userId: search.userId || null,
+      userId: search.userId ? parseInt(search.userId) : null,
       resultsCount: 0,
     }).returning();
-    return newSearch;
+    return {
+      ...newSearch,
+      timestamp: new Date(newSearch.timestamp)
+    };
   }
 
   async getSearches(userId?: string) {
     if (userId) {
-      return await db.select().from(searches).where(eq(searches.userId, userId));
+      return await db.select().from(searches).where(eq(searches.userId, parseInt(userId)));
     }
     return await db.select().from(searches);
   }

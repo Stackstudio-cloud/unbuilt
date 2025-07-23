@@ -10,11 +10,11 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "/api/auth/google/callback"
   },
-  async (accessToken, refreshToken, profile, done) => {
+  async (accessToken: any, refreshToken: any, profile: any, done: any) => {
     try {
       const email = profile.emails?.[0]?.value;
       if (!email) {
-        return done(new Error('No email found in Google profile'), null);
+        return done(new Error('No email found in Google profile'), false);
       }
 
       // Check if user already exists
@@ -55,11 +55,11 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: "/api/auth/github/callback"
   },
-  async (accessToken, refreshToken, profile, done) => {
+  async (accessToken: any, refreshToken: any, profile: any, done: any) => {
     try {
       const email = profile.emails?.[0]?.value;
       if (!email) {
-        return done(new Error('No email found in GitHub profile'), null);
+        return done(new Error('No email found in GitHub profile'), false);
       }
 
       // Check if user already exists

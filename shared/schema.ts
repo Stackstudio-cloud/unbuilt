@@ -71,6 +71,7 @@ export const sessions = pgTable("session", {
   index("IDX_session_expire").using("btree", table.expire.asc().nullsLast().op("timestamp_ops")),
 ]);
 
+export type User = typeof users.$inferSelect;
 export type UpsertUser = typeof users.$inferInsert;
 
 export const insertSearchSchema = createInsertSchema(searches).pick({

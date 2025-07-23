@@ -67,30 +67,31 @@ export class AuthService {
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
     
     await db.insert(sessions).values({
-      id: sessionId,
-      userId,
-      expiresAt,
+      sid: sessionId,
+      sess: { userId },
+      expire: expiresAt.toISOString(),
     });
     
     return sessionId;
   }
 
   async getSessionUser(sessionId: string): Promise<User | null> {
-    const [session] = await db.select().from(sessions).where(eq(sessions.id, sessionId));
+    const [session] = await db.select().from(sessions).where(eq(sessions.sid, sessionId));
     
-    if (!session || session.expiresAt < new Date()) {
+    if (!session || new Date(session.expire) < new Date()) {
       if (session) {
         await this.deleteSession(sessionId);
       }
       return null;
     }
     
-    const user = await this.getUserById(session.userId);
+    const sessionData = session.sess as { userId: number };
+    const user = await this.getUserById(sessionData.userId);
     return user || null;
   }
 
   async deleteSession(sessionId: string): Promise<void> {
-    await db.delete(sessions).where(eq(sessions.id, sessionId));
+    await db.delete(sessions).where(eq(sessions.sid, sessionId));
   }
 
   async updateUserPlan(userId: number, plan: string, subscriptionData?: any): Promise<void> {
@@ -99,7 +100,7 @@ export class AuthService {
       subscriptionStatus: subscriptionData?.status || 'active',
       stripeSubscriptionId: subscriptionData?.id,
       stripeCustomerId: subscriptionData?.customerId,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     }).where(eq(users.id, userId));
   }
 
@@ -115,14 +116,14 @@ export class AuthService {
   async resetSearchCount(userId: number): Promise<void> {
     await db.update(users).set({
       searchCount: 0,
-      lastResetDate: new Date(),
+      lastResetDate: new Date().toISOString(),
     }).where(eq(users.id, userId));
   }
 
   async updateUserProfile(userId: number, updates: Partial<User>): Promise<User | undefined> {
     const [updatedUser] = await db.update(users).set({
       ...updates,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     }).where(eq(users.id, userId)).returning();
     
     return updatedUser;

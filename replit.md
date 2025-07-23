@@ -6,6 +6,16 @@ Unbuilt (formerly GapFinder) is a full-stack web application that helps entrepre
 
 **Strategic Integration Ready**: Built as a standalone platform with architecture designed for future integration with StackFast (AI-powered project planning tool) to create a complete innovation-to-execution ecosystem.
 
+## Recent Changes
+
+### July 23, 2025
+- ✅ Fixed database schema mismatch issues for user authentication
+- ✅ Resolved 'first_name' column conflicts by implementing consistent name field handling
+- ✅ Updated authentication system to support both unified `name` field and separate `firstName`/`lastName`
+- ✅ Fixed timestamp handling issues in Drizzle ORM with string mode
+- ✅ Corrected session management to use proper PostgreSQL session table structure
+- ✅ Applied all deployment fixes for production-ready authentication system
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
@@ -39,8 +49,12 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Database Schema
+- **users**: User accounts with authentication data (supports local, Google, GitHub, and Replit auth)
+  - Fields: `name`, `first_name`, `last_name`, `email`, `password`, `provider`, `provider_id`
+  - Support for OAuth providers with profile data mapping
 - **searches**: Stores user search queries and metadata
 - **search_results**: Stores AI-generated gap analysis results with detailed metrics
+- **sessions**: Express session storage for user authentication
 - **Fields**: Innovation scores, market potential, feasibility ratings, market size estimates
 
 ### AI Integration
