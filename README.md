@@ -10,7 +10,7 @@
 
 ## 🚀 Live Demo
 
-**Try Unbuilt now:** 
+**Try Unbuilt demo now @ Unbuilt.one** 
 
 Demo credentials for testing:
 - **Email:** test@example.com
@@ -18,7 +18,6 @@ Demo credentials for testing:
 
 ## 📸 Platform Demo
 
-The demo GIF above showcases the complete Unbuilt platform journey (3 seconds per frame):
 - **Welcome Tour** - Interactive onboarding that introduces users to AI-powered gap discovery
 - **Search Interface** - Clean homepage with flame-themed design and intelligent search suggestions
 - **Gap Analysis Results** - Detailed market opportunities with innovation scores and feasibility ratings  
@@ -108,16 +107,6 @@ Unbuilt features a unique "Neon Flame" theme with a mysterious "black hole" aest
 └── attached_assets/     # Static assets and logos
 ```
 
-## 🔧 Development
-
-### Available Scripts
-
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run db:push` - Push schema changes to database
-- `npm run db:studio` - Open Drizzle Studio for database management
-
 ### Demo Features
 
 The live demo includes:
@@ -138,45 +127,8 @@ The live demo includes:
 - `POST /api/trial/activate` - Activate free trial for Pro features
 - `GET /health` - Health check endpoint
 
-## 📦 Deployment
+**Current Live Demo:** The application is currently deployed and accessible at HTTPS://UNBUILT.ONE
 
-### Replit Deployment (Recommended)
-
-The application is configured for easy deployment on Replit:
-
-1. Import the repository to Replit
-2. Set environment variables in Replit Secrets:
-   - `DATABASE_URL` - Your PostgreSQL connection string
-   - `GEMINI_API_KEY` - Google Gemini API key
-   - `SESSION_SECRET` - Random string for session security
-3. Run the application - it will automatically bind to port 5000
-
-**Current Live Demo:** The application is currently deployed and accessible at the demo link above.
-
-### Production Deployment
-
-1. **Build the application**
-   ```bash
-   npm run build
-   ```
-
-2. **Set production environment variables**
-   - `DATABASE_URL` - PostgreSQL connection string
-   - `GEMINI_API_KEY` - Google Gemini API key
-   - `SENDGRID_API_KEY` - SendGrid for email (optional)
-
-3. **Start the production server**
-   ```bash
-   npm run start
-   ```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📄 License
 
@@ -209,4 +161,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Discover what's missing. Build what's next.** 🚀
 
-*Ready to find your next big opportunity? [Try the live demo now →](https://a89c34fb-a499-4213-be44-089e1af5a604-00-3v22fv7gmb01o.janeway.replit.dev/)*
+*Ready to find your next big opportunity? [Try the live demo now →](https://Unbuilt.one*
