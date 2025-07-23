@@ -63,7 +63,7 @@ export const users = pgTable("users", {
   unique("users_email_unique").on(table.email),
 ]);
 
-export const sessions = pgTable("sessions", {
+export const sessions = pgTable("session", {
   sid: text().primaryKey().notNull(),
   sess: jsonb().notNull(),
   expire: timestamp({ mode: 'string' }).notNull(),

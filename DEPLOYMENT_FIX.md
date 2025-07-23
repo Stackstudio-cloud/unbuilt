@@ -1,7 +1,13 @@
 # Deployment Fix for SID/SESS Column Issues
 
 ## Problem
-During Replit deployment, you may encounter conflicts with SID and SESS columns in the sessions table.
+During Replit deployment, you may encounter conflicts with SID and SESS columns in the sessions table. This occurs because:
+
+1. **connect-pg-simple** middleware expects table named `"session"` (singular)
+2. **Drizzle schema** was defining table as `"sessions"` (plural)  
+3. **Deployment system** detects this naming mismatch as a potential conflict
+
+**Root Cause**: Table naming inconsistency between session middleware and schema definition.
 
 ## Solution
 

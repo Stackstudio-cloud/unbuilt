@@ -10,7 +10,7 @@
 
 ## 🚀 Live Demo
 
-**Try Unbuilt now:** [https://a89c34fb-a499-4213-be44-089e1af5a604-00-3v22fv7gmb01o.janeway.replit.dev/](https://a89c34fb-a499-4213-be44-089e1af5a604-00-3v22fv7gmb01o.janeway.replit.dev/)
+**Try Unbuilt now:** 
 
 Demo credentials for testing:
 - **Email:** test@example.com
